@@ -8,27 +8,33 @@ namespace InputSystem
     public class InputSystemTest : MonoBehaviour
     {
         [SerializeField] private InputActionReference jumpAction;
-        
-    
+        [SerializeField] private InputActionReference moveAction;
+        [SerializeField] private float baseSpeed = 10.0f;
+        private Rigidbody _rb;
 
         private void Awake()
         {
-            // bool canPlace = jumpAction.action.IsPressed();
-            // Debug.Log("Can place = " + canPlace);
+            _rb = GetComponent<Rigidbody>();
+            
         }
 
         private void Update()
         {
-            if (jumpAction.action.triggered)
-            {
-                Debug.Log("Jump");
-                Jump();
-            }
+            HandleMovement();
+            HandleJump();
         }
 
-        public void Jump()
+        private void HandleMovement()
         {
-            
+           Vector2 moveDirection = moveAction.action.ReadValue<Vector2>();
+           if (moveDirection == Vector2.zero) return;
+
+           _rb.MovePosition(_rb.position + (new Vector3(moveDirection.x, 0f, moveDirection.y))*baseSpeed * Time.deltaTime);
+        }
+        
+        private void HandleJump()
+        {
+            if (!jumpAction.action.triggered) return;
         }
     }
 }
