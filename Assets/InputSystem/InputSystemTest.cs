@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -6,17 +5,29 @@ namespace InputSystem
 {
     public class InputSystemTest : MonoBehaviour
     {
-        private Rigidbody capsuleRigidBody;
+        private Rigidbody _capsuleRigidBody;
+        private PlayerInput _playerInput;
 
         private void Awake()
         {
-            capsuleRigidBody = GetComponent<Rigidbody>();
+            _capsuleRigidBody = GetComponent<Rigidbody>();
+            _playerInput = GetComponent<PlayerInput>();
+
+            _playerInput.onActionTriggered += PlayerInput_onActionTriggered;
+        }
+
+        private void PlayerInput_onActionTriggered(InputAction.CallbackContext context)
+        {
+            Debug.Log("context = " + context);
         }
 
         public void Jump(InputAction.CallbackContext context)
         {
-            Debug.Log("Jump " + context.phase);
-            capsuleRigidBody.AddForce(Vector3.up*5f, ForceMode.Impulse);
+            if (context.performed)
+            {
+                Debug.Log("Jump " + context.phase);
+                _capsuleRigidBody.AddForce(Vector3.up * 5f, ForceMode.Impulse);
+            }
         }
     }
 }
