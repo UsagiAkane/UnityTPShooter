@@ -50,7 +50,7 @@ namespace InputSystem
 
         private void SetActionMapActiveState(InputActionMap inputActionMap, bool isActive)
         {
-            Debug.Log("5: SetActionMapActiveState: " + isActive);//---------
+            //Debug.Log("5: SetActionMapActiveState: " + isActive);//---------
             
             if (isActive) inputActionMap.Enable();
             else inputActionMap.Disable();
@@ -58,7 +58,7 @@ namespace InputSystem
         
         private void SetActionActiveState(InputAction action, bool isActive)
         {
-            Debug.Log("6: SetActionActiveState: " + isActive);//---------
+            //Debug.Log("6: SetActionActiveState: " + isActive);//---------
             
             if(isActive) action.Enable();
             else action.Disable();
