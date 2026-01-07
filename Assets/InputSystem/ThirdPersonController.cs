@@ -51,8 +51,8 @@ namespace InputSystem
             HandleCameraDirection();
             HandleJump();
             
-            //RotateFromLookAction();
-            //RotateCameraPitchFromLook();
+            RotateFromLookAction();
+            RotateCameraPitchFromLook();
         }
 
         private void FixedUpdate()
@@ -104,16 +104,12 @@ namespace InputSystem
         //mouse delta (lookAction)
         private void RotateFromLookAction()
         {
-            if (lookAction?.action == null) return;
-
             Vector2 lookDelta = lookAction.action.ReadValue<Vector2>();
-            //Debug.Log(lookDelta.x);
             float deltaYaw = lookDelta.x * mouseSensitivity * 0.1f;
-
             _yaw += deltaYaw;
-            //Apply yaw to the player (smooth)
             Quaternion targetRotation = Quaternion.Euler(0f, _yaw, 0f);
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+            _rb.MoveRotation(targetRotation);
+            // transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime); //Problem with sync to camera after collision
         }
         private void RotateCameraPitchFromLook()
         {
