@@ -17,8 +17,6 @@ namespace InputSystem
         [SerializeField] private float moveSpeed = 10f;
         [SerializeField] private float maxSpeed = 10f;
         [SerializeField] private float jumpForce = 5f;
-        [SerializeField] private float rotationSpeed = 10f;
-        [SerializeField] private float mouseSensitivity = 0.1f;
 
         [Header("Camera")] 
         [SerializeField] private Transform cameraTransform;
@@ -26,9 +24,11 @@ namespace InputSystem
         
         [Header("Aim/Camera Pitch")]
         [SerializeField] private Transform cameraPitchTarget;
+        [SerializeField] private float pitchSensitivity = 0.1f;
+        [SerializeField] private float mouseSensitivity = 0.1f;
+        [SerializeField] private float rotationSpeed = 99999f;
         [SerializeField] private float pitchMin = -20f;
         [SerializeField] private float pitchMax = 60f;
-        [SerializeField] private float pitchSensitivity = 1f;
         
         private float _pitch;
 
@@ -51,8 +51,8 @@ namespace InputSystem
             HandleCameraDirection();
             HandleJump();
             
-            RotateFromLookAction();
-            RotateCameraPitchFromLook();
+            //RotateFromLookAction();
+            //RotateCameraPitchFromLook();
         }
 
         private void FixedUpdate()
@@ -60,18 +60,6 @@ namespace InputSystem
             HandleMovement();
         }
         
-        private void RotateCameraPitchFromLook()
-        {
-            Vector2 lookDelta = lookAction.action.ReadValue<Vector2>();
-            float deltaPitch = lookDelta.y * pitchSensitivity;
-            _pitch -= deltaPitch; // invert if you prefer: _pitch += deltaPitch
-            _pitch = Mathf.Clamp(_pitch, pitchMin, pitchMax);
-
-            Vector3 euler = cameraPitchTarget.localEulerAngles;
-            euler.x = _pitch;
-            cameraPitchTarget.localEulerAngles = euler;
-        }
-
         private void HandleInputs()
         {
             if (moveAction?.action != null)
@@ -108,36 +96,46 @@ namespace InputSystem
                 _rb.linearVelocity = new Vector3(limited.x, velocity.y, limited.z);
             }
         }
-
-        // Optional: if you want to keep MovePositionMove for some reason
+        
         private void MovePositionMove() => _rb.MovePosition(_rb.position
                                                             + new Vector3(_moveInput.x, 0f, _moveInput.y)
                                                             * moveSpeed * Time.fixedDeltaTime);
 
-        // Rotation driven by mouse delta (lookAction)
+        //mouse delta (lookAction)
         private void RotateFromLookAction()
         {
             if (lookAction?.action == null) return;
 
             Vector2 lookDelta = lookAction.action.ReadValue<Vector2>();
             //Debug.Log(lookDelta.x);
-            float deltaYaw = lookDelta.x * mouseSensitivity *0.1f;
+            float deltaYaw = lookDelta.x * mouseSensitivity * 0.1f;
 
             _yaw += deltaYaw;
-            // Apply yaw to the player (smooth)
+            //Apply yaw to the player (smooth)
             Quaternion targetRotation = Quaternion.Euler(0f, _yaw, 0f);
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
         }
+        private void RotateCameraPitchFromLook()
+        {
+            Vector2 lookDelta = lookAction.action.ReadValue<Vector2>();
+            float deltaPitch = lookDelta.y * pitchSensitivity * 0.1f;
+            _pitch -= deltaPitch;
+            _pitch = Mathf.Clamp(_pitch, pitchMin, pitchMax);
 
+            Vector3 euler = cameraPitchTarget.localEulerAngles;
+            euler.x = _pitch;
+            cameraPitchTarget.localEulerAngles = euler;
+        }
+
+        
+        
         private void HandleJump()
         {
-            if (jumpAction?.action != null && jumpAction.action.triggered)
+            if (jumpAction.action.triggered) //TODO isGrounded check
             {
                 _rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
             }
         }
 
-        // Optional: if you want to keep facing the movement direction when stationary
-        // you can reintroduce a small RotatePlayer here and call it from Update.
     }
 }

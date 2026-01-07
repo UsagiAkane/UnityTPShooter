@@ -4,7 +4,7 @@
 PlayerSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 28
-  productGUID: 44bc0cd1c6167504ba5bf724b0552043
+  productGUID: 9179b590dbd7a6646a7478b2f9a4423b
   AndroidProfiler: 0
   AndroidFilterTouchesWhenObscured: 0
   AndroidEnableSustainedPerformanceMode: 0
@@ -13,7 +13,7 @@ PlayerSettings:
   useOnDemandResources: 0
   accelerometerFrequency: 60
   companyName: DefaultCompany
-  productName: TPSTest
+  productName: UnityTPShooter
   defaultCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
   m_SplashScreenBackgroundColor: {r: 0.13725491, g: 0.12156863, b: 0.1254902, a: 1}
@@ -524,7 +524,10 @@ PlayerSettings:
       m_Height: 720
       m_Kind: 1
       m_SubKind: 
-  m_BuildTargetBatching: []
+  m_BuildTargetBatching:
+  - m_BuildTarget: Standalone
+    m_StaticBatching: 1
+    m_DynamicBatching: 0
   m_BuildTargetShaderSettings: []
   m_BuildTargetGraphicsJobs: []
   m_BuildTargetGraphicsJobMode: []
@@ -846,14 +849,14 @@ PlayerSettings:
   editorAssembliesCompatibilityLevel: 1
   m_RenderingPath: 1
   m_MobileRenderingPath: 1
-  metroPackageName: TPSTest
+  metroPackageName: UnityTPShooter
   metroPackageVersion: 
   metroCertificatePath: 
   metroCertificatePassword: 
   metroCertificateSubject: 
   metroCertificateIssuer: 
   metroCertificateNotAfter: 0000000000000000
-  metroApplicationDescription: TPSTest
+  metroApplicationDescription: UnityTPShooter
   wsaImages: {}
   metroTileShortName: 
   metroTileShowName: 0
@@ -924,10 +927,10 @@ PlayerSettings:
   captureStartupLogs: {}
   activeInputHandler: 1
   windowsGamepadBackendHint: 0
-  cloudProjectId: 4a6360f2-b914-4af9-bb17-a587fbe2a415
+  cloudProjectId: c73f6e82-77b3-44eb-8ea9-e19ccb2bd83b
   framebufferDepthMemorylessMode: 0
   qualitySettingsNames: []
-  projectName: TPSTest
+  projectName: UnityTPShooter
   organizationId: demia232
   cloudEnabled: 0
   legacyClampBlendShapeWeights: 0
