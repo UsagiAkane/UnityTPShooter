@@ -35,6 +35,8 @@ namespace InputSystem
         [SerializeField] private Transform debugTransform;
         [SerializeField] private Transform pfBulletProjectile;
         [SerializeField] private Transform spawnBulletPosition;
+        [SerializeField] private ObjectPool bulletPool;
+        [SerializeField] private float bulletSpeed = 20f;
         
         private Vector2 lookDelta = Vector2.zero;
         
@@ -61,6 +63,7 @@ namespace InputSystem
             
             //-----------------
             HandleAimPosition();
+            //ProjectileShootObsolete();
             ProjectileShoot();
             
             
@@ -90,7 +93,18 @@ namespace InputSystem
                 //hitTransform = raycastHit.transform;//hitscan check
             }
         }
+        
         private void ProjectileShoot()
+        {
+            if (shootAction.action.triggered)
+            {
+                Vector3 aimDir = (_mouseWorldPosition-spawnBulletPosition.position).normalized;
+                Quaternion rot = Quaternion.LookRotation(aimDir, Vector3.up);
+
+                bulletPool.GetBulletProjectile(spawnBulletPosition.position, rot, aimDir, bulletSpeed);
+            }
+        }
+        private void ProjectileShootObsolete()
         {
             if (shootAction.action.triggered)
             {
