@@ -12,6 +12,7 @@ namespace InputSystem
         [SerializeField] private InputActionReference moveAction;
         [SerializeField] private InputActionReference lookAction;
         [SerializeField] private InputActionReference jumpAction;
+        [SerializeField] private InputActionReference shootAction;
 
         [Header("Params")] 
         [SerializeField] private float moveSpeed = 10f;
@@ -30,11 +31,20 @@ namespace InputSystem
         [SerializeField] private float pitchMin = -20f;
         [SerializeField] private float pitchMax = 60f;
         
+        [SerializeField] private LayerMask aimCollisionLayerMask;
+        [SerializeField] private Transform debugTransform;
+        [SerializeField] private Transform pfBulletProjectile;
+        [SerializeField] private Transform spawnBulletPosition;
+        
+        private Vector2 lookDelta = Vector2.zero;
+        
+        private Vector3 _mouseWorldPosition = Vector3.zero;
         private float _pitch;
 
         private Rigidbody _rb;
         private Vector2 _moveInput;
         private Vector3 _moveDirection;
+        
 
         private float _yaw;
 
@@ -47,6 +57,14 @@ namespace InputSystem
 
         private void Update()
         {
+            lookDelta = lookAction.action.ReadValue<Vector2>();
+            
+            //-----------------
+            HandleAimPosition();
+            ProjectileShoot();
+            
+            
+            //-----------------
             HandleInputs();
             HandleCameraDirection();
             HandleJump();
@@ -54,10 +72,31 @@ namespace InputSystem
             RotateFromLookAction();
             RotateCameraPitchFromLook();
         }
-
         private void FixedUpdate()
         {
             HandleMovement();
+        }
+
+        private void HandleAimPosition()
+        {
+            Vector2 screenCenterPoint = new Vector2(Screen.width / 2f, Screen.height / 2f);
+            Ray ray = Camera.main.ScreenPointToRay(screenCenterPoint);
+            //Transform hitTransform = null; //hitscan check
+            
+            if (Physics.Raycast(ray, out RaycastHit raycastHit, 999f,aimCollisionLayerMask))
+            {
+                debugTransform.position = raycastHit.point;
+                _mouseWorldPosition = raycastHit.point;
+                //hitTransform = raycastHit.transform;//hitscan check
+            }
+        }
+        private void ProjectileShoot()
+        {
+            if (shootAction.action.triggered)
+            {
+                Vector3 aimDir = (_mouseWorldPosition-spawnBulletPosition.position).normalized;
+                Instantiate(pfBulletProjectile,spawnBulletPosition.position, Quaternion.LookRotation(aimDir,Vector3.up));
+            }
         }
         
         private void HandleInputs()
@@ -100,11 +139,10 @@ namespace InputSystem
         private void MovePositionMove() => _rb.MovePosition(_rb.position
                                                             + new Vector3(_moveInput.x, 0f, _moveInput.y)
                                                             * moveSpeed * Time.fixedDeltaTime);
-
-        //mouse delta (lookAction)
+        
         private void RotateFromLookAction()
         {
-            Vector2 lookDelta = lookAction.action.ReadValue<Vector2>();
+            //Vector2 lookDelta = lookAction.action.ReadValue<Vector2>();
             float deltaYaw = lookDelta.x * mouseSensitivity * 0.1f;
             _yaw += deltaYaw;
             Quaternion targetRotation = Quaternion.Euler(0f, _yaw, 0f);
@@ -113,7 +151,7 @@ namespace InputSystem
         }
         private void RotateCameraPitchFromLook()
         {
-            Vector2 lookDelta = lookAction.action.ReadValue<Vector2>();
+            //Vector2 lookDelta = lookAction.action.ReadValue<Vector2>();
             float deltaPitch = lookDelta.y * pitchSensitivity * 0.1f;
             _pitch -= deltaPitch;
             _pitch = Mathf.Clamp(_pitch, pitchMin, pitchMax);
@@ -122,8 +160,6 @@ namespace InputSystem
             euler.x = _pitch;
             cameraPitchTarget.localEulerAngles = euler;
         }
-
-        
         
         private void HandleJump()
         {
@@ -132,6 +168,7 @@ namespace InputSystem
                 _rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
             }
         }
-
+        
+       
     }
 }
