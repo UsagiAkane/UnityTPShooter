@@ -12,7 +12,6 @@ namespace InputSystem
         [SerializeField] private InputActionReference moveAction;
         [SerializeField] private InputActionReference lookAction;
         [SerializeField] private InputActionReference jumpAction;
-        [SerializeField] private InputActionReference shootAction;
 
         [Header("Params")] 
         [SerializeField] private float moveSpeed = 10f;
@@ -33,10 +32,7 @@ namespace InputSystem
         
         [SerializeField] private LayerMask aimCollisionLayerMask;
         [SerializeField] private Transform debugTransform;
-        [SerializeField] private Transform pfBulletProjectile;
-        [SerializeField] private Transform spawnBulletPosition;
-        [SerializeField] private ObjectPool bulletPool;
-        [SerializeField] private float bulletSpeed = 20f;
+        
         
         private Vector2 lookDelta = Vector2.zero;
         
@@ -62,9 +58,10 @@ namespace InputSystem
             lookDelta = lookAction.action.ReadValue<Vector2>();
             
             //-----------------
-            HandleAimPosition();
+            _mouseWorldPosition = HandleAimPosition();
+            debugTransform.position = _mouseWorldPosition;
             //ProjectileShootObsolete();
-            ProjectileShoot();
+            //ProjectileShoot();
             
             
             //-----------------
@@ -80,7 +77,7 @@ namespace InputSystem
             HandleMovement();
         }
 
-        private void HandleAimPosition()
+        public Vector3 HandleAimPosition()
         {
             Vector2 screenCenterPoint = new Vector2(Screen.width / 2f, Screen.height / 2f);
             Ray ray = Camera.main.ScreenPointToRay(screenCenterPoint);
@@ -88,29 +85,10 @@ namespace InputSystem
             
             if (Physics.Raycast(ray, out RaycastHit raycastHit, 999f,aimCollisionLayerMask))
             {
-                debugTransform.position = raycastHit.point;
-                _mouseWorldPosition = raycastHit.point;
                 //hitTransform = raycastHit.transform;//hitscan check
+                return raycastHit.point;
             }
-        }
-        
-        private void ProjectileShoot()
-        {
-            if (shootAction.action.triggered)
-            {
-                Vector3 aimDir = (_mouseWorldPosition-spawnBulletPosition.position).normalized;
-                Quaternion rot = Quaternion.LookRotation(aimDir, Vector3.up);
-
-                bulletPool.GetBulletProjectile(spawnBulletPosition.position, rot, aimDir, bulletSpeed);
-            }
-        }
-        private void ProjectileShootObsolete()
-        {
-            if (shootAction.action.triggered)
-            {
-                Vector3 aimDir = (_mouseWorldPosition-spawnBulletPosition.position).normalized;
-                Instantiate(pfBulletProjectile,spawnBulletPosition.position, Quaternion.LookRotation(aimDir,Vector3.up));
-            }
+            else return Vector3.zero;
         }
         
         private void HandleInputs()
