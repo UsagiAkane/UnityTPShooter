@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -17,7 +18,7 @@ public class ObjectPool : MonoBehaviour
     {
         for (int i = 0; i < count; i++)
         {
-            var b = Instantiate(bulletProjectilePrefab, transform);
+            var b = Instantiate(bulletProjectilePrefab);
             b.gameObject.SetActive(false);
             _freeBullets.Add(b);
         }
@@ -34,10 +35,12 @@ public class ObjectPool : MonoBehaviour
         }
         else
         {
-            bullet = Instantiate(bulletProjectilePrefab, transform);
+            bullet = Instantiate(bulletProjectilePrefab);
         }
 
-        bullet.Init(position, rotation, direction, speed, this);
+        bullet.transform.position = position;
+        bullet.transform.rotation = rotation;
+        bullet.Init(direction, speed, this);
         return bullet;
     }
 
@@ -46,5 +49,13 @@ public class ObjectPool : MonoBehaviour
     {
         bullet.gameObject.SetActive(false);
         _freeBullets.Add(bullet);
+    }
+
+    private void OnDestroy()
+    {
+        for (int i = 0; i < _freeBullets.Count; i++)
+        {
+            Destroy(_freeBullets[i].gameObject);
+        }
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public abstract class Gun : MonoBehaviour
@@ -7,10 +8,14 @@ public abstract class Gun : MonoBehaviour
     protected ObjectPool projectilePool;
     protected GunConfig config;
 
-    public virtual void Initialize(GunConfig cfg, ObjectPool pool)
+    private void Awake()
+    {
+        projectilePool = GetComponent<ObjectPool>();
+    }
+
+    public virtual void Initialize(GunConfig cfg)
     {
         config = cfg;
-        projectilePool = pool;
         currentAmmo = cfg.clipSize;
         cooldown = 0f;
     }

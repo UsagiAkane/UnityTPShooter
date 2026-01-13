@@ -15,9 +15,9 @@ MonoBehaviour:
   droppepPF: {fileID: 1817304317981312710, guid: 0ef8028e39878674bbec32ec39898dc1, type: 3}
   equipedPF: {fileID: 3206979623911657815, guid: a006dda16a3879e4d9a0a9ffd28fe635, type: 3}
   weaponName: Pistol
-  clipSize: 5
+  clipSize: 15
   reloadTime: 1
   damage: 5
   fireRate: 5
-  projectileSpeed: 20
+  projectileSpeed: 5
   usesProjectile: 1

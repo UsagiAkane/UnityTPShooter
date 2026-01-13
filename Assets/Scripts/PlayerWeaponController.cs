@@ -62,35 +62,6 @@ public class PlayerWeaponController : MonoBehaviour
         weaponHolder.LookAt(_mouseWorldPosition);
     }
 
-    public void AlignGunPitchToCrosshairFromWorldPoint(float maxPitchDeg = 60f)
-    {
-        if (_currentGun == null) return;
-
-        Vector3 targetPoint = HandleAimPosition();
-        if (targetPoint == Vector3.zero) return;
-
-        // Compute direction to target
-        Vector3 gunPos = _currentGun.transform.position;
-        Vector3 dir = targetPoint - gunPos;
-
-        // Keep yaw controlled by the parent/player; compute pitch relative to gun's local Up
-        Vector3 localUp = _currentGun.transform.up;
-        Vector3 dirProjected = Vector3.ProjectOnPlane(dir, localUp);
-        if (dirProjected.sqrMagnitude < 0.0001f) return;
-
-        Vector3 localForward = _currentGun.transform.forward;
-        float pitch = Vector3.SignedAngle(Vector3.ProjectOnPlane(localForward, localUp), dirProjected, localUp);
-        pitch = Mathf.Clamp(pitch, -maxPitchDeg, maxPitchDeg);
-
-        // Apply only pitch, preserve yaw/roll
-        Vector3 euler = _currentGun.transform.localEulerAngles;
-        // Normalize angle wrap-around
-        if (euler.x > 180f) euler.x -= 360f;
-        euler.x = pitch;
-        _currentGun.transform.localEulerAngles = new Vector3(euler.x, euler.y, 0f);
-    }
-
-
     private void TryEquipFromLook()
     {
         Vector2 screenCenterPoint = new Vector2(Screen.width / 2f, Screen.height / 2f);
@@ -104,6 +75,7 @@ public class PlayerWeaponController : MonoBehaviour
                 _currentGunConfig = weapon.GetConfig();
                 Destroy(weapon.gameObject);
                 _currentGun = Instantiate(_currentGunConfig.equipedPF).GetComponent<Gun>();
+                _currentGun.Initialize(_currentGunConfig);
                 //Debug.Log("Picking up " + _currentGun);
                 _currentGun.transform.SetParent(weaponHolder);
                 _currentGun.transform.localPosition = Vector3.zero;
@@ -123,10 +95,9 @@ public class PlayerWeaponController : MonoBehaviour
 
         Vector3 spawnPos = transform.position + transform.forward * 0.5f + transform.right * 0.5f; // 1 meter ahead
         Quaternion spawnRot = _currentGun.transform.rotation;
-
-        var droppedObj = Instantiate(_currentGunConfig.droppepPF, spawnPos, spawnRot);
-        var rb = droppedObj.GetComponent<Rigidbody>();
-        rb.linearVelocity = this.GetComponent<Rigidbody>().linearVelocity;
+        
+        Rigidbody rb = Instantiate(_currentGunConfig.droppepPF, spawnPos, spawnRot).GetComponent<Rigidbody>();
+        rb.linearVelocity = GetComponent<Rigidbody>().linearVelocity;
         rb.AddForce(transform.up * dropImpulse, ForceMode.Impulse);
         rb.AddForce(transform.forward * dropImpulse, ForceMode.Impulse);
         Vector3 randomTorque = new Vector3(
