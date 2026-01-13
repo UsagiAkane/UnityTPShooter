@@ -31,12 +31,12 @@ namespace InputSystem
         [SerializeField] private float pitchMax = 60f;
         
         [SerializeField] private LayerMask aimCollisionLayerMask;
-        [SerializeField] private Transform debugTransform;
+
         
         
         private Vector2 lookDelta = Vector2.zero;
         
-        private Vector3 _mouseWorldPosition = Vector3.zero;
+
         private float _pitch;
 
         private Rigidbody _rb;
@@ -58,8 +58,6 @@ namespace InputSystem
             lookDelta = lookAction.action.ReadValue<Vector2>();
             
             //-----------------
-            _mouseWorldPosition = HandleAimPosition();
-            debugTransform.position = _mouseWorldPosition;
             //ProjectileShootObsolete();
             //ProjectileShoot();
             
@@ -77,7 +75,7 @@ namespace InputSystem
             HandleMovement();
         }
 
-        public Vector3 HandleAimPosition()
+        private Vector3 HandleAimPosition()
         {
             Vector2 screenCenterPoint = new Vector2(Screen.width / 2f, Screen.height / 2f);
             Ray ray = Camera.main.ScreenPointToRay(screenCenterPoint);
