@@ -44,7 +44,7 @@ public class BulletProjectile : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (TryGetComponent(out BulletTarget bulletTarget))
+        if (other.TryGetComponent(out BulletTarget bulletTarget))
         {
             Debug.Log("Target hit");
         }

@@ -53,9 +53,11 @@ public class ObjectPool : MonoBehaviour
 
     private void OnDestroy()
     {
+        Debug.Log("ObjectPool freeBullets =  " + _freeBullets.Count);
         for (int i = 0; i < _freeBullets.Count; i++)
         {
             Destroy(_freeBullets[i].gameObject);
+        Debug.Log(i  + ": Destroyed");
         }
     }
 }
