@@ -1,23 +1,28 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class PlayerWeaponController : MonoBehaviour
 {
-    [SerializeField] private Transform weaponHolder; // where to attach weapon
+    [Header("System")] [SerializeField] private Transform weaponHolder; // where to attach weapon
     [SerializeField] private LayerMask aimCollisionLayerMask;
     [SerializeField] private LayerMask pickupCollisionLayerMask;
 
-    private Gun _currentGun;
-    private GunConfig _currentGunConfig;
-
-    [SerializeField] private InputActionReference shootAction;
+    [Header("Actions")] [SerializeField] private InputActionReference shootAction;
     [SerializeField] private InputActionReference pickUpAction;
     [SerializeField] private InputActionReference weaponDropAction;
 
+    [Header("UI Text")] [SerializeField] private GameObject uiTextAmmo;
+
+
+    private Gun _currentGun;
+    private GunConfig _currentGunConfig;
     private Vector3 _mouseWorldPosition = Vector3.zero;
 
     private void Update()
     {
+        if (_currentGunConfig != null) uiTextAmmo.GetComponent<TMP_Text>().text = _currentGun.GetCurrentAmmo() + "/" + _currentGunConfig.clipSize.ToString();
+
         if (shootAction.action.triggered)
         {
             Shoot();
@@ -95,7 +100,7 @@ public class PlayerWeaponController : MonoBehaviour
 
         Vector3 spawnPos = transform.position + transform.forward * 0.5f + transform.right * 0.5f; // 1 meter ahead
         Quaternion spawnRot = _currentGun.transform.rotation;
-        
+
         Rigidbody rb = Instantiate(_currentGunConfig.droppepPF, spawnPos, spawnRot).GetComponent<Rigidbody>();
         rb.linearVelocity = GetComponent<Rigidbody>().linearVelocity;
         rb.AddForce(transform.up * dropImpulse, ForceMode.Impulse);

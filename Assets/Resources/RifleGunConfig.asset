@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: eb25d7f7dc7262545a7fc0f830daeab8, type: 3}
-  m_Name: PistolGunConfig
+  m_Name: RifleGunConfig
   m_EditorClassIdentifier: Assembly-CSharp::GunConfig
-  droppepPF: {fileID: 1817304317981312710, guid: 0ef8028e39878674bbec32ec39898dc1, type: 3}
-  equipedPF: {fileID: 3206979623911657815, guid: a006dda16a3879e4d9a0a9ffd28fe635, type: 3}
-  weaponName: Pistol
-  clipSize: 15
-  reloadTime: 1
-  damage: 5
-  fireRate: 10
-  projectileSpeed: 5
+  droppepPF: {fileID: 2710863874842361168, guid: 6bb856afed8033e4fa425371d702ac7c, type: 3}
+  equipedPF: {fileID: 2460316172583773104, guid: e3bf1c7c6747ad14cba75605b749bd58, type: 3}
+  weaponName: Rifle
+  clipSize: 25
+  reloadTime: 5
+  damage: 15
+  fireRate: 600
+  projectileSpeed: 20
   usesProjectile: 1

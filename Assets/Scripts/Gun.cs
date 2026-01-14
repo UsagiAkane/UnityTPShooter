@@ -4,9 +4,12 @@ using UnityEngine;
 public abstract class Gun : MonoBehaviour
 {
     protected int currentAmmo;
-    protected float cooldown;// time since last shot
+    protected float cooldown; // time since last shot
     protected ObjectPool projectilePool;
     protected GunConfig config;
+    protected bool CanShoot => currentAmmo > 0 && cooldown <= 0f;
+
+    public int GetCurrentAmmo() => currentAmmo;
 
     private void Awake()
     {
@@ -26,8 +29,6 @@ public abstract class Gun : MonoBehaviour
     {
         currentAmmo = config?.clipSize ?? 0;
     }
-
-    public bool CanShoot => currentAmmo > 0 && cooldown <= 0f;
 
     protected void TickCooldown(float dt)
     {

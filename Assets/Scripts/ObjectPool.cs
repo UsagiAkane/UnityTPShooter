@@ -5,7 +5,7 @@ using UnityEngine;
 public class ObjectPool : MonoBehaviour
 {
     [SerializeField] private BulletProjectile bulletProjectilePrefab;
-    [SerializeField] private int amount = 20;
+    [SerializeField] private int amount = 10;
 
     private readonly List<BulletProjectile> _freeBullets = new();
 
