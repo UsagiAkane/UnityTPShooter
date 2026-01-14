@@ -1,9 +1,13 @@
-using TMPro;
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Random = UnityEngine.Random;
 
 public class PlayerWeaponController : MonoBehaviour
 {
+    public static event Action<Gun> OnGunPickUp;
+    public static event Action<Gun> OnGunDropDown;
+
     [Header("System")] [SerializeField] private Transform weaponHolder; // where to attach weapon
     [SerializeField] private LayerMask aimCollisionLayerMask;
     [SerializeField] private LayerMask pickupCollisionLayerMask;
@@ -12,17 +16,12 @@ public class PlayerWeaponController : MonoBehaviour
     [SerializeField] private InputActionReference pickUpAction;
     [SerializeField] private InputActionReference weaponDropAction;
 
-    [Header("UI Text")] [SerializeField] private GameObject uiTextAmmo;
-
-
     private Gun _currentGun;
     private GunConfig _currentGunConfig;
     private Vector3 _mouseWorldPosition = Vector3.zero;
 
     private void Update()
     {
-        if (_currentGunConfig != null) uiTextAmmo.GetComponent<TMP_Text>().text = _currentGun.GetCurrentAmmo() + "/" + _currentGunConfig.clipSize.ToString();
-
         if (shootAction.action.triggered)
         {
             Shoot();
@@ -69,6 +68,8 @@ public class PlayerWeaponController : MonoBehaviour
 
     private void TryEquipFromLook()
     {
+        if (_currentGun != null) TryDropWeaponForward();
+
         Vector2 screenCenterPoint = new Vector2(Screen.width / 2f, Screen.height / 2f);
         Ray ray = Camera.main.ScreenPointToRay(screenCenterPoint);
 
@@ -80,12 +81,13 @@ public class PlayerWeaponController : MonoBehaviour
                 _currentGunConfig = weapon.GetConfig();
                 Destroy(weapon.gameObject);
                 _currentGun = Instantiate(_currentGunConfig.equipedPF).GetComponent<Gun>();
-                _currentGun.Initialize(_currentGunConfig);
-                //Debug.Log("Picking up " + _currentGun);
                 _currentGun.transform.SetParent(weaponHolder);
                 _currentGun.transform.localPosition = Vector3.zero;
                 _currentGun.transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
                 _currentGun.transform.localScale = Vector3.one;
+                OnGunPickUp?.Invoke(_currentGun);
+                _currentGun.Initialize(_currentGunConfig);
+                //Debug.Log("Picking up " + _currentGun);
             }
         }
     }
@@ -112,6 +114,7 @@ public class PlayerWeaponController : MonoBehaviour
         );
         rb.AddTorque(randomTorque, ForceMode.Impulse);
 
+        OnGunDropDown?.Invoke(_currentGun);
         Destroy(_currentGun.gameObject);
         _currentGun = null;
         _currentGunConfig = null;

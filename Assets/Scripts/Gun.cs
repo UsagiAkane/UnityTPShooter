@@ -3,13 +3,25 @@ using UnityEngine;
 
 public abstract class Gun : MonoBehaviour
 {
-    protected int currentAmmo;
+    public event Action<int, int> OnAmmoAmountChanged;
+
+    private int currentAmmo;
     protected float cooldown; // time since last shot
     protected ObjectPool projectilePool;
     protected GunConfig config;
     protected bool CanShoot => currentAmmo > 0 && cooldown <= 0f;
 
-    public int GetCurrentAmmo() => currentAmmo;
+    public int CurrentAmmo
+    {
+        get => currentAmmo;
+        protected set
+        {
+            currentAmmo = value;
+            OnAmmoAmountChanged?.Invoke(currentAmmo, config?.clipSize ?? 0);
+        }
+    }
+    
+
 
     private void Awake()
     {
@@ -19,7 +31,7 @@ public abstract class Gun : MonoBehaviour
     public virtual void Initialize(GunConfig cfg)
     {
         config = cfg;
-        currentAmmo = cfg.clipSize;
+        CurrentAmmo = cfg.clipSize;
         cooldown = 0f;
     }
 
@@ -27,7 +39,7 @@ public abstract class Gun : MonoBehaviour
 
     public virtual void Reload()
     {
-        currentAmmo = config?.clipSize ?? 0;
+        CurrentAmmo = config?.clipSize ?? 0;
     }
 
     protected void TickCooldown(float dt)
