@@ -1,4 +1,3 @@
-using System;
 using TMPro;
 using UnityEngine;
 
@@ -15,7 +14,7 @@ public class AmmoUI : MonoBehaviour
 
     private void UpdateAmmoUI(int currentAmmo, int maxAmmo)
     {
-        ammoText.text = currentAmmo + "/" + maxAmmo;
+        ammoText.text = $"{currentAmmo}/{maxAmmo}";
     }
 
     private void OnDestroy()
@@ -34,9 +33,7 @@ public class AmmoUI : MonoBehaviour
 
         currentGun = gun;
         currentGun.OnAmmoAmountChanged += UpdateAmmoText;
-
         
-        //UpdateAmmoText(currentGun.CurrentAmmo,currentGun.);
     }
 
     private void HandleGunDropped(Gun gun)

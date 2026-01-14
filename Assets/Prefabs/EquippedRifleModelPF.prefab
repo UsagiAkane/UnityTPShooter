@@ -92,5 +92,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: feeb68799adcd7a4eab0efe23a174491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ObjectPool
-  bulletProjectilePrefab: {fileID: 0}
+  bulletProjectilePrefab: {fileID: -8681239984784094275, guid: ab347df51905bc5489443e8784d0e49c, type: 3}
   amount: 20

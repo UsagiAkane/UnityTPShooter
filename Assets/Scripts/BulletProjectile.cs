@@ -10,6 +10,7 @@ public class BulletProjectile : MonoBehaviour
 
     [SerializeField] private Rigidbody rbBullet;
 
+    private float damage = 27f;
     private Vector3 _direction;
     private float _speed;
     [SerializeField] float _lifeTime = 5f;
@@ -46,11 +47,12 @@ public class BulletProjectile : MonoBehaviour
     {
         if (other.TryGetComponent(out BulletTarget bulletTarget))
         {
-            Debug.Log("Target hit");
+            //Debug.Log("Target hit");
+            bulletTarget.TookDamage(damage);
         }
         else
         {
-            Debug.Log("No target hit");
+            Debug.Log("groud hit");
         }
 
         ReturnToPool();
