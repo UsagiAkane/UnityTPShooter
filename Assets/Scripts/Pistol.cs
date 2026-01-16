@@ -5,6 +5,7 @@ public class Pistol : Gun
     public override void Shoot()
     {
         if (!CanShoot) return;
+        if (cooldown >= 0.01f) return;
         Debug.Log("\ncurrent ammo = " + CurrentAmmo + "\nconfig name" + config.name);
 
         projectilePool.GetBulletProjectile(
@@ -13,6 +14,7 @@ public class Pistol : Gun
             transform.forward,
             config.projectileSpeed);
         CurrentAmmo--;
-        //cooldown = 1f / (config.fireRate > 0f ? config.fireRate : 1f);
+
+        cooldown = cooldown = 60f / config.fireRate;
     }
 }

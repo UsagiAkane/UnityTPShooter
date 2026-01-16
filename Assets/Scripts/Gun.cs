@@ -20,12 +20,15 @@ public abstract class Gun : MonoBehaviour
             OnAmmoAmountChanged?.Invoke(currentAmmo, config?.clipSize ?? 0);
         }
     }
-    
-
 
     private void Awake()
     {
         projectilePool = GetComponent<ObjectPool>();
+    }
+
+    private void Update()
+    {
+        TickCooldown(Time.deltaTime);
     }
 
     public virtual void Initialize(GunConfig cfg)

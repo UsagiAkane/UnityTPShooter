@@ -22,8 +22,9 @@ public class PlayerWeaponController : MonoBehaviour
 
     private void Update()
     {
-        if (shootAction.action.triggered)
+        if (shootAction.action.IsPressed())
         {
+            //Debug.Log("shooting");
             Shoot();
         }
 
