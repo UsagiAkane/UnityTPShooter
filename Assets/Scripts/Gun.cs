@@ -4,12 +4,13 @@ using UnityEngine;
 public abstract class Gun : MonoBehaviour
 {
     public event Action<int, int> OnAmmoAmountChanged;
-    
+
+    [SerializeField] protected Transform firePoint;
     protected float cooldown; // time since last shot
     protected ObjectPool projectilePool;
     protected GunConfig config;
     protected bool CanShoot => _currentAmmo > 0 && cooldown <= 0f;
-    
+
     private int _currentAmmo;
 
     public int CurrentAmmo

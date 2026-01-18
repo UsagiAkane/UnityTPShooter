@@ -11,7 +11,7 @@ public class Pistol : Gun
         //Debug.Log("\ncurrent ammo = " + CurrentAmmo + "\nconfig name" + config.name);
 
         projectilePool.GetBulletProjectile(
-            transform.position,
+            firePoint.position,
             transform.rotation,
             transform.forward,
             config.projectileSpeed);
