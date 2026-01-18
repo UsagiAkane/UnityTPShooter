@@ -51,10 +51,4 @@ public abstract class Gun : MonoBehaviour
     {
         if (cooldown >= 0f) cooldown -= dt;
     }
-
-    // protected BulletProjectile SpawnBullet(Vector3 position, Quaternion rotation, Vector3 dir, float speed)
-    // {
-    //     //if (projectilePool == null) return null; ???????????????????????????????????????
-    //     return projectilePool.GetBulletProjectile(position, rotation, dir, speed);
-    // }
 }

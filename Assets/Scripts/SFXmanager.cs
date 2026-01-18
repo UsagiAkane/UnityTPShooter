@@ -30,9 +30,4 @@ public class SFXmanager : MonoBehaviour
         //destroy 
         Destroy(audioSource.gameObject, clipLength);
     }
-
-    private void Die()
-    {
-        Destroy(gameObject);
-    }
 }

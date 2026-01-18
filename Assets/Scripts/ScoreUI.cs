@@ -8,7 +8,7 @@ public class ScoreUI : MonoBehaviour
     private void Awake()
     {
         //BulletTarget.OnHealthChange += HandleScoreTextHP;
-        BulletTarget.OnTakeDamage += HandleScoreTextDamage;
+        BulletTarget.OnTookDamage += HandleScoreTextDamage;
     }
 
     private void HandleScoreTextHP(float current, float max)
@@ -18,14 +18,13 @@ public class ScoreUI : MonoBehaviour
 
     private void HandleScoreTextDamage(float dmg)
     {
-        //Debug.Log(dmg);
-        float.TryParse(scoreText.text, out float damage);
+        float.TryParse(scoreText.text, out float damage);//DELETE
         scoreText.text = (damage + dmg).ToString();
     }
 
     private void OnDestroy()
     {
         //BulletTarget.OnHealthChange -= HandleScoreTextHP;
-        BulletTarget.OnTakeDamage -= HandleScoreTextDamage;
+        BulletTarget.OnTookDamage -= HandleScoreTextDamage;
     }
 }

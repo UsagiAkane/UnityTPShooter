@@ -29,21 +29,14 @@ namespace InputSystem
         [SerializeField] private float rotationSpeed = 99999f;
         [SerializeField] private float pitchMin = -20f;
         [SerializeField] private float pitchMax = 60f;
-        
         [SerializeField] private LayerMask aimCollisionLayerMask;
-
-        
         
         private Vector2 lookDelta = Vector2.zero;
-        
-
         private float _pitch;
 
         private Rigidbody _rb;
         private Vector2 _moveInput;
         private Vector3 _moveDirection;
-        
-
         private float _yaw;
 
         private void Awake()
@@ -55,14 +48,6 @@ namespace InputSystem
 
         private void Update()
         {
-            lookDelta = lookAction.action.ReadValue<Vector2>();
-            
-            //-----------------
-            //ProjectileShootObsolete();
-            //ProjectileShoot();
-            
-            
-            //-----------------
             HandleInputs();
             HandleCameraDirection();
             HandleJump();
@@ -74,25 +59,12 @@ namespace InputSystem
         {
             HandleMovement();
         }
-
-        private Vector3 HandleAimPosition()
-        {
-            Vector2 screenCenterPoint = new Vector2(Screen.width / 2f, Screen.height / 2f);
-            Ray ray = Camera.main.ScreenPointToRay(screenCenterPoint);
-            //Transform hitTransform = null; //hitscan check
-            
-            if (Physics.Raycast(ray, out RaycastHit raycastHit, 999f,aimCollisionLayerMask))
-            {
-                //hitTransform = raycastHit.transform;//hitscan check
-                return raycastHit.point;
-            }
-            else return Vector3.zero;
-        }
         
         private void HandleInputs()
         {
-            if (moveAction?.action != null)
-                _moveInput = moveAction.action.ReadValue<Vector2>();
+            lookDelta = lookAction.action.ReadValue<Vector2>();
+            
+            if (moveAction?.action != null) _moveInput = moveAction.action.ReadValue<Vector2>();
         }
 
         private void HandleCameraDirection()
@@ -100,8 +72,10 @@ namespace InputSystem
             Vector3 forward = cameraTransform.forward;
             Vector3 right = cameraTransform.right;
 
-            forward.y = 0; right.y = 0;
-            forward.Normalize(); right.Normalize();
+            forward.y = 0; 
+            right.y = 0;
+            forward.Normalize(); 
+            right.Normalize();
 
             _moveDirection = forward * _moveInput.y + right * _moveInput.x;
         }
@@ -125,23 +99,17 @@ namespace InputSystem
                 _rb.linearVelocity = new Vector3(limited.x, velocity.y, limited.z);
             }
         }
-        
-        private void MovePositionMove() => _rb.MovePosition(_rb.position
-                                                            + new Vector3(_moveInput.x, 0f, _moveInput.y)
-                                                            * moveSpeed * Time.fixedDeltaTime);
-        
+
         private void RotateFromLookAction()
         {
-            //Vector2 lookDelta = lookAction.action.ReadValue<Vector2>();
             float deltaYaw = lookDelta.x * mouseSensitivity * 0.1f;
             _yaw += deltaYaw;
             Quaternion targetRotation = Quaternion.Euler(0f, _yaw, 0f);
             _rb.MoveRotation(targetRotation);
-            // transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime); //Problem with sync to camera after collision
         }
+        
         private void RotateCameraPitchFromLook()
         {
-            //Vector2 lookDelta = lookAction.action.ReadValue<Vector2>();
             float deltaPitch = lookDelta.y * pitchSensitivity * 0.1f;
             _pitch -= deltaPitch;
             _pitch = Mathf.Clamp(_pitch, pitchMin, pitchMax);
@@ -158,7 +126,5 @@ namespace InputSystem
                 _rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
             }
         }
-        
-       
     }
 }

@@ -7,12 +7,12 @@ public class Laser : Gun
         base.Initialize(cfg);
         projectilePool.InitializePool(config.bulletPF, config.usesProjectile);
     }
-    
+
     public override void Shoot()
     {
         if (!CanShoot) return;
         if (cooldown >= 0f) return;
-        
+
         GameObject bullet = projectilePool.GetBulletProjectile(firePoint.position, transform.rotation);
         bullet.GetComponent<BulletProjectile>()
             .Init(firePoint.forward, config.projectileSpeed, config.damage, projectilePool);
@@ -20,16 +20,7 @@ public class Laser : Gun
         if (Physics.Raycast(firePoint.position, transform.TransformDirection(Vector3.forward),
                 out RaycastHit raycastHit, 100f))
         {
-            Debug.DrawRay(firePoint.position, raycastHit.point, Color.red);
-            if (raycastHit.collider.TryGetComponent(out BulletTarget bulletTarget))
-            {
-                //Debug.Log("Target hit");
-                bulletTarget.TookDamage(50f);
-            }
-            else
-            {
-                Debug.Log("groud hit");
-            }
+            if (raycastHit.collider.TryGetComponent(out BulletTarget bulletTarget)) bulletTarget.TookDamage(50f);
         }
 
         CurrentAmmo--;

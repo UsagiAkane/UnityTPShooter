@@ -5,9 +5,6 @@ using UnityEngine.Pool;
 
 public class BulletProjectile : MonoBehaviour
 {
-    // [SerializeField] private Transform vfxHitGreen;
-    // [SerializeField] private Transform vfxHitRed;
-
     [SerializeField] private Rigidbody rbBullet;
 
     private float _damage = 0f;
@@ -17,11 +14,10 @@ public class BulletProjectile : MonoBehaviour
     private float _lifeTimer;
     private ObjectPool _pool;
 
-
     //Called by pool to spawn bullet
     public void Init(Vector3 direction, float speed, float dmg, ObjectPool pool)
     {
-        _direction = direction; //.normalized;
+        _direction = direction;
         _speed = speed;
         _lifeTimer = 0f;
         _damage = dmg;
@@ -39,19 +35,8 @@ public class BulletProjectile : MonoBehaviour
         }
     }
 
-    void Start()
-    {
-        //rbBullet.linearVelocity = transform.forward * 10f;
-    }
-
     private void OnTriggerEnter(Collider other)
     {
-        if (!_pool.UsesProjectiles)
-        {
-            ReturnToPool();
-            Debug.Log("not projectile");
-        }
-
         if (other.TryGetComponent(out BulletTarget bulletTarget))
         {
             //Debug.Log("Target hit");

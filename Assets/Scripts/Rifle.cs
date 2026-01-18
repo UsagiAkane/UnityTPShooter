@@ -13,7 +13,6 @@ public class Rifle : Gun
     {
         if (!CanShoot) return;
         if (cooldown >= 0f) return;
-        //Debug.Log("\ncurrent ammo = " + CurrentAmmo + "\nconfig name" + config.name);
 
         GameObject bullet = projectilePool.GetBulletProjectile(firePoint.position, transform.rotation);
         bullet.GetComponent<BulletProjectile>()

@@ -15,11 +15,6 @@ public class ObjectPool : MonoBehaviour
         set => usesProjectiles = value;
     }
 
-    private void Awake()
-    {
-        //Prewarm(amount);
-    }
-
     public void InitializePool(GameObject bulletPf, bool useProjectiles)
     {
         _bulletProjectilePrefab = bulletPf;
