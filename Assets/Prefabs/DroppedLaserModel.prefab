@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 4756150804630102598}
   - component: {fileID: -4682529470253888394}
   - component: {fileID: 1568696370327044591}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: DroppedLaserModel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
