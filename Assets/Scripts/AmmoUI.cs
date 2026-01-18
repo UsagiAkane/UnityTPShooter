@@ -26,14 +26,12 @@ public class AmmoUI : MonoBehaviour
     }
 
 
-
     private void HandleGunPickedUp(Gun gun)
     {
         UnsubscribeFromGun();
 
         currentGun = gun;
         currentGun.OnAmmoAmountChanged += UpdateAmmoText;
-        
     }
 
     private void HandleGunDropped(Gun gun)
@@ -56,5 +54,4 @@ public class AmmoUI : MonoBehaviour
     {
         ammoText.text = $"{current}/{max}";
     }
-
 }

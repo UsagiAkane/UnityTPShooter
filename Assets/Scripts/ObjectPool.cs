@@ -4,30 +4,43 @@ using UnityEngine;
 
 public class ObjectPool : MonoBehaviour
 {
-    [SerializeField] private BulletProjectile bulletProjectilePrefab;
+    private GameObject _bulletProjectilePrefab;
     [SerializeField] private int amount = 10;
+    private bool usesProjectiles;
+    private readonly List<GameObject> _freeBullets = new();
 
-    private readonly List<BulletProjectile> _freeBullets = new();
+    public bool UsesProjectiles
+    {
+        get => usesProjectiles;
+        set => usesProjectiles = value;
+    }
 
     private void Awake()
     {
-        Prewarm(amount);
+        //Prewarm(amount);
     }
-    
-    private void Prewarm(int count)
+
+    public void InitializePool(GameObject bulletPf, bool useProjectiles)
     {
-        for (int i = 0; i < count; i++)
+        _bulletProjectilePrefab = bulletPf;
+        UsesProjectiles = useProjectiles;
+        Prewarm();
+    }
+
+    private void Prewarm()
+    {
+        for (int i = 0; i < amount; i++)
         {
-            var b = Instantiate(bulletProjectilePrefab);
+            var b = Instantiate(_bulletProjectilePrefab);
             b.gameObject.SetActive(false);
             _freeBullets.Add(b);
         }
     }
-    
+
     // Call from shooter
-    public BulletProjectile GetBulletProjectile(Vector3 position, Quaternion rotation, Vector3 direction, float speed)
+    public GameObject GetBulletProjectile(Vector3 position, Quaternion rotation)
     {
-        BulletProjectile bullet;
+        GameObject bullet;
         if (_freeBullets.Count > 0)
         {
             bullet = _freeBullets[0];
@@ -35,19 +48,19 @@ public class ObjectPool : MonoBehaviour
         }
         else
         {
-            bullet = Instantiate(bulletProjectilePrefab);
+            bullet = Instantiate(_bulletProjectilePrefab);
         }
 
         bullet.transform.position = position;
         bullet.transform.rotation = rotation;
-        bullet.Init(direction, speed, this);
+        //bullet.Init(direction, speed, this);
         return bullet;
     }
 
     //Called from bullet
-    public void ReturnBulletProjectile(BulletProjectile bullet)
+    public void ReturnBulletProjectile(GameObject bullet)
     {
-        bullet.gameObject.SetActive(false);
+        bullet.SetActive(false);
         _freeBullets.Add(bullet);
     }
 
@@ -57,7 +70,7 @@ public class ObjectPool : MonoBehaviour
         for (int i = 0; i < _freeBullets.Count; i++)
         {
             Destroy(_freeBullets[i].gameObject);
-        Debug.Log(i  + ": Destroyed");
+            Debug.Log(i + ": Destroyed");
         }
     }
 }

@@ -5,6 +5,8 @@ public class GunConfig : ScriptableObject
 {
     public GameObject droppepPF;
     public GameObject equipedPF;
+    public GameObject bulletPF;
+    public AudioClip shotSfx;
     public string weaponName; //????
     public int clipSize;
     public float reloadTime;

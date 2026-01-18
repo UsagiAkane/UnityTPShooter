@@ -14,10 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GunConfig
   droppepPF: {fileID: 3784009868338572175, guid: 420342cae50baa640993fb56813adf28, type: 3}
   equipedPF: {fileID: 4438786768396064293, guid: 485b2e19f21da204589cd1f09fd190ab, type: 3}
+  bulletPF: {fileID: 0}
+  shotSfx: {fileID: 8300000, guid: cf01f756d3661c345b735fe356f2db74, type: 3}
   weaponName: Laser weapon
   clipSize: 5
   reloadTime: 5
   damage: 75
-  fireRate: 20
-  projectileSpeed: 0
-  usesProjectile: 0
+  fireRate: 45
+  projectileSpeed: 300
+  usesProjectile: 1

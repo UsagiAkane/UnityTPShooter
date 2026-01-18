@@ -2,24 +2,26 @@ using UnityEngine;
 
 public class Pistol : Gun
 {
-    [SerializeField] private AudioClip shotSound;
-    
+    public override void Initialize(GunConfig cfg)
+    {
+        base.Initialize(cfg);
+        projectilePool.InitializePool(config.bulletPF, config.usesProjectile);
+    }
+
     public override void Shoot()
     {
         if (!CanShoot) return;
-        if (cooldown >= 0.01f) return;
+        if (cooldown >= 0f) return;
         //Debug.Log("\ncurrent ammo = " + CurrentAmmo + "\nconfig name" + config.name);
 
-        projectilePool.GetBulletProjectile(
-            firePoint.position,
-            transform.rotation,
-            transform.forward,
-            config.projectileSpeed);
+        GameObject bullet = projectilePool.GetBulletProjectile(firePoint.position, transform.rotation);
+        bullet.GetComponent<BulletProjectile>()
+            .Init(firePoint.forward, config.projectileSpeed, config.damage, projectilePool);
+        
         CurrentAmmo--;
-
         cooldown = cooldown = 60f / config.fireRate;
 
         //play sfx
-        SFXmanager.instance.PlaySFXClip(shotSound, transform, 1f);
+        SFXmanager.instance.PlaySFXClip(config.shotSfx, transform, 1f);
     }
 }

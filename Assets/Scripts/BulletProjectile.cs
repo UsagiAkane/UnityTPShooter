@@ -10,7 +10,7 @@ public class BulletProjectile : MonoBehaviour
 
     [SerializeField] private Rigidbody rbBullet;
 
-    private float damage = 27f;
+    private float _damage = 0f;
     private Vector3 _direction;
     private float _speed;
     [SerializeField] float _lifeTime = 5f;
@@ -19,11 +19,12 @@ public class BulletProjectile : MonoBehaviour
 
 
     //Called by pool to spawn bullet
-    public void Init(Vector3 direction, float speed, ObjectPool pool)
+    public void Init(Vector3 direction, float speed, float dmg, ObjectPool pool)
     {
         _direction = direction; //.normalized;
         _speed = speed;
         _lifeTimer = 0f;
+        _damage = dmg;
         _pool = pool;
         gameObject.SetActive(true);
         rbBullet.AddForce(_direction * _speed, ForceMode.Impulse);
@@ -45,10 +46,16 @@ public class BulletProjectile : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        if (!_pool.UsesProjectiles)
+        {
+            ReturnToPool();
+            Debug.Log("not projectile");
+        }
+
         if (other.TryGetComponent(out BulletTarget bulletTarget))
         {
             //Debug.Log("Target hit");
-            bulletTarget.TookDamage(damage);
+            bulletTarget.TookDamage(_damage);
         }
         else
         {
@@ -66,7 +73,7 @@ public class BulletProjectile : MonoBehaviour
         }
         else
         {
-            _pool.ReturnBulletProjectile(this);
+            _pool.ReturnBulletProjectile(gameObject);
         }
     }
 }
