@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb25d7f7dc7262545a7fc0f830daeab8, type: 3}
   m_Name: RifleGunConfig
   m_EditorClassIdentifier: Assembly-CSharp::GunConfig
-  droppepPF: {fileID: 2710863874842361168, guid: 6bb856afed8033e4fa425371d702ac7c, type: 3}
-  equipedPF: {fileID: 2460316172583773104, guid: e3bf1c7c6747ad14cba75605b749bd58, type: 3}
-  weaponName: Rifle
+  droppepPF: {fileID: 2808625149419590679, guid: a953d1da82b1ff441b6bb6a8da4de693, type: 3}
+  equipedPF: {fileID: 4533255817393384811, guid: 3f351c6e8be4b1c409acac7e0a16dd13, type: 3}
+  weaponName: Rifle weapon
   clipSize: 25
   reloadTime: 5
   damage: 15

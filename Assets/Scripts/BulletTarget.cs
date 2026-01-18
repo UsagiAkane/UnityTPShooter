@@ -3,8 +3,11 @@ using UnityEngine;
 
 public class BulletTarget : MonoBehaviour
 {
+    [SerializeField] private AudioClip recieveDamageSound;
+
     public static event Action<float> OnTakeDamage;
     public static event Action<float, float> OnHealthChange;
+
     private float health = 100f;
     private float maxHealth = 100f;
     private float takenDamage = 0f;
@@ -30,8 +33,8 @@ public class BulletTarget : MonoBehaviour
         get => takenDamage;
         protected set
         {
+            OnTakeDamage?.Invoke(value - TakenDamage);
             takenDamage = value;
-            OnTakeDamage?.Invoke(TakenDamage);
         }
     }
 
@@ -39,5 +42,8 @@ public class BulletTarget : MonoBehaviour
     {
         TakenDamage += damage;
         Health -= damage;
+
+        //play sfx
+        SFXmanager.instance.PlaySFXClip(recieveDamageSound, transform, 1f);
     }
 }

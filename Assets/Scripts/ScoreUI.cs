@@ -18,7 +18,7 @@ public class ScoreUI : MonoBehaviour
 
     private void HandleScoreTextDamage(float dmg)
     {
-        Debug.Log(dmg);
+        //Debug.Log(dmg);
         float.TryParse(scoreText.text, out float damage);
         scoreText.text = (damage + dmg).ToString();
     }

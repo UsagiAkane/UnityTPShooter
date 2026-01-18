@@ -4,20 +4,21 @@ using UnityEngine;
 public abstract class Gun : MonoBehaviour
 {
     public event Action<int, int> OnAmmoAmountChanged;
-
-    private int currentAmmo;
+    
     protected float cooldown; // time since last shot
     protected ObjectPool projectilePool;
     protected GunConfig config;
-    protected bool CanShoot => currentAmmo > 0 && cooldown <= 0f;
+    protected bool CanShoot => _currentAmmo > 0 && cooldown <= 0f;
+    
+    private int _currentAmmo;
 
     public int CurrentAmmo
     {
-        get => currentAmmo;
+        get => _currentAmmo;
         protected set
         {
-            currentAmmo = value;
-            OnAmmoAmountChanged?.Invoke(currentAmmo, config?.clipSize ?? 0);
+            _currentAmmo = value;
+            OnAmmoAmountChanged?.Invoke(_currentAmmo, config?.clipSize ?? 0);
         }
     }
 
@@ -47,7 +48,7 @@ public abstract class Gun : MonoBehaviour
 
     protected void TickCooldown(float dt)
     {
-        if (cooldown > 0f) cooldown -= dt;
+        if (cooldown >= 0f) cooldown -= dt;
     }
 
     protected BulletProjectile SpawnBullet(Vector3 position, Quaternion rotation, Vector3 dir, float speed)
