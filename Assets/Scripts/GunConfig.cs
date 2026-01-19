@@ -15,6 +15,7 @@ public class GunConfig : ScriptableObject
     public float fireRate;
     public int clipSize;
     public float projectileSpeed = 20f;
+    public float projectileLifeTimeSeconds = 5f;
     public float reloadTime;
 
     // Optional: spread, range, recoil, etc.

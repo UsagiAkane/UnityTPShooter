@@ -46,11 +46,11 @@ public abstract class Gun : MonoBehaviour
 
     public virtual void Shoot()
     {
-        if (CanShoot()) return;
-        
+        if (!CanShoot()) return;
+
         GameObject bullet = projectilePool.GetBulletProjectile(firePoint.position, firePoint.rotation);
         bullet.GetComponent<BulletProjectile>()
-            .Init(firePoint.forward, config.projectileSpeed, config.damage, projectilePool);
+            .Init(firePoint.forward, config.projectileSpeed, config.damage,config.projectileLifeTimeSeconds, projectilePool);
 
         CurrentAmmo--;
         cooldown = 60f / config.fireRate;
