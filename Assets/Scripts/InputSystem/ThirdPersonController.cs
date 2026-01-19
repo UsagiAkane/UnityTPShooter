@@ -20,13 +20,13 @@ namespace InputSystem
 
         [Header("Camera")] 
         [SerializeField] private Transform cameraTransform;
-        [SerializeField] private bool lookMoveDirection = true;
+        //[SerializeField] private bool lookMoveDirection = true;
         
         [Header("Aim/Camera Pitch")]
         [SerializeField] private Transform cameraPitchTarget;
         [SerializeField] private float pitchSensitivity = 0.1f;
         [SerializeField] private float mouseSensitivity = 0.1f;
-        [SerializeField] private float rotationSpeed = 99999f;
+        //[SerializeField] private float rotationSpeed = 99999f;
         [SerializeField] private float pitchMin = -20f;
         [SerializeField] private float pitchMax = 60f;
         [SerializeField] private LayerMask aimCollisionLayerMask;

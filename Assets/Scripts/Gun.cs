@@ -29,6 +29,7 @@ public abstract class Gun : MonoBehaviour
 
     private void Update()
     {
+        Debug.DrawRay(firePoint.position, firePoint.forward, Color.red);
         TickCooldown(Time.deltaTime);
     }
 
