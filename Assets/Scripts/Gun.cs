@@ -9,7 +9,6 @@ public abstract class Gun : MonoBehaviour
     protected float cooldown; // time since last shot
     protected ObjectPool projectilePool;
     protected GunConfig config;
-    protected bool CanShoot => _currentAmmo > 0 && cooldown <= 0f;
 
     private int _currentAmmo;
 
@@ -40,18 +39,22 @@ public abstract class Gun : MonoBehaviour
         cooldown = 0f;
     }
 
-    public void Shoot()
+    public bool CanShoot()
     {
-        if (!CanShoot) return;
-        if (cooldown >= 0f) return;
+        return (_currentAmmo > 0 && cooldown <= 0f);
+    }
 
+    public virtual void Shoot()
+    {
+        if (CanShoot()) return;
+        
         GameObject bullet = projectilePool.GetBulletProjectile(firePoint.position, firePoint.rotation);
         bullet.GetComponent<BulletProjectile>()
             .Init(firePoint.forward, config.projectileSpeed, config.damage, projectilePool);
-        
+
         CurrentAmmo--;
-        cooldown = cooldown = 60f / config.fireRate;
-        
+        cooldown = 60f / config.fireRate;
+
         //play sfx
         SFXmanager.instance.PlaySFXClip(config.shotSfx, transform, 1f);
     }

@@ -42,10 +42,7 @@ public class BulletProjectile : MonoBehaviour
             //Debug.Log("Target hit");
             bulletTarget.TookDamage(_damage);
         }
-        else
-        {
-            Debug.Log("groud hit");
-        }
+        //else Debug.Log("groud hit");
 
         ReturnToPool();
     }
@@ -58,6 +55,7 @@ public class BulletProjectile : MonoBehaviour
         }
         else
         {
+            rbBullet.linearVelocity = Vector3.zero;
             _pool.ReturnBulletProjectile(gameObject);
         }
     }

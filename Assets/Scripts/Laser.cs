@@ -8,10 +8,11 @@ public class Laser : Gun
         projectilePool.InitializePool(config.bulletPF, config.usesProjectile);
     }
 
-    public new void Shoot()
+    public override void Shoot()
     {
+        if (CanShoot()) return;
         base.Shoot();
-        
+
         if (Physics.Raycast(firePoint.position, transform.TransformDirection(Vector3.forward),
                 out RaycastHit raycastHit, 100f))
         {

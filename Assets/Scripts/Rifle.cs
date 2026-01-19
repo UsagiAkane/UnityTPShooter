@@ -9,7 +9,7 @@ public class Rifle : Gun
         projectilePool.InitializePool(config.bulletPF, config.usesProjectile);
     }
 
-    public new void Shoot()
+    public override void Shoot()
     {
         base.Shoot();
     }

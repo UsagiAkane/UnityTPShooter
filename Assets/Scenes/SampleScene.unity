@@ -978,7 +978,6 @@ GameObject:
   - component: {fileID: 621156341}
   - component: {fileID: 621156340}
   - component: {fileID: 621156344}
-  - component: {fileID: 621156345}
   m_Layer: 9
   m_Name: Cube Target
   m_TagString: Untagged
@@ -1073,7 +1072,7 @@ Transform:
   m_GameObject: {fileID: 621156339}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 3.901, y: 0.97, z: 7.585}
+  m_LocalPosition: {x: 3.901, y: 4.87, z: 7.585}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1092,18 +1091,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BulletTarget
   recieveDamageSound: {fileID: 8300000, guid: 7c9aeaef3a52d0444ab88393837e7c61, type: 3}
---- !u!114 &621156345
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 621156339}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 70598b8f65143b64aa9185c89e97cc80, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: '::'
 --- !u!1 &792766045
 GameObject:
   m_ObjectHideFlags: 0
@@ -1287,7 +1274,6 @@ GameObject:
   - component: {fileID: 867002684}
   - component: {fileID: 867002683}
   - component: {fileID: 867002682}
-  - component: {fileID: 867002681}
   m_Layer: 9
   m_Name: Cube Target (1)
   m_TagString: Untagged
@@ -1295,18 +1281,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &867002681
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 867002680}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 70598b8f65143b64aa9185c89e97cc80, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: '::'
 --- !u!114 &867002682
 MonoBehaviour:
   m_ObjectHideFlags: 0
