@@ -5,7 +5,7 @@ using UnityEngine;
 public class BulletProjectile : MonoBehaviour
 {
     [SerializeField] private Rigidbody rbBullet;
-
+    
     private float _damage = 0f;
     private Vector3 _direction;
     private float _speed;

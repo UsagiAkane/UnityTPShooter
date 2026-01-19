@@ -1,11 +1,9 @@
-using System;
-using System.Linq.Expressions;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 namespace InputSystem
 {
+    [RequireComponent(typeof(Rigidbody))]
     public class ThirdPersonController : MonoBehaviour
     {
         [Header("Actions")]
