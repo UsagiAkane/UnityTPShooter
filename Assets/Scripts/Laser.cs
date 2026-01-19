@@ -10,7 +10,7 @@ public class Laser : Gun
 
     public override void Shoot()
     {
-        if (CanShoot()) return;
+        if (!CanShoot()) return;
         base.Shoot();
 
         if (Physics.Raycast(firePoint.position, transform.TransformDirection(Vector3.forward),

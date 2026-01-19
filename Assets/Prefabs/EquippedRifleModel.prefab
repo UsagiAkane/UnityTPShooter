@@ -69,7 +69,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -876546973899608171, guid: 888abc0ffd42f9a4a8ab8681d43f8fd8, type: 3}
+  - {fileID: 2100000, guid: bbdab4f7cf121c242b5f10bb95e2ba3e, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -106,7 +106,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Rifle
   firePoint: {fileID: 6193834938811018476}
-  shotSound: {fileID: 8300000, guid: d1534f23bf508fb43b5de130cd17e9f4, type: 3}
 --- !u!114 &3797155787920726905
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -119,7 +118,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: feeb68799adcd7a4eab0efe23a174491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ObjectPool
-  bulletProjectilePrefab: {fileID: -8681239984784094275, guid: ab347df51905bc5489443e8784d0e49c, type: 3}
   amount: 10
 --- !u!1 &5477795480603744787
 GameObject:
