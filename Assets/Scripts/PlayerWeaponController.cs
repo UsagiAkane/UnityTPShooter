@@ -8,11 +8,13 @@ public class PlayerWeaponController : MonoBehaviour
     public static event Action<Gun> OnGunPickUp;
     public static event Action<Gun> OnGunDropDown;
 
-    [Header("System")] [SerializeField] private Transform weaponHolder; // where to attach weapon
+    [Header("System")] //
+    [SerializeField] private Transform weaponHolder; // where to attach weapon
     [SerializeField] private LayerMask aimCollisionLayerMask;
     [SerializeField] private LayerMask pickupCollisionLayerMask;
 
-    [Header("Actions")] [SerializeField] private InputActionReference shootAction;
+    [Header("Actions")] //
+    [SerializeField] private InputActionReference shootAction;
     [SerializeField] private InputActionReference pickUpAction;
     [SerializeField] private InputActionReference weaponDropAction;
 
@@ -22,26 +24,15 @@ public class PlayerWeaponController : MonoBehaviour
 
     private void Update()
     {
-        if (shootAction.action.IsPressed())
-        {
-            //Debug.Log("shooting");
-            Shoot();
-        }
+        if (pickUpAction.action.triggered) TryEquipFromLook();
 
-        if (pickUpAction.action.triggered)
-        {
-            //Debug.Log("Picking up");
-            TryEquipFromLook();
-        }
-
-        if (weaponDropAction.action.triggered)
-        {
-            //Debug.Log("Picking up");
-            TryDropWeaponForward();
-        }
+        if (weaponDropAction.action.triggered) TryDropWeaponForward();
 
         _mouseWorldPosition = HandleAimPosition();
+        
         AlignGun();
+        
+        if (shootAction.action.IsPressed()) Shoot();
     }
 
     private void Shoot()
@@ -69,8 +60,6 @@ public class PlayerWeaponController : MonoBehaviour
 
     private void TryEquipFromLook()
     {
-        if (_currentGun != null) TryDropWeaponForward();
-
         Vector2 screenCenterPoint = new Vector2(Screen.width / 2f, Screen.height / 2f);
         Ray ray = Camera.main.ScreenPointToRay(screenCenterPoint);
 
@@ -78,6 +67,8 @@ public class PlayerWeaponController : MonoBehaviour
         {
             if (raycastHit.collider.TryGetComponent<DroppedWeapon>(out var weapon))
             {
+                if (_currentGun != null) TryDropWeaponForward();
+
                 _currentGunConfig = weapon.GetConfig();
                 Destroy(weapon.gameObject);
 
@@ -113,9 +104,9 @@ public class PlayerWeaponController : MonoBehaviour
         droppedGunRB.AddTorque(randomTorque, ForceMode.Impulse);
 
         OnGunDropDown?.Invoke(_currentGun);
-        
+
         Destroy(_currentGun.gameObject);
-        
+
         _currentGun = null;
         _currentGunConfig = null;
     }

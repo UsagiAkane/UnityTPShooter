@@ -29,7 +29,7 @@ Transform:
   m_GameObject: {fileID: 3206979623911657815}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.58, y: 0.71, z: 3.11}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -106,7 +106,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Pistol
   firePoint: {fileID: 343577821482109312}
-  shotSound: {fileID: 8300000, guid: bcf6dcb40e28bca41b7a180eb1981ec1, type: 3}
 --- !u!114 &-8905092937986013972
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -119,7 +118,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: feeb68799adcd7a4eab0efe23a174491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ObjectPool
-  bulletProjectilePrefab: {fileID: -8681239984784094275, guid: ab347df51905bc5489443e8784d0e49c, type: 3}
   amount: 10
 --- !u!1 &5434473203936587375
 GameObject:

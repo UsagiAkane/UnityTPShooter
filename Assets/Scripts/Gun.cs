@@ -40,7 +40,21 @@ public abstract class Gun : MonoBehaviour
         cooldown = 0f;
     }
 
-    public abstract void Shoot();
+    public void Shoot()
+    {
+        if (!CanShoot) return;
+        if (cooldown >= 0f) return;
+
+        GameObject bullet = projectilePool.GetBulletProjectile(firePoint.position, firePoint.rotation);
+        bullet.GetComponent<BulletProjectile>()
+            .Init(firePoint.forward, config.projectileSpeed, config.damage, projectilePool);
+        
+        CurrentAmmo--;
+        cooldown = cooldown = 60f / config.fireRate;
+        
+        //play sfx
+        SFXmanager.instance.PlaySFXClip(config.shotSfx, transform, 1f);
+    }
 
     public virtual void Reload()
     {

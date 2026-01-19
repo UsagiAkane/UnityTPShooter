@@ -8,20 +8,8 @@ public class Pistol : Gun
         projectilePool.InitializePool(config.bulletPF, config.usesProjectile);
     }
 
-    public override void Shoot()
+    public new void Shoot()
     {
-        if (!CanShoot) return;
-        if (cooldown >= 0f) return;
-        //Debug.Log("\ncurrent ammo = " + CurrentAmmo + "\nconfig name" + config.name);
-
-        GameObject bullet = projectilePool.GetBulletProjectile(firePoint.position, transform.rotation);
-        bullet.GetComponent<BulletProjectile>()
-            .Init(firePoint.forward, config.projectileSpeed, config.damage, projectilePool);
-        
-        CurrentAmmo--;
-        cooldown = cooldown = 60f / config.fireRate;
-
-        //play sfx
-        SFXmanager.instance.PlaySFXClip(config.shotSfx, transform, 1f);
+        base.Shoot();
     }
 }
