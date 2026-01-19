@@ -12,7 +12,7 @@ public class BulletProjectile : MonoBehaviour
     private ObjectPool _pool;
 
     //Called by pool to spawn bullet
-    public void Init(Vector3 direction, float speed, float dmg, float _lifeTime,ObjectPool pool)
+    public void Init(Vector3 direction, float speed, float dmg, float _lifeTime, ObjectPool pool)
     {
         _direction = direction;
         _speed = speed;
@@ -20,9 +20,10 @@ public class BulletProjectile : MonoBehaviour
         _pool = pool;
         gameObject.SetActive(true);
         rbBullet.AddForce(_direction * _speed, ForceMode.Impulse);
-        
+
         StartCoroutine(WaitForReturn(_lifeTime));
     }
+
     private IEnumerator WaitForReturn(float seconds)
     {
         yield return new WaitForSeconds(seconds);
@@ -30,26 +31,12 @@ public class BulletProjectile : MonoBehaviour
         ReturnToPool();
     }
 
-    private void Update()
-    {
-        // _lifeTimer += Time.deltaTime;
-        // if (_lifeTimer >= _lifeTime)
-        // {
-        //     ReturnToPool();
-        // }
-    }
-
-    private void Awake()
-    {
-        //Destroy(gameObject, _lifeTime);
-    }
-
     private void OnTriggerEnter(Collider other)
     {
         if (other.TryGetComponent(out BulletTarget bulletTarget))
         {
             //Debug.Log("Target hit");
-            bulletTarget.TookDamage(_damage);
+            bulletTarget.TookDamage(_damage); //TODO REWORK
         }
         //else Debug.Log("groud hit");
 
