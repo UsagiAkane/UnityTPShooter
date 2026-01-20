@@ -34,6 +34,10 @@ public class PlayerWeaponInput : MonoBehaviour, IWeaponInputSource
 
     private void OnDisable()
     {
+        //не знаю чи треба?
+        shoot.action.Disable();
+        reload.action.Disable();
+        
         shoot.action.performed -= OnShoot;
         reload.action.performed -= OnReload;
         pickup.action.performed -= OnPickup;
