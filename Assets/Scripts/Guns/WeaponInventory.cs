@@ -12,39 +12,24 @@ public class WeaponInventory : MonoBehaviour, IWeaponInventory
 
     private Gun _currentGun;
     private GunConfig _currentConfig;
-    
-    
+    private WeaponRuntimeData _currentRuntime;
     
     public void Pickup(DroppedWeapon dropped)
     {
-        //Debug.Log($"Picked up: {dropped.GetConfig().weaponName}");
         if (dropped == null) return;
 
-        Equip(dropped.GetConfig());
-        Destroy(dropped.gameObject);
-    }
-
-    public void Equip(GunConfig config)
-    {
         if (_currentGun != null)
             DropInternal();
 
-        
-        
-        Gun gun = Instantiate(config.equipedPF, weaponHolder)
-            .GetComponent<Gun>();
+        _currentConfig = dropped.GetConfig();
+        _currentRuntime = dropped.GetRuntime();
 
-        gun.transform.localPosition = Vector3.zero;
-        gun.transform.localRotation = Quaternion.identity;
-        gun.transform.localScale = Vector3.one;
+        if (_currentRuntime == null)
+            _currentRuntime = new WeaponRuntimeData(_currentConfig.clipSize);
 
-        gun.Initialize(config);
-        gun.SetOwner(GetComponentInParent<IDamageInstigator>());
+        SpawnGun(_currentConfig, _currentRuntime);
 
-        _currentGun = gun;
-        _currentConfig = config;
-
-        OnGunEquipped?.Invoke(gun);
+        Destroy(dropped.gameObject);
     }
 
     public void Drop()
@@ -56,12 +41,12 @@ public class WeaponInventory : MonoBehaviour, IWeaponInventory
     private void DropInternal(float dropImpulse = 2f, float torqueRange = 1f)
     {
         Gun gunToDrop = _currentGun;
-        GunConfig configToDrop = _currentConfig;
+        
+        //відмінити reload
+        _currentRuntime.reloadVersion++;
+        _currentRuntime.isReloading = false;
 
         OnGunUnequipped?.Invoke(gunToDrop);
-
-        _currentGun = null;
-        _currentConfig = null;
 
         Vector3 spawnPos =
             transform.position +
@@ -69,15 +54,39 @@ public class WeaponInventory : MonoBehaviour, IWeaponInventory
             transform.right * 0.5f;
 
         Rigidbody rb = Instantiate(
-            configToDrop.droppepPF,
+            _currentConfig.droppepPF,
             spawnPos,
             gunToDrop.transform.rotation
         ).GetComponent<Rigidbody>();
+
+        DroppedWeapon dropped = rb.GetComponent<DroppedWeapon>();
+        dropped.Initialize(_currentConfig, _currentRuntime);
 
         rb.linearVelocity = GetComponent<Rigidbody>().linearVelocity;
         rb.AddForce(transform.up * dropImpulse, ForceMode.Impulse);
         rb.AddForce(transform.forward * dropImpulse, ForceMode.Impulse);
 
         Destroy(gunToDrop.gameObject);
+
+        _currentGun = null;
+        _currentConfig = null;
+        _currentRuntime = null;
+    }
+    
+    private void SpawnGun(GunConfig config, WeaponRuntimeData runtime)
+    {
+        Gun gun = Instantiate(config.equipedPF, weaponHolder)
+            .GetComponent<Gun>();
+
+        gun.transform.localPosition = Vector3.zero;
+        gun.transform.localRotation = Quaternion.identity;
+        gun.transform.localScale = Vector3.one;
+
+        gun.SetOwner(GetComponentInParent<IDamageInstigator>());
+        gun.Initialize(config, runtime);
+
+        _currentGun = gun;
+
+        OnGunEquipped?.Invoke(gun);
     }
 }

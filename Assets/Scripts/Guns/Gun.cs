@@ -9,11 +9,10 @@ public abstract class Gun : MonoBehaviour
 
     [SerializeField] protected Transform firePoint;
 
-    protected int currentAmmo;
+    protected WeaponRuntimeData runtime;
     protected int maxAmmo;
-    protected bool isReloading;
     //тут чи нижче?
-    public int AmmoCurrent => currentAmmo;
+    public int AmmoCurrent => runtime.currentAmmo;
     public int AmmoMax => maxAmmo;
 
     protected float cooldown;
@@ -22,42 +21,44 @@ public abstract class Gun : MonoBehaviour
     protected GunConfig config;
     protected IDamageInstigator Owner { get; private set; }
 
-    public virtual void SetOwner(IDamageInstigator owner)
-    {
-        Owner = owner;
-    }
-
     private void Awake()
     {
         projectilePool = GetComponent<ObjectPool>();
     }
+    
+    public virtual void Initialize(GunConfig cfg, WeaponRuntimeData runtimeData)
+    {
+        config = cfg;
+        maxAmmo = cfg.clipSize;
+        runtime = runtimeData ?? new WeaponRuntimeData(maxAmmo);
 
+        OnAmmoAmountChanged?.Invoke(runtime.currentAmmo, maxAmmo);
+    }
+    
     private void Update()
     {
         //Debug.DrawRay(firePoint.position, firePoint.forward, Color.red);
         TickCooldown(Time.deltaTime);
     }
-
-    public virtual void Initialize(GunConfig cfg)
+    
+    public virtual void SetOwner(IDamageInstigator owner)
     {
-        config = cfg;
-        currentAmmo = cfg.clipSize;
-        maxAmmo = cfg.clipSize;
-        cooldown = 0f;
-        
-        OnAmmoAmountChanged?.Invoke(currentAmmo, maxAmmo);
+        Owner = owner;
     }
 
     public bool CanShoot()
     {
-        return currentAmmo > 0 && cooldown <= 0f && !isReloading;
+        return runtime.currentAmmo > 0 && cooldown <= 0f && !runtime.isReloading;
     }
     
     public virtual void Shoot()
     {
         if (!CanShoot()) return;
 
-        GameObject bullet = projectilePool.GetBulletProjectile(firePoint.position, firePoint.rotation);
+        GameObject bullet = projectilePool.GetBulletProjectile(
+            firePoint.position,
+            firePoint.rotation
+        );
 
         bullet.GetComponent<BulletProjectile>().Init(
             firePoint.forward,
@@ -65,45 +66,52 @@ public abstract class Gun : MonoBehaviour
             config.damage,
             config.projectileLifeTimeSeconds,
             projectilePool,
-            Owner);
+            Owner
+        );
 
-        ConsumeAmmo(); //OLD: currentAmmo--; with property set override to invoke
+        ConsumeAmmo();
         cooldown = 60f / config.fireRate;
 
-        //play sfx
         SFXmanager.instance.PlaySFXClip(config.shotSfx, transform, 1f);
     }
-
+    
     protected virtual void ConsumeAmmo(int amount = 1)
     {
-        currentAmmo -= amount;
-        OnAmmoAmountChanged?.Invoke(currentAmmo, maxAmmo);
+        runtime.currentAmmo -= amount;
+        OnAmmoAmountChanged?.Invoke(runtime.currentAmmo, maxAmmo);
     }
 
     public virtual void Reload(MonoBehaviour runner)
     {
-        if (isReloading) return;
-        if (currentAmmo == maxAmmo) return;
+        if (runtime.isReloading) return;
+        if (runtime.currentAmmo == maxAmmo) return;
 
-        runner.StartCoroutine(ReloadRoutine());
+        runtime.isReloading = true;
+        runtime.reloadVersion++;
+
+        int myVersion = runtime.reloadVersion;
+
+        OnReloadStateChanged?.Invoke(true);
+        runner.StartCoroutine(ReloadRoutine(myVersion));
     }
 
-    private IEnumerator ReloadRoutine()
+    private IEnumerator ReloadRoutine(int version)
     {
         SFXmanager.instance.PlaySFXClip(config.reloadSfx, transform, 1f);
-            
-        isReloading = true;
-        OnReloadStateChanged?.Invoke(true);
-
 
         yield return new WaitForSeconds(config.reloadTime);
 
-        currentAmmo = maxAmmo;
-        OnAmmoAmountChanged?.Invoke(currentAmmo, maxAmmo);
+        //Якщо був дропнутий
+        if (runtime.reloadVersion != version)
+            yield break;
 
-        isReloading = false;
+        runtime.currentAmmo = maxAmmo;
+        runtime.isReloading = false;
+
+        OnAmmoAmountChanged?.Invoke(runtime.currentAmmo, maxAmmo);
         OnReloadStateChanged?.Invoke(false);
     }
+
 
     protected void TickCooldown(float dt)
     {

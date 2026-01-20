@@ -8,7 +8,7 @@ public interface IWeaponInventory
     event Action<Gun> OnGunEquipped;
     event Action<Gun> OnGunUnequipped;
 
-    void Equip(GunConfig config);
+    //void Equip(GunConfig config);
     void Drop();
 }
 

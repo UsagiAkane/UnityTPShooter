@@ -4,10 +4,11 @@ public class Laser : Gun
 {
     [SerializeField] private float maxRange = 100f;
 
-    public override void Initialize(GunConfig cfg)
+    public override void Initialize(GunConfig cfg, WeaponRuntimeData runtime)
     {
-        base.Initialize(cfg);
-        //Laser не projectile, але пул для FX
+        base.Initialize(cfg, runtime);
+
+        // Laser не projectile, але пул для FX
         projectilePool.InitializePool(config.bulletPF, config.usesProjectile);
     }
 

@@ -3,14 +3,9 @@ using UnityEngine;
 
 public class Rifle : Gun
 {
-    public override void Initialize(GunConfig cfg)
+    public override void Initialize(GunConfig cfg, WeaponRuntimeData runtime)
     {
-        base.Initialize(cfg);
+        base.Initialize(cfg, runtime);
         projectilePool.InitializePool(config.bulletPF, config.usesProjectile);
-    }
-
-    public override void Shoot()
-    {
-        base.Shoot();
     }
 }
