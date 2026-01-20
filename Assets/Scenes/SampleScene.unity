@@ -1241,6 +1241,20 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 456718732}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &552817258
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc1515ab76e54f068e2f2207940fab32, type: 3}
+  m_Name: Player/Swap
+  m_EditorClassIdentifier: Unity.InputSystem::UnityEngine.InputSystem.InputActionReference
+  m_Asset: {fileID: -944628639613478452, guid: 4b5c7a3ff36a0924694e558d8e09be8d, type: 3}
+  m_ActionId: 17635950-fa2b-4207-b2a0-34a3dabecf7e
 --- !u!1 &604363393
 GameObject:
   m_ObjectHideFlags: 0
@@ -2600,10 +2614,10 @@ GameObject:
   m_Component:
   - component: {fileID: 1334792170}
   - component: {fileID: 1334792172}
-  - component: {fileID: 1334792171}
-  - component: {fileID: 1334792175}
-  - component: {fileID: 1334792176}
   - component: {fileID: 1334792177}
+  - component: {fileID: 1334792171}
+  - component: {fileID: 1334792176}
+  - component: {fileID: 1334792175}
   - component: {fileID: 1334792179}
   - component: {fileID: 1334792178}
   - component: {fileID: 1334792180}
@@ -2762,6 +2776,7 @@ MonoBehaviour:
   reload: {fileID: 310906497}
   pickup: {fileID: 968639661}
   drop: {fileID: 1031518093}
+  swap: {fileID: 552817258}
 --- !u!114 &1334792180
 MonoBehaviour:
   m_ObjectHideFlags: 0
