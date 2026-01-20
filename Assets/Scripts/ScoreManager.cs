@@ -2,15 +2,27 @@ using UnityEngine;
 
 public class ScoreManager : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    // Listens to Damage / Kill events
+    // Aggregates damage
+    // Calculates score
+    // Notifies UI
+
+    private float totalDamage;
+    private int score;
+
+    private void OnEnable()
     {
-        
+        BulletTarget.OnDamageTaken += RegisterDamage;
+        BulletTarget.OnTargetKilled += RegisterKill;
     }
 
-    // Update is called once per frame
-    void Update()
+    private void RegisterDamage(float dmg)
     {
-        
+        totalDamage += dmg;
+    }
+
+    private void RegisterKill(BulletTarget target)
+    {
+        score += 100; //або з config
     }
 }

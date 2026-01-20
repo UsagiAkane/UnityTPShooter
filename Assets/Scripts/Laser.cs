@@ -16,7 +16,7 @@ public class Laser : Gun
         if (Physics.Raycast(firePoint.position, transform.TransformDirection(Vector3.forward),
                 out RaycastHit raycastHit, 100f))
         {
-            if (raycastHit.collider.TryGetComponent(out BulletTarget bulletTarget)) bulletTarget.TookDamage(50f);
+            if (raycastHit.collider.TryGetComponent(out BulletTarget bulletTarget)) bulletTarget.TakeDamage(50f);//TODO CFG DMG
         }
     }
 }

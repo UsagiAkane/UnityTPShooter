@@ -1,49 +1,30 @@
 using System;
 using UnityEngine;
 
-public class BulletTarget : MonoBehaviour
+public class BulletTarget : MonoBehaviour, IDamageable
 {
-    public static event Action<float> OnTookDamage;
-    public static event Action<float, float> OnHealthChanged;
+    [SerializeField] private AudioClip recieveDamageSound;//TODO REWORK?
     
-    [SerializeField] private AudioClip recieveDamageSound;
+    public static event Action<BulletTarget> OnTargetKilled;//TODO
+    public static event Action<float> OnDamageTaken;
 
-    private float _health = 100f;
-    private float _maxHealth = 100f;
-    private float _takenDamage = 0f;
+    [SerializeField] private float maxHealth = 100f;
+    private float _health;
 
-    public float MaxHealth
+    private void Awake()
     {
-        get => _maxHealth;
-        set => _maxHealth = value;
+        _health = maxHealth;
     }
-
-    public float Health
+    
+    public void TakeDamage(float damage)
     {
-        get => _health;
-        protected set
+        _health -= damage;
+        OnDamageTaken?.Invoke(damage);
+
+        if (_health <= 0f)
         {
-            _health = value;
-            OnHealthChanged?.Invoke(_health, MaxHealth);
+            OnTargetKilled?.Invoke(this);
+            Destroy(gameObject);
         }
-    }
-
-    public float TakenDamage
-    {
-        get => _takenDamage;
-        protected set
-        {
-            OnTookDamage?.Invoke(value - TakenDamage);
-            _takenDamage = value;
-        }
-    }
-
-    public void TookDamage(float damage)
-    {
-        TakenDamage += damage;
-        Health -= damage;
-
-        //play sfx
-        SFXmanager.instance.PlaySFXClip(recieveDamageSound, transform, 1f);
     }
 }

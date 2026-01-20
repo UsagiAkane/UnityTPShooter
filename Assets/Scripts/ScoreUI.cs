@@ -8,7 +8,7 @@ public class ScoreUI : MonoBehaviour
     private void Awake()
     {
         //BulletTarget.OnHealthChange += HandleScoreTextHP;
-        BulletTarget.OnTookDamage += HandleScoreTextDamage;
+        BulletTarget.OnDamageTaken += HandleScoreTextDamage;
     }
 
     private void HandleScoreTextHP(float current, float max)
@@ -25,6 +25,6 @@ public class ScoreUI : MonoBehaviour
     private void OnDestroy()
     {
         //BulletTarget.OnHealthChange -= HandleScoreTextHP;
-        BulletTarget.OnTookDamage -= HandleScoreTextDamage;
+        BulletTarget.OnDamageTaken -= HandleScoreTextDamage;
     }
 }

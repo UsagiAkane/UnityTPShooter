@@ -36,7 +36,7 @@ public class BulletProjectile : MonoBehaviour
         if (other.TryGetComponent(out BulletTarget bulletTarget))
         {
             //Debug.Log("Target hit");
-            bulletTarget.TookDamage(_damage); //TODO REWORK
+            bulletTarget.TakeDamage(_damage);
         }
         //else Debug.Log("groud hit");
 
