@@ -6,20 +6,22 @@ public abstract class Gun : MonoBehaviour
     public event Action<int, int> OnAmmoAmountChanged;
 
     [SerializeField] protected Transform firePoint;
-    protected float cooldown; // time since last shot
+
+    protected int currentAmmo;
+    protected int maxAmmo;
+    //тут чи нижче?
+    public int AmmoCurrent => currentAmmo;
+    public int AmmoMax => maxAmmo;
+
+    protected float cooldown;
+
     protected ObjectPool projectilePool;
     protected GunConfig config;
+    protected GameObject Owner { get; private set; }
 
-    private int _currentAmmo;
-
-    public int CurrentAmmo
+    public virtual void SetOwner(GameObject owner)
     {
-        get => _currentAmmo;
-        protected set
-        {
-            _currentAmmo = value;
-            OnAmmoAmountChanged?.Invoke(_currentAmmo, config?.clipSize ?? 0);
-        }
+        Owner = owner;
     }
 
     private void Awake()
@@ -36,13 +38,14 @@ public abstract class Gun : MonoBehaviour
     public virtual void Initialize(GunConfig cfg)
     {
         config = cfg;
-        CurrentAmmo = cfg.clipSize;
+        currentAmmo = cfg.clipSize;
+        maxAmmo = cfg.clipSize;
         cooldown = 0f;
     }
 
     public bool CanShoot()
     {
-        return (_currentAmmo > 0 && cooldown <= 0f);
+        return (currentAmmo > 0 && cooldown <= 0f);
     }
 
     public virtual void Shoot()
@@ -50,19 +53,31 @@ public abstract class Gun : MonoBehaviour
         if (!CanShoot()) return;
 
         GameObject bullet = projectilePool.GetBulletProjectile(firePoint.position, firePoint.rotation);
-        bullet.GetComponent<BulletProjectile>()
-            .Init(firePoint.forward, config.projectileSpeed, config.damage,config.projectileLifeTimeSeconds, projectilePool);
 
-        CurrentAmmo--;
+        bullet.GetComponent<BulletProjectile>().Init(
+            firePoint.forward,
+            config.projectileSpeed,
+            config.damage,
+            config.projectileLifeTimeSeconds,
+            projectilePool,
+            Owner);
+
+        ConsumeAmmo(); //OLD: currentAmmo--; with property set override to invoke
         cooldown = 60f / config.fireRate;
 
         //play sfx
         SFXmanager.instance.PlaySFXClip(config.shotSfx, transform, 1f);
     }
 
+    protected virtual void ConsumeAmmo(int amount = 1)
+    {
+        currentAmmo -= amount;
+        OnAmmoAmountChanged?.Invoke(currentAmmo, maxAmmo);
+    }
+
     public virtual void Reload()
     {
-        CurrentAmmo = config?.clipSize ?? 0;
+        currentAmmo = config?.clipSize ?? 0;
     }
 
     protected void TickCooldown(float dt)

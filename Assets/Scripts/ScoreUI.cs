@@ -1,30 +1,25 @@
-using TMPro;
 using UnityEngine;
+using TMPro;
 
 public class ScoreUI : MonoBehaviour
 {
-    [SerializeField] private TextMeshProUGUI scoreText;
+    [SerializeField] private TMP_Text scoreText;
 
-    private void Awake()
+    private void OnEnable()
     {
-        //BulletTarget.OnHealthChange += HandleScoreTextHP;
-        BulletTarget.OnDamageTaken += HandleScoreTextDamage;
+        ScoreManager.OnScoreChanged += UpdateScore;
+
+        if (ScoreManager.Instance != null)
+            UpdateScore(ScoreManager.Instance.CurrentScore);
     }
 
-    private void HandleScoreTextHP(float current, float max)
+    private void OnDisable()
     {
-        scoreText.text = $"{current}/{max}";
+        ScoreManager.OnScoreChanged -= UpdateScore;
     }
 
-    private void HandleScoreTextDamage(float dmg)
+    private void UpdateScore(int score)
     {
-        float.TryParse(scoreText.text, out float damage);//DELETE
-        scoreText.text = (damage + dmg).ToString();
-    }
-
-    private void OnDestroy()
-    {
-        //BulletTarget.OnHealthChange -= HandleScoreTextHP;
-        BulletTarget.OnDamageTaken -= HandleScoreTextDamage;
+        scoreText.text = score.ToString();
     }
 }

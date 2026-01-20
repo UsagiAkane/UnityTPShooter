@@ -10,9 +10,11 @@ public class BulletProjectile : MonoBehaviour
     private Vector3 _direction;
     private float _speed;
     private ObjectPool _pool;
+    private GameObject _instigator;//to log who deal dmg
+
 
     //Called by pool to spawn bullet
-    public void Init(Vector3 direction, float speed, float dmg, float _lifeTime, ObjectPool pool)
+    public void Init(Vector3 direction, float speed, float dmg, float _lifeTime, ObjectPool pool, GameObject ownerGameObject)
     {
         _direction = direction;
         _speed = speed;
@@ -20,8 +22,7 @@ public class BulletProjectile : MonoBehaviour
         _pool = pool;
         gameObject.SetActive(true);
         rbBullet.AddForce(_direction * _speed, ForceMode.Impulse);
-
-        StartCoroutine(WaitForReturn(_lifeTime));
+        _instigator = ownerGameObject;
     }
 
     private IEnumerator WaitForReturn(float seconds)
@@ -33,15 +34,28 @@ public class BulletProjectile : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.TryGetComponent(out BulletTarget bulletTarget))
+        if (other.TryGetComponent<IDamageable>(out var damageable))
         {
-            //Debug.Log("Target hit");
-            bulletTarget.TakeDamage(_damage);
+            DamageInfo info = new DamageInfo
+            {
+                amount = _damage,
+                source = gameObject,
+                instigator = _instigator,//to log who deal dmg
+                hitPoint = transform.position,
+                hitDirection = transform.forward
+            };
+
+            damageable.TakeDamage(info);
         }
-        //else Debug.Log("groud hit");
 
         ReturnToPool();
     }
+    
+    // private void OnTriggerEnterOLD(Collider other)
+    // {
+    //     if (other.TryGetComponent(out BulletTarget bulletTarget)) bulletTarget.TakeDamage(_damage);
+    //     ReturnToPool();
+    // }
 
     private void ReturnToPool()
     {

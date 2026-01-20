@@ -5,8 +5,8 @@ public class BulletTarget : MonoBehaviour, IDamageable
 {
     [SerializeField] private AudioClip recieveDamageSound;//TODO REWORK?
     
-    public static event Action<BulletTarget> OnTargetKilled;//TODO
-    public static event Action<float> OnDamageTaken;
+    public static event Action<BulletTarget, DamageInfo> OnTargetKilled;//TODO
+    public static event Action<float> OnDamageTaken; //для UI
 
     [SerializeField] private float maxHealth = 100f;
     private float _health;
@@ -15,15 +15,16 @@ public class BulletTarget : MonoBehaviour, IDamageable
     {
         _health = maxHealth;
     }
-    
-    public void TakeDamage(float damage)
+
+    public void TakeDamage(DamageInfo damage)
     {
-        _health -= damage;
-        OnDamageTaken?.Invoke(damage);
+        if (_health <= 0f) return;//бо дестрой асінк???
+
+        _health -= damage.amount;
 
         if (_health <= 0f)
         {
-            OnTargetKilled?.Invoke(this);
+            OnTargetKilled?.Invoke(this, damage);
             Destroy(gameObject);
         }
     }

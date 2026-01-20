@@ -4,25 +4,34 @@ using UnityEngine;
 public class AmmoUI : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI ammoText;
+
     private Gun _currentGun;
 
-    private void Awake()
+    private void OnEnable()
     {
         PlayerWeaponController.OnGunPickUp += HandleGunPickedUp;
         PlayerWeaponController.OnGunDropDown += HandleGunDropped;
     }
-    
-    private void UpdateAmmoText(int current, int max)
+
+    private void OnDisable()
     {
-        ammoText.text = $"{current}/{max}";
+        PlayerWeaponController.OnGunPickUp -= HandleGunPickedUp;
+        PlayerWeaponController.OnGunDropDown -= HandleGunDropped;
+
+        UnsubscribeFromGun();
     }
-    
+
     private void HandleGunPickedUp(Gun gun)
     {
         UnsubscribeFromGun();
 
         _currentGun = gun;
         _currentGun.OnAmmoAmountChanged += UpdateAmmoText;
+        
+        UpdateAmmoText(
+            _currentGun.AmmoCurrent,
+            _currentGun.AmmoMax
+        );
     }
 
     private void HandleGunDropped(Gun gun)
@@ -33,19 +42,16 @@ public class AmmoUI : MonoBehaviour
         ammoText.text = "--/--";
     }
 
+    private void UpdateAmmoText(int current, int max)
+    {
+        ammoText.text = $"{current}/{max}";
+    }
+
     private void UnsubscribeFromGun()
     {
         if (_currentGun == null) return;
 
         _currentGun.OnAmmoAmountChanged -= UpdateAmmoText;
         _currentGun = null;
-    }
-    
-    private void OnDestroy()
-    {
-        PlayerWeaponController.OnGunPickUp -= HandleGunPickedUp;
-        PlayerWeaponController.OnGunDropDown -= HandleGunDropped;
-
-        UnsubscribeFromGun();
     }
 }
