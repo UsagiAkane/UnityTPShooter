@@ -7,4 +7,5 @@ public interface IWeaponInputSource
     event Action Reload;
     event Action Pickup;
     event Action Drop;
+    event Action Swap;
 }
