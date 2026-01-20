@@ -10,11 +10,11 @@ public class BulletProjectile : MonoBehaviour
     private Vector3 _direction;
     private float _speed;
     private ObjectPool _pool;
-    private GameObject _instigator;//to log who deal dmg
+    private IDamageInstigator _instigator;//to log who deal dmg
 
 
     //Called by pool to spawn bullet
-    public void Init(Vector3 direction, float speed, float dmg, float _lifeTime, ObjectPool pool, GameObject ownerGameObject)
+    public void Init(Vector3 direction, float speed, float dmg, float _lifeTime, ObjectPool pool, IDamageInstigator ownerGameObject)
     {
         _direction = direction;
         _speed = speed;

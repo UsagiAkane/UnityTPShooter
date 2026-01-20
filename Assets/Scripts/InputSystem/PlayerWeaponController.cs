@@ -16,6 +16,7 @@ public class PlayerWeaponController : MonoBehaviour
 
     [Header("Actions")]
     [SerializeField] private InputActionReference shootAction;
+    [SerializeField] private InputActionReference reloadAction;
     [SerializeField] private InputActionReference pickUpAction;
     [SerializeField] private InputActionReference weaponDropAction;
 
@@ -30,6 +31,9 @@ public class PlayerWeaponController : MonoBehaviour
 
         if (weaponDropAction.action.triggered)
             TryDropInput();
+        
+        if (reloadAction.action.triggered)
+            TryReload();
 
         UpdateAim();
         AlignGun();
@@ -64,7 +68,7 @@ public class PlayerWeaponController : MonoBehaviour
         gunInstance.transform.localScale = Vector3.one;
 
         gunInstance.Initialize(config);
-        gunInstance.SetOwner(transform.root.gameObject);
+        gunInstance.SetOwner(transform.root.GetComponent<IDamageInstigator>());
 
         EquipGunState(gunInstance, config);
     }
@@ -175,5 +179,11 @@ public class PlayerWeaponController : MonoBehaviour
     private void HandleGunAmmoChanged(int current, int max)
     {
         OnPlayerAmmoChanged?.Invoke(current, max);
+    }
+    
+    private void TryReload()
+    {
+        if (_currentGun == null) return;
+        _currentGun.Reload(this);
     }
 }

@@ -1,14 +1,17 @@
 using System;
+using System.Collections;
 using UnityEngine;
 
 public abstract class Gun : MonoBehaviour
 {
     public event Action<int, int> OnAmmoAmountChanged;
+    public event Action<bool> OnReloadStateChanged;
 
     [SerializeField] protected Transform firePoint;
 
     protected int currentAmmo;
     protected int maxAmmo;
+    protected bool isReloading;
     //тут чи нижче?
     public int AmmoCurrent => currentAmmo;
     public int AmmoMax => maxAmmo;
@@ -17,9 +20,9 @@ public abstract class Gun : MonoBehaviour
 
     protected ObjectPool projectilePool;
     protected GunConfig config;
-    protected GameObject Owner { get; private set; }
+    protected IDamageInstigator Owner { get; private set; }
 
-    public virtual void SetOwner(GameObject owner)
+    public virtual void SetOwner(IDamageInstigator owner)
     {
         Owner = owner;
     }
@@ -41,13 +44,15 @@ public abstract class Gun : MonoBehaviour
         currentAmmo = cfg.clipSize;
         maxAmmo = cfg.clipSize;
         cooldown = 0f;
+        
+        OnAmmoAmountChanged?.Invoke(currentAmmo, maxAmmo);
     }
 
     public bool CanShoot()
     {
-        return (currentAmmo > 0 && cooldown <= 0f);
+        return currentAmmo > 0 && cooldown <= 0f && !isReloading;
     }
-
+    
     public virtual void Shoot()
     {
         if (!CanShoot()) return;
@@ -75,9 +80,29 @@ public abstract class Gun : MonoBehaviour
         OnAmmoAmountChanged?.Invoke(currentAmmo, maxAmmo);
     }
 
-    public virtual void Reload()
+    public virtual void Reload(MonoBehaviour runner)
     {
-        currentAmmo = config?.clipSize ?? 0;
+        if (isReloading) return;
+        if (currentAmmo == maxAmmo) return;
+
+        runner.StartCoroutine(ReloadRoutine());
+    }
+
+    private IEnumerator ReloadRoutine()
+    {
+        SFXmanager.instance.PlaySFXClip(config.reloadSfx, transform, 1f);
+            
+        isReloading = true;
+        OnReloadStateChanged?.Invoke(true);
+
+
+        yield return new WaitForSeconds(config.reloadTime);
+
+        currentAmmo = maxAmmo;
+        OnAmmoAmountChanged?.Invoke(currentAmmo, maxAmmo);
+
+        isReloading = false;
+        OnReloadStateChanged?.Invoke(false);
     }
 
     protected void TickCooldown(float dt)

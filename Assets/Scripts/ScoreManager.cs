@@ -7,6 +7,9 @@ public class ScoreManager : MonoBehaviour
     //Aggregate damage
     //Calculate score
     //Notify UI
+    
+    [SerializeField] private int playerTeamId = 0;
+    [SerializeField] private int scorePerKill = 100;
 
     public static event Action<int> OnScoreChanged;
 
@@ -39,9 +42,9 @@ public class ScoreManager : MonoBehaviour
 
     private void HandleTargetKilled(BulletTarget target, DamageInfo damage)
     {
-        if (!damage.instigator.CompareTag("Player")) return;
+        if (damage.instigator.TeamId != playerTeamId) return;
 
-        _score += 100;//поки хардкодом
+        _score += scorePerKill;
         OnScoreChanged?.Invoke(_score);
     }
 }

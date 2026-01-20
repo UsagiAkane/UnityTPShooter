@@ -27,7 +27,8 @@ public class AmmoUI : MonoBehaviour
 
         _currentGun = gun;
         _currentGun.OnAmmoAmountChanged += UpdateAmmoText;
-        
+        _currentGun.OnReloadStateChanged += HandleReloadState;
+
         UpdateAmmoText(
             _currentGun.AmmoCurrent,
             _currentGun.AmmoMax
@@ -46,12 +47,19 @@ public class AmmoUI : MonoBehaviour
     {
         ammoText.text = $"{current}/{max}";
     }
+    
+    private void HandleReloadState(bool isReloading)
+    {
+        if (isReloading)
+            ammoText.text = "RELOADING...";
+    }
 
     private void UnsubscribeFromGun()
     {
         if (_currentGun == null) return;
 
         _currentGun.OnAmmoAmountChanged -= UpdateAmmoText;
+        _currentGun.OnReloadStateChanged -= HandleReloadState;
         _currentGun = null;
     }
 }
