@@ -9,17 +9,13 @@ public class PlayerWeaponController : MonoBehaviour
     public static event Action<Gun> OnGunPickUp;
     public static event Action<Gun> OnGunDropDown;
 
-    [Header("System")] //
-    [SerializeField]
-    private Transform weaponHolder; // where to attach weapon
-
+    [Header("System")]
+    [SerializeField]private Transform weaponHolder; //where to attach weapon
     [SerializeField] private LayerMask aimCollisionLayerMask;
     [SerializeField] private LayerMask pickupCollisionLayerMask;
 
-    [Header("Actions")] //
-    [SerializeField]
-    private InputActionReference shootAction;
-
+    [Header("Actions")]
+    [SerializeField] private InputActionReference shootAction;
     [SerializeField] private InputActionReference pickUpAction;
     [SerializeField] private InputActionReference weaponDropAction;
 
@@ -29,78 +25,59 @@ public class PlayerWeaponController : MonoBehaviour
 
     private void Update()
     {
-        if (pickUpAction.action.triggered) TryEquipFromLook();
+        if (pickUpAction.action.triggered)
+            TryPickupFromLook();
 
-        if (weaponDropAction.action.triggered) DropCurrentGun();
+        if (weaponDropAction.action.triggered)
+            TryDropInput();
 
-        _mouseWorldPosition = HandleAimPosition();
-
+        UpdateAim();
         AlignGun();
 
-        if (shootAction.action.IsPressed()) Shoot();
+        if (shootAction.action.IsPressed())
+            Shoot();
     }
 
-    private void Shoot()
+    private void TryPickupFromLook()
     {
-        if (_currentGun == null) return;
-        _currentGun.Shoot();
-    }
+        Vector2 center = new(Screen.width / 2f, Screen.height / 2f);
+        Ray ray = Camera.main.ScreenPointToRay(center);
 
-    private Vector3 HandleAimPosition()
-    {
-        Vector2 screenCenterPoint = new Vector2(Screen.width / 2f, Screen.height / 2f);
-        Ray ray = Camera.main.ScreenPointToRay(screenCenterPoint);
-        if (Physics.Raycast(ray, out RaycastHit raycastHit, 999f, aimCollisionLayerMask))
-            return raycastHit.point;
+        if (!Physics.Raycast(ray, out RaycastHit hit, 999f, pickupCollisionLayerMask))
+            return;
 
+        if (!hit.collider.TryGetComponent<DroppedWeapon>(out var dropped))
+            return;
 
-        return Vector3.zero;
-    }
-
-    private void AlignGun()
-    {
-        if (_currentGun == null) return;
-        weaponHolder.LookAt(_mouseWorldPosition);
-    }
-
-    private void TryEquipFromLook()
-    {
-        Vector2 screenCenterPoint = new Vector2(Screen.width / 2f, Screen.height / 2f);
-        Ray ray = Camera.main.ScreenPointToRay(screenCenterPoint);
-
-        if (Physics.Raycast(ray, out RaycastHit raycastHit, 999f, pickupCollisionLayerMask))
-        {
-            if (!Physics.Raycast(ray, out RaycastHit hit, 999f, pickupCollisionLayerMask))
-                return;
-
-            if (!hit.collider.TryGetComponent<DroppedWeapon>(out var droppedWeapon))
-                return;
-            
-            if (_currentGun != null)
-                DropCurrentGun();
-
-            GunConfig config = droppedWeapon.GetConfig();
-            Destroy(droppedWeapon.gameObject);
-
-            Gun gunInstance = Instantiate(config.equipedPF, weaponHolder).GetComponent<Gun>();
-
-            gunInstance.transform.localPosition = Vector3.zero;
-            gunInstance.transform.localRotation = Quaternion.identity;
-            gunInstance.transform.localScale = Vector3.one;
-
-            gunInstance.Initialize(config);
-            gunInstance.SetOwner(gameObject);
-
-            EquipGun(gunInstance, config);
-        }
-    }
-    
-    private void EquipGun(Gun newGun, GunConfig config)
-    {
+        //replace
         if (_currentGun != null)
-            UnequipCurrentGun();
+            DropGunWorld();
 
-        _currentGun = newGun;
+        GunConfig config = dropped.GetConfig();
+        Destroy(dropped.gameObject); //world droppedGun destroy
+
+        Gun gunInstance = Instantiate(config.equipedPF, weaponHolder)
+            .GetComponent<Gun>();
+
+        gunInstance.transform.localPosition = Vector3.zero;
+        gunInstance.transform.localRotation = Quaternion.identity;
+        gunInstance.transform.localScale = Vector3.one;
+
+        gunInstance.Initialize(config);
+        gunInstance.SetOwner(transform.root.gameObject);
+
+        EquipGunState(gunInstance, config);
+    }
+
+    private void TryDropInput()
+    {
+        if (_currentGun == null) return;
+        DropGunWorld();
+    }
+
+    private void EquipGunState(Gun gun, GunConfig config)
+    {
+        _currentGun = gun;
         _currentGunConfig = config;
 
         _currentGun.OnAmmoAmountChanged += HandleGunAmmoChanged;
@@ -113,51 +90,90 @@ public class PlayerWeaponController : MonoBehaviour
         OnGunPickUp?.Invoke(_currentGun);
     }
 
-    private void DropCurrentGun(float dropImpulse = 2f, float torqueRange = 1f)
+    private Gun UnequipGunState()
+    {
+        if (_currentGun == null) return null;
+
+        Gun removedGun = _currentGun;
+
+        _currentGun.OnAmmoAmountChanged -= HandleGunAmmoChanged;
+        OnGunDropDown?.Invoke(_currentGun);
+
+        _currentGun = null;
+        _currentGunConfig = null;
+
+        return removedGun;
+    }
+
+    private void DropGunWorld(float dropImpulse = 2f, float torqueRange = 1f)
     {
         if (_currentGun == null) return;
+
+        //зберігаємо дані ДО unequip
+        Gun gunToDrop = _currentGun;
+        GunConfig configToDrop = _currentGunConfig;
+
+        //teardown state
+        UnequipGunState();
 
         Vector3 spawnPos =
             transform.position +
             transform.forward * 0.5f +
             transform.right * 0.5f;
 
-        Quaternion spawnRot = _currentGun.transform.rotation;
+        Quaternion spawnRot = gunToDrop.transform.rotation;
 
-        Rigidbody droppedRB = Instantiate(_currentGunConfig.droppepPF, spawnPos, spawnRot).GetComponent<Rigidbody>();
+        Rigidbody rb = Instantiate(
+            configToDrop.droppepPF,
+            spawnPos,
+            spawnRot
+        ).GetComponent<Rigidbody>();
 
-        droppedRB.linearVelocity = GetComponent<Rigidbody>().linearVelocity;
-        droppedRB.AddForce(transform.up * dropImpulse, ForceMode.Impulse);
-        droppedRB.AddForce(transform.forward * dropImpulse, ForceMode.Impulse);
+        rb.linearVelocity = GetComponent<Rigidbody>().linearVelocity;
+        rb.AddForce(transform.up * dropImpulse, ForceMode.Impulse);
+        rb.AddForce(transform.forward * dropImpulse, ForceMode.Impulse);
 
-        Vector3 randomTorque = new(
+        Vector3 torque = new(
             Random.Range(-torqueRange, torqueRange),
             Random.Range(-torqueRange, torqueRange),
             Random.Range(-torqueRange * 0.05f, torqueRange * 0.05f)
         );
 
-        droppedRB.AddTorque(randomTorque, ForceMode.Impulse);
+        rb.AddTorque(torque, ForceMode.Impulse);
 
-        UnequipCurrentGun();
+        DestroyGunInstance(gunToDrop);
     }
-    
-    private void UnequipCurrentGun()
+
+    private void DestroyGunInstance(Gun gun)
+    {
+        if (gun == null) return;
+        Destroy(gun.gameObject);
+    }
+
+    private void UpdateAim()
+    {
+        Vector2 center = new(Screen.width / 2f, Screen.height / 2f);
+        Ray ray = Camera.main.ScreenPointToRay(center);
+
+        if (Physics.Raycast(ray, out RaycastHit hit, 999f, aimCollisionLayerMask))
+            _mouseWorldPosition = hit.point;
+    }
+
+    private void AlignGun()
     {
         if (_currentGun == null) return;
+        weaponHolder.LookAt(_mouseWorldPosition);
+    }
 
-        _currentGun.OnAmmoAmountChanged -= HandleGunAmmoChanged;
 
-        OnGunDropDown?.Invoke(_currentGun);
-
-        Destroy(_currentGun.gameObject);
-
-        _currentGun = null;
-        _currentGunConfig = null;
+    private void Shoot()
+    {
+        if (_currentGun == null) return;
+        _currentGun.Shoot();
     }
 
     private void HandleGunAmmoChanged(int current, int max)
     {
         OnPlayerAmmoChanged?.Invoke(current, max);
     }
-    
 }

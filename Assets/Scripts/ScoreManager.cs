@@ -39,10 +39,6 @@ public class ScoreManager : MonoBehaviour
 
     private void HandleTargetKilled(BulletTarget target, DamageInfo damage)
     {
-        Debug.Log(
-            $"Instigator: {damage.instigator.name}, " +
-            $"tag: {damage.instigator.tag}"
-        );
         if (!damage.instigator.CompareTag("Player")) return;
 
         _score += 100;//поки хардкодом
