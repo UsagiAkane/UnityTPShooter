@@ -19,6 +19,8 @@ public class LevelManager : MonoBehaviour
 
     private void CompleteLevel()
     {
+        Object.FindAnyObjectByType<InputSystem.InputsManager>()?.gameObject.SetActive(false);// Чи можна тут так?
+        
         levelCompleteUI.Show();
         
         _levelCompleted = true;
