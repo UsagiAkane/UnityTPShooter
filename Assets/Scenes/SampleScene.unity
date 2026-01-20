@@ -119,20 +119,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!114 &108124004
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fc1515ab76e54f068e2f2207940fab32, type: 3}
-  m_Name: Player/Reload
-  m_EditorClassIdentifier: Unity.InputSystem::UnityEngine.InputSystem.InputActionReference
-  m_Asset: {fileID: -944628639613478452, guid: 4b5c7a3ff36a0924694e558d8e09be8d, type: 3}
-  m_ActionId: f86d0092-78c3-44b5-954d-a07168c0cbd7
 --- !u!1 &184073756
 GameObject:
   m_ObjectHideFlags: 0
@@ -571,6 +557,20 @@ Transform:
   - {fileID: 1756917770}
   m_Father: {fileID: 1827590156}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &310906497
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc1515ab76e54f068e2f2207940fab32, type: 3}
+  m_Name: Player/Reload
+  m_EditorClassIdentifier: Unity.InputSystem::UnityEngine.InputSystem.InputActionReference
+  m_Asset: {fileID: -944628639613478452, guid: 4b5c7a3ff36a0924694e558d8e09be8d, type: 3}
+  m_ActionId: f86d0092-78c3-44b5-954d-a07168c0cbd7
 --- !u!1 &330585543
 GameObject:
   m_ObjectHideFlags: 0
@@ -1265,7 +1265,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 604363393}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -2037,7 +2037,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 604363394}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &958370195
+--- !u!114 &968639661
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2047,10 +2047,24 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fc1515ab76e54f068e2f2207940fab32, type: 3}
-  m_Name: Player/Shoot
+  m_Name: Player/PickUp
   m_EditorClassIdentifier: Unity.InputSystem::UnityEngine.InputSystem.InputActionReference
   m_Asset: {fileID: -944628639613478452, guid: 4b5c7a3ff36a0924694e558d8e09be8d, type: 3}
-  m_ActionId: b9fd80af-ef78-408f-b50d-027480f22b3d
+  m_ActionId: 981f0d32-b5a7-4a2c-966f-abc6cf0d063f
+--- !u!114 &1031518093
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc1515ab76e54f068e2f2207940fab32, type: 3}
+  m_Name: Player/DropDown
+  m_EditorClassIdentifier: Unity.InputSystem::UnityEngine.InputSystem.InputActionReference
+  m_Asset: {fileID: -944628639613478452, guid: 4b5c7a3ff36a0924694e558d8e09be8d, type: 3}
+  m_ActionId: 56283ab0-7375-4807-82a1-9f61577944df
 --- !u!1 &1052137281
 GameObject:
   m_ObjectHideFlags: 0
@@ -2511,7 +2525,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1242058248}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2147194023}
+        m_TargetAssemblyTypeName: LevelManager, Assembly-CSharp
+        m_MethodName: RestartLevel
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1242058248
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2550,6 +2576,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1242058245}
   m_CullTransparentMesh: 1
+--- !u!114 &1285194316
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc1515ab76e54f068e2f2207940fab32, type: 3}
+  m_Name: Player/Shoot
+  m_EditorClassIdentifier: Unity.InputSystem::UnityEngine.InputSystem.InputActionReference
+  m_Asset: {fileID: -944628639613478452, guid: 4b5c7a3ff36a0924694e558d8e09be8d, type: 3}
+  m_ActionId: b9fd80af-ef78-408f-b50d-027480f22b3d
 --- !u!1 &1334792169
 GameObject:
   m_ObjectHideFlags: 0
@@ -2564,6 +2604,9 @@ GameObject:
   - component: {fileID: 1334792175}
   - component: {fileID: 1334792176}
   - component: {fileID: 1334792177}
+  - component: {fileID: 1334792179}
+  - component: {fileID: 1334792178}
+  - component: {fileID: 1334792180}
   m_Layer: 6
   m_Name: PlayerObj
   m_TagString: Player
@@ -2661,17 +2704,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e3e4c9ae5ec7c743b340405b43f9320, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerWeaponController
-  weaponHolder: {fileID: 1052137282}
-  aimCollisionLayerMask:
-    serializedVersion: 2
-    m_Bits: 768
   pickupCollisionLayerMask:
     serializedVersion: 2
     m_Bits: 128
-  shootAction: {fileID: 958370195}
-  reloadAction: {fileID: 108124004}
-  pickUpAction: {fileID: 1738616669}
-  weaponDropAction: {fileID: 1994319546}
 --- !u!114 &1334792176
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2698,6 +2733,51 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 337f74944695c684dbba4c88f0e9bcfa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerTeam
+--- !u!114 &1334792178
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1334792169}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c7207339d4b4f2a43b45ec4eba49f691, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WeaponInventory
+  weaponHolder: {fileID: 1052137282}
+--- !u!114 &1334792179
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1334792169}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 57e7483f354d5824bb71768cc696371f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerWeaponInput
+  shoot: {fileID: 1285194316}
+  reload: {fileID: 310906497}
+  pickup: {fileID: 968639661}
+  drop: {fileID: 1031518093}
+--- !u!114 &1334792180
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1334792169}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6796e205df21944458e386f087d5f777, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AimSystem
+  aimCollisionLayerMask:
+    serializedVersion: 2
+    m_Bits: 896
+  cameraTransform: {fileID: 792766049}
 --- !u!1 &1363500651
 GameObject:
   m_ObjectHideFlags: 0
@@ -3178,8 +3258,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -110, y: 20}
-  m_SizeDelta: {x: 200, y: 50}
+  m_AnchoredPosition: {x: -174, y: 20}
+  m_SizeDelta: {x: 320, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1735240009
 MonoBehaviour:
@@ -3201,7 +3281,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: --\--
+  m_text: RELOADING...--\--
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -3294,20 +3374,39 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AmmoUI
   ammoText: {fileID: 1735240009}
---- !u!114 &1738616669
-MonoBehaviour:
+--- !u!1 &1748279972
+GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fc1515ab76e54f068e2f2207940fab32, type: 3}
-  m_Name: Player/PickUp
-  m_EditorClassIdentifier: Unity.InputSystem::UnityEngine.InputSystem.InputActionReference
-  m_Asset: {fileID: -944628639613478452, guid: 4b5c7a3ff36a0924694e558d8e09be8d, type: 3}
-  m_ActionId: 981f0d32-b5a7-4a2c-966f-abc6cf0d063f
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1748279973}
+  m_Layer: 0
+  m_Name: UI
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1748279973
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1748279972}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 2102822280}
+  - {fileID: 1771002524}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1748601406
 GameObject:
   m_ObjectHideFlags: 0
@@ -3596,7 +3695,7 @@ RectTransform:
   - {fileID: 1370936898}
   - {fileID: 258458543}
   - {fileID: 1735240008}
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 1748279973}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -4256,20 +4355,50 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2863037684071349793, guid: 0ef8028e39878674bbec32ec39898dc1, type: 3}
   m_PrefabInstance: {fileID: 1171031323}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1994319546
+--- !u!1 &2102822279
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2102822280}
+  - component: {fileID: 2102822281}
+  m_Layer: 0
+  m_Name: UIContext
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2102822280
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2102822279}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1748279973}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2102822281
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 2102822279}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fc1515ab76e54f068e2f2207940fab32, type: 3}
-  m_Name: Player/DropDown
-  m_EditorClassIdentifier: Unity.InputSystem::UnityEngine.InputSystem.InputActionReference
-  m_Asset: {fileID: -944628639613478452, guid: 4b5c7a3ff36a0924694e558d8e09be8d, type: 3}
-  m_ActionId: 56283ab0-7375-4807-82a1-9f61577944df
+  m_Script: {fileID: 11500000, guid: c131fba82a4bf6f41b08b37b233fbd73, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UIContext
 --- !u!4 &2119371118 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3047735906784951383, guid: 420342cae50baa640993fb56813adf28, type: 3}
@@ -4394,8 +4523,8 @@ SceneRoots:
   - {fileID: 792766049}
   - {fileID: 410087041}
   - {fileID: 832575519}
-  - {fileID: 1771002524}
   - {fileID: 1827590156}
+  - {fileID: 1748279973}
+  - {fileID: 409887326}
   - {fileID: 604363394}
   - {fileID: 1334792170}
-  - {fileID: 409887326}

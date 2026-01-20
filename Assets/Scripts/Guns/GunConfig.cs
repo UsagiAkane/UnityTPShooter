@@ -21,4 +21,7 @@ public class GunConfig : ScriptableObject
 
     // Optional: spread, range, recoil, etc.
     public bool usesProjectile = true;
+    
+    [Header("Runtime")]
+    public int currentAmmo;
 }

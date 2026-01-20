@@ -5,23 +5,29 @@ public class AmmoUI : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI ammoText;
 
+    private WeaponInventory _inventory;
     private Gun _currentGun;
+
+    private void Awake()
+    {
+        _inventory = UIContext.Instance.WeaponInventory;
+    }
 
     private void OnEnable()
     {
-        PlayerWeaponController.OnGunPickUp += HandleGunPickedUp;
-        PlayerWeaponController.OnGunDropDown += HandleGunDropped;
+        _inventory.OnGunEquipped += HandleGunEquipped;
+        _inventory.OnGunUnequipped += HandleGunUnequipped;
     }
 
     private void OnDisable()
     {
-        PlayerWeaponController.OnGunPickUp -= HandleGunPickedUp;
-        PlayerWeaponController.OnGunDropDown -= HandleGunDropped;
+        _inventory.OnGunEquipped -= HandleGunEquipped;
+        _inventory.OnGunUnequipped -= HandleGunUnequipped;
 
         UnsubscribeFromGun();
     }
 
-    private void HandleGunPickedUp(Gun gun)
+    private void HandleGunEquipped(Gun gun)
     {
         UnsubscribeFromGun();
 
@@ -29,13 +35,10 @@ public class AmmoUI : MonoBehaviour
         _currentGun.OnAmmoAmountChanged += UpdateAmmoText;
         _currentGun.OnReloadStateChanged += HandleReloadState;
 
-        UpdateAmmoText(
-            _currentGun.AmmoCurrent,
-            _currentGun.AmmoMax
-        );
+        UpdateAmmoText(_currentGun.AmmoCurrent, _currentGun.AmmoMax);
     }
 
-    private void HandleGunDropped(Gun gun)
+    private void HandleGunUnequipped(Gun gun)
     {
         if (gun != _currentGun) return;
 
@@ -47,7 +50,7 @@ public class AmmoUI : MonoBehaviour
     {
         ammoText.text = $"{current}/{max}";
     }
-    
+
     private void HandleReloadState(bool isReloading)
     {
         if (isReloading)

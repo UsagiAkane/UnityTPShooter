@@ -11,7 +11,7 @@ public class ScoreManager : MonoBehaviour
     [SerializeField] private int playerTeamId = 0;
     [SerializeField] private int scorePerKill = 100;
 
-    public static event Action<int> OnScoreChanged;
+    public event Action<int> OnScoreChanged;
 
     public static ScoreManager Instance { get; private set; }
 

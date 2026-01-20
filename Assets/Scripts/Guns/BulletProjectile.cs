@@ -50,12 +50,6 @@ public class BulletProjectile : MonoBehaviour
 
         ReturnToPool();
     }
-    
-    // private void OnTriggerEnterOLD(Collider other)
-    // {
-    //     if (other.TryGetComponent(out BulletTarget bulletTarget)) bulletTarget.TakeDamage(_damage);
-    //     ReturnToPool();
-    // }
 
     private void ReturnToPool()
     {
@@ -66,6 +60,10 @@ public class BulletProjectile : MonoBehaviour
         else
         {
             rbBullet.linearVelocity = Vector3.zero;
+            //added for kekes
+            rbBullet.angularVelocity = Vector3.zero;
+            rbBullet.rotation = Quaternion.identity;
+            
             _pool.ReturnBulletProjectile(gameObject);
         }
     }

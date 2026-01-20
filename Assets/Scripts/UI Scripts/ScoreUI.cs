@@ -1,21 +1,32 @@
-using UnityEngine;
 using TMPro;
+using UnityEngine;
 
 public class ScoreUI : MonoBehaviour
 {
     [SerializeField] private TMP_Text scoreText;
 
+    private ScoreManager _scoreManager;
+
+    private void Awake()
+    {
+        _scoreManager = UIContext.Instance.ScoreManager;
+    }
+
     private void OnEnable()
     {
-        ScoreManager.OnScoreChanged += UpdateScore;
+        if (_scoreManager == null)
+            return;
 
-        if (ScoreManager.Instance != null)
-            UpdateScore(ScoreManager.Instance.CurrentScore);
+        _scoreManager.OnScoreChanged += UpdateScore;
+        UpdateScore(_scoreManager.CurrentScore);
     }
 
     private void OnDisable()
     {
-        ScoreManager.OnScoreChanged -= UpdateScore;
+        if (_scoreManager == null)
+            return;
+
+        _scoreManager.OnScoreChanged -= UpdateScore;
     }
 
     private void UpdateScore(int score)
