@@ -15,11 +15,13 @@ MonoBehaviour:
   droppepPF: {fileID: 2808625149419590679, guid: a953d1da82b1ff441b6bb6a8da4de693, type: 3}
   equipedPF: {fileID: 4533255817393384811, guid: 3f351c6e8be4b1c409acac7e0a16dd13, type: 3}
   bulletPF: {fileID: 7465240956135062789, guid: ab347df51905bc5489443e8784d0e49c, type: 3}
-  shotSfx: {fileID: 8300000, guid: d1534f23bf508fb43b5de130cd17e9f4, type: 3}
   weaponName: Rifle weapon
-  clipSize: 25
-  reloadTime: 5
+  shotSfx: {fileID: 8300000, guid: d1534f23bf508fb43b5de130cd17e9f4, type: 3}
   damage: 15
   fireRate: 600
+  clipSize: 25
   projectileSpeed: 20
+  projectileLifeTimeSeconds: 5
+  reloadTime: 1
+  reloadSfx: {fileID: 8300000, guid: 4d4cdbad1078902499ae80e2f20cc7f8, type: 3}
   usesProjectile: 1

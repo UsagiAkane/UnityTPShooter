@@ -7,12 +7,16 @@ public class BulletTarget : MonoBehaviour, IDamageable
     
     public static event Action<BulletTarget, DamageInfo> OnTargetKilled;//TODO
     public static event Action<float> OnDamageTaken; //для UI
+    
+    public static int AliveCount { get; private set; }
+    
 
     [SerializeField] private float maxHealth = 100f;
     private float _health;
 
     private void Awake()
     {
+        AliveCount++;
         _health = maxHealth;
     }
 
@@ -27,5 +31,10 @@ public class BulletTarget : MonoBehaviour, IDamageable
             OnTargetKilled?.Invoke(this, damage);
             Destroy(gameObject);
         }
+    }
+    
+    private void OnDestroy()
+    {
+        AliveCount--;
     }
 }

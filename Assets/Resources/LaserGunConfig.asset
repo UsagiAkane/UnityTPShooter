@@ -15,11 +15,13 @@ MonoBehaviour:
   droppepPF: {fileID: 3784009868338572175, guid: 420342cae50baa640993fb56813adf28, type: 3}
   equipedPF: {fileID: 4438786768396064293, guid: 485b2e19f21da204589cd1f09fd190ab, type: 3}
   bulletPF: {fileID: 8741731339181686983, guid: 0970fa8219c31dc4aa7c2d009e6ae038, type: 3}
-  shotSfx: {fileID: 8300000, guid: cf01f756d3661c345b735fe356f2db74, type: 3}
   weaponName: Laser weapon
+  shotSfx: {fileID: 8300000, guid: cf01f756d3661c345b735fe356f2db74, type: 3}
   damage: 75
   fireRate: 45
   clipSize: 5
   projectileSpeed: 300
-  reloadTime: 5
+  projectileLifeTimeSeconds: 5
+  reloadTime: 2
+  reloadSfx: {fileID: 8300000, guid: 4d4cdbad1078902499ae80e2f20cc7f8, type: 3}
   usesProjectile: 0
