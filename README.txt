@@ -75,8 +75,6 @@ WeaponInventory
  - НЕ знати про cooldown / reload?? бо буде стейт машина
 
 WeaponStateMachine (DECISION LAYER)
-
-🎯 Відповідальність
 вирішує чи можна
 -Shoot
 -Reload
