@@ -1,55 +1,45 @@
-using System;
-using UnityEngine;
-using UnityEngine.InputSystem;
-using Random = UnityEngine.Random;
-
 using UnityEngine;
 
 public class PlayerWeaponController : MonoBehaviour
 {
     [SerializeField] private LayerMask pickupCollisionLayerMask;
 
-    private Gun _currentGun;
-
-    private PlayerWeaponInput _input;
     private WeaponInventory _inventory;
     private AimSystem _aimSystem;
+    private IWeaponInputSource _input;
+
+    private Gun _currentGun;
 
     private void Awake()
     {
         _inventory = GetComponent<WeaponInventory>();
         _aimSystem = GetComponent<AimSystem>();
-        _input = GetComponent<PlayerWeaponInput>();
+        _input = GetComponent<IWeaponInputSource>();
+    }
 
-        // Inventory to Aim
+    private void OnEnable()
+    {
         _inventory.OnGunEquipped += HandleGunEquipped;
         _inventory.OnGunUnequipped += HandleGunUnequipped;
 
-        // Input
-        _input.PickupPressed += TryPickupFromLook;
-        _input.ShootPressed += Shoot;
-        _input.ReloadPressed += Reload;
-        _input.DropPressed += Drop;
+        _input.Shoot += HandleShoot;
+        _input.Reload += HandleReload;
+        _input.Pickup += HandlePickup;
+        _input.Drop += HandleDrop;
     }
 
-    private void OnDestroy()
+    private void OnDisable()
     {
-        if (_inventory != null)
-        {
-            _inventory.OnGunEquipped -= HandleGunEquipped;
-            _inventory.OnGunUnequipped -= HandleGunUnequipped;
-        }
+        _inventory.OnGunEquipped -= HandleGunEquipped;
+        _inventory.OnGunUnequipped -= HandleGunUnequipped;
 
-        if (_input != null)
-        {
-            _input.PickupPressed -= TryPickupFromLook;
-            _input.ShootPressed -= Shoot;
-            _input.ReloadPressed -= Reload;
-            _input.DropPressed -= Drop;
-        }
+        _input.Shoot -= HandleShoot;
+        _input.Reload -= HandleReload;
+        _input.Pickup -= HandlePickup;
+        _input.Drop -= HandleDrop;
     }
 
-    //---Inventory callbacks---
+    //---Inventory---
     private void HandleGunEquipped(Gun gun)
     {
         _currentGun = gun;
@@ -64,25 +54,25 @@ public class PlayerWeaponController : MonoBehaviour
         _aimSystem.ClearGun(gun);
     }
 
-    //---Input actions---
-    private void Shoot()
+    //---Input---
+    private void HandleShoot()
     {
         if (_currentGun == null) return;
         _currentGun.Shoot();
     }
 
-    private void Reload()
+    private void HandleReload()
     {
         if (_currentGun == null) return;
         _currentGun.Reload(this);
     }
 
-    private void Drop()
+    private void HandleDrop()
     {
         _inventory.Drop();
     }
 
-    private void TryPickupFromLook()
+    private void HandlePickup()
     {
         if (!TryRaycastPickup(out DroppedWeapon dropped))
             return;
@@ -90,13 +80,11 @@ public class PlayerWeaponController : MonoBehaviour
         _inventory.Pickup(dropped);
     }
 
-    //---Helpers---
+    //--- Helpers ---
     private bool TryRaycastPickup(out DroppedWeapon dropped)
     {
         dropped = null;
-
-        if (Camera.main == null)
-            return false;
+        if (Camera.main == null) return false;
 
         Ray ray = Camera.main.ScreenPointToRay(
             new Vector2(Screen.width / 2f, Screen.height / 2f)
@@ -105,7 +93,7 @@ public class PlayerWeaponController : MonoBehaviour
         if (!Physics.Raycast(ray, out RaycastHit hit, 999f, pickupCollisionLayerMask))
             return false;
 
-        return hit.collider.GetComponentInParent<DroppedWeapon>() != null
-            && (dropped = hit.collider.GetComponentInParent<DroppedWeapon>()) != null;
+        return hit.collider.GetComponentInParent<DroppedWeapon>() is { } dw
+            && (dropped = dw) != null;
     }
 }

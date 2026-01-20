@@ -2,30 +2,41 @@ using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PlayerWeaponInput : MonoBehaviour
+public class PlayerWeaponInput : MonoBehaviour, IWeaponInputSource
 {
-    public event Action ShootPressed;
-    public event Action ReloadPressed;
-    public event Action PickupPressed;
-    public event Action DropPressed;
+    public event Action Shoot;
+    public event Action Reload;
+    public event Action Pickup;
+    public event Action Drop;
 
     [SerializeField] private InputActionReference shoot;
     [SerializeField] private InputActionReference reload;
     [SerializeField] private InputActionReference pickup;
     [SerializeField] private InputActionReference drop;
 
-    private void Update()
+    private void OnEnable()
     {
-        if (shoot.action.IsPressed())
-            ShootPressed?.Invoke();
+        shoot.action.performed += OnShoot;
+        reload.action.performed += OnReload;
+        pickup.action.performed += OnPickup;
+        drop.action.performed += OnDrop;
 
-        if (reload.action.triggered)
-            ReloadPressed?.Invoke();
-
-        if (pickup.action.triggered)
-            PickupPressed?.Invoke();
-
-        if (drop.action.triggered)
-            DropPressed?.Invoke();
+        shoot.action.Enable();
+        reload.action.Enable();
+        pickup.action.Enable();
+        drop.action.Enable();
     }
+
+    private void OnDisable()
+    {
+        shoot.action.performed -= OnShoot;
+        reload.action.performed -= OnReload;
+        pickup.action.performed -= OnPickup;
+        drop.action.performed -= OnDrop;
+    }
+
+    private void OnShoot(InputAction.CallbackContext _) => Shoot?.Invoke();
+    private void OnReload(InputAction.CallbackContext _) => Reload?.Invoke();
+    private void OnPickup(InputAction.CallbackContext _) => Pickup?.Invoke();
+    private void OnDrop(InputAction.CallbackContext _) => Drop?.Invoke();
 }
