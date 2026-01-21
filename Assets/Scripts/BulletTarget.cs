@@ -6,7 +6,7 @@ public class BulletTarget : MonoBehaviour, IDamageable
     [SerializeField] private AudioClip recieveDamageSound;//TODO REWORK?
     
     public static event Action<BulletTarget, DamageInfo> OnTargetKilled;//TODO
-    public static event Action<float> OnDamageTaken; //для UI
+    //public static event Action<float> OnDamageTaken; //для UI
     
     public static int AliveCount { get; private set; }
     

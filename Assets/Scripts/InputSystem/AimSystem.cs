@@ -1,7 +1,5 @@
 using UnityEngine;
 
-using UnityEngine;
-
 public class AimSystem : MonoBehaviour
 {
     [SerializeField] private LayerMask aimCollisionLayerMask;

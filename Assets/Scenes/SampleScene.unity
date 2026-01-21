@@ -3251,7 +3251,7 @@ GameObject:
   - component: {fileID: 1735240009}
   - component: {fileID: 1735240011}
   m_Layer: 5
-  m_Name: ClipSize
+  m_Name: Ammo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3418,7 +3418,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 2102822280}
   - {fileID: 1771002524}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -4370,50 +4369,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2863037684071349793, guid: 0ef8028e39878674bbec32ec39898dc1, type: 3}
   m_PrefabInstance: {fileID: 1171031323}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &2102822279
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2102822280}
-  - component: {fileID: 2102822281}
-  m_Layer: 0
-  m_Name: UIContext
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &2102822280
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2102822279}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1748279973}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2102822281
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2102822279}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c131fba82a4bf6f41b08b37b233fbd73, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::UIContext
 --- !u!4 &2119371118 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3047735906784951383, guid: 420342cae50baa640993fb56813adf28, type: 3}
@@ -4429,6 +4384,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2147194022}
   - component: {fileID: 2147194023}
+  - component: {fileID: 2147194024}
   m_Layer: 0
   m_Name: LevelManager
   m_TagString: Untagged
@@ -4464,6 +4420,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LevelManager
   levelCompleteUI: {fileID: 409887322}
+--- !u!114 &2147194024
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2147194021}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0261730a64645ebba198b3a139e1b4e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Managers.UIBootstrap
+  weaponInventory: {fileID: 1334792178}
+  scoreManager: {fileID: 1834367154}
+  ammoUI: {fileID: 1735240011}
+  scoreUI: {fileID: 258458546}
 --- !u!1001 &6811982602516434966
 PrefabInstance:
   m_ObjectHideFlags: 0

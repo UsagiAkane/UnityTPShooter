@@ -7,26 +7,17 @@ public class ScoreUI : MonoBehaviour
 
     private ScoreManager _scoreManager;
 
-    private void Awake()
+    public void Bind(ScoreManager scoreManager)
     {
-        _scoreManager = UIContext.Instance.ScoreManager;
-    }
-
-    private void OnEnable()
-    {
-        if (_scoreManager == null)
-            return;
-
+        _scoreManager = scoreManager;
         _scoreManager.OnScoreChanged += UpdateScore;
         UpdateScore(_scoreManager.CurrentScore);
     }
 
-    private void OnDisable()
+    private void OnDestroy()
     {
-        if (_scoreManager == null)
-            return;
-
-        _scoreManager.OnScoreChanged -= UpdateScore;
+        if (_scoreManager != null)
+            _scoreManager.OnScoreChanged -= UpdateScore;
     }
 
     private void UpdateScore(int score)

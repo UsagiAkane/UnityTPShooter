@@ -8,19 +8,23 @@ public class AmmoUI : MonoBehaviour
     private WeaponInventory _inventory;
     private Gun _currentGun;
 
-    private void Awake()
+    public void Bind(WeaponInventory inventory)
     {
-        _inventory = UIContext.Instance.WeaponInventory;
-    }
+        _inventory = inventory;
 
-    private void OnEnable()
-    {
         _inventory.OnGunEquipped += HandleGunEquipped;
         _inventory.OnGunUnequipped += HandleGunUnequipped;
+
+        if (_inventory.CurrentGun != null)
+            HandleGunEquipped(_inventory.CurrentGun);
+        else
+            ammoText.text = "--/--";
     }
 
-    private void OnDisable()
+    private void OnDestroy()
     {
+        if (_inventory == null) return;
+
         _inventory.OnGunEquipped -= HandleGunEquipped;
         _inventory.OnGunUnequipped -= HandleGunUnequipped;
 
