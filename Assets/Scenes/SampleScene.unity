@@ -2752,7 +2752,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6796e205df21944458e386f087d5f777, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AimSystem
-  aimDirectionSource: {fileID: 1916308347}
+  aimDirectionSource: {fileID: 330585546}
   aimMask:
     serializedVersion: 2
     m_Bits: 768

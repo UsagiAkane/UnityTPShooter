@@ -48,10 +48,10 @@ public class AimSystem : MonoBehaviour
     {
         Transform originTransform = _aimProvider.AimOrigin;
 
-        Vector3 origin = originTransform.position;
-
-        //джерело direction для читабельності
-        Vector3 direction = aimDirectionSource.forward.normalized;
+        Vector3 origin = aimDirectionSource.position;   // CAMERA
+        Vector3 direction = aimDirectionSource.forward; // CAMERA
+        
+        
 
         bool hasHit = false;
         RaycastHit hit = default;
