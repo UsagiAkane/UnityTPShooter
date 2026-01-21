@@ -1,9 +1,12 @@
 using UnityEngine;
 
-public interface IAimProvider
+namespace Player.AimSystem
 {
-    Transform AimOrigin { get; }   //звідки стріляємо
-    //float MaxAimDistance { get; }  //поки не вирішив чи хочу його тут
+    public interface IAimProvider
+    {
+        Transform AimOrigin { get; }   //звідки стріляємо
+        //float MaxAimDistance { get; }  //поки не вирішив чи хочу його тут
 
-    void OnAimUpdated(AimResult result);
+        void OnAimUpdated(AimResult result);
+    }
 }

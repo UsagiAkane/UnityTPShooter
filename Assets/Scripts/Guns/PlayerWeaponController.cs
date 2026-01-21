@@ -1,3 +1,4 @@
+using Player.AimSystem;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -32,6 +33,8 @@ namespace Guns
 
         private void OnEnable()
         {
+            _aimSystem.OnAimComputed += HandleAimUpdated;
+            
             _inventory.OnGunEquipped += HandleGunEquipped;
             _inventory.OnGunUnequipped += HandleGunUnequipped;
             _inventory.OnDropRequested += HandleDropRequested;
@@ -39,6 +42,8 @@ namespace Guns
 
         private void OnDisable()
         {
+            _aimSystem.OnAimComputed -= HandleAimUpdated;
+            
             _inventory.OnGunEquipped -= HandleGunEquipped;
             _inventory.OnGunUnequipped -= HandleGunUnequipped;
             _inventory.OnDropRequested -= HandleDropRequested;
@@ -71,6 +76,11 @@ namespace Guns
                 _currentGun = null;
 
             _aimSystem.ClearAimProvider(gun);
+        }
+        
+        private void HandleAimUpdated(AimResult aim)
+        {
+            _currentGun?.OnAimUpdated(aim);
         }
 
         //PICKUP / DROP

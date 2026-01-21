@@ -1,3 +1,5 @@
+using Guns;
+using UI_Scripts;
 using UnityEngine;
 
 namespace Managers

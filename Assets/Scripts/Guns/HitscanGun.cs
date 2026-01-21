@@ -1,3 +1,4 @@
+using Player.AimSystem;
 using UnityEngine;
 
 namespace Guns

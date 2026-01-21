@@ -1,16 +1,19 @@
 using UnityEngine;
 
-public class DroppedWeapon : MonoBehaviour
+namespace Guns
 {
-    [SerializeField] private GunConfig config;
-    [SerializeField] private int currentAmmo;
-
-    public GunConfig GetConfig => config;
-    public int GetCurrentAmmo => currentAmmo;
-
-    public void Initialize(GunConfig cfg, int ammo)
+    public class DroppedWeapon : MonoBehaviour
     {
-        config = cfg;
-        currentAmmo = ammo;
+        [SerializeField] private GunConfig config;
+        [SerializeField] private int currentAmmo;
+
+        public GunConfig GetConfig => config;
+        public int GetCurrentAmmo => currentAmmo;
+
+        public void Initialize(GunConfig cfg, int ammo)
+        {
+            config = cfg;
+            currentAmmo = ammo;
+        }
     }
 }

@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace InputSystem
+namespace Player.Movement
 {
     [RequireComponent(typeof(Rigidbody))]
     public class ThirdPersonController : MonoBehaviour

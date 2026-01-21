@@ -1,72 +1,76 @@
+using Guns;
 using TMPro;
 using UnityEngine;
 
-public class AmmoUI : MonoBehaviour
+namespace UI_Scripts
 {
-    [SerializeField] private TextMeshProUGUI ammoText;
-
-    private WeaponInventory _inventory;
-    private Gun _currentGun;
-
-    public void Bind(WeaponInventory inventory)
+    public class AmmoUI : MonoBehaviour
     {
-        _inventory = inventory;
+        [SerializeField] private TextMeshProUGUI ammoText;
 
-        _inventory.OnGunEquipped += HandleGunEquipped;
-        _inventory.OnGunUnequipped += HandleGunUnequipped;
+        private WeaponInventory _inventory;
+        private Gun _currentGun;
 
-        if (_inventory.CurrentGun != null) //Do you need playerWeaponController event if I dont use it?
-            HandleGunEquipped(_inventory.CurrentGun);
-        else
+        public void Bind(WeaponInventory inventory)
+        {
+            _inventory = inventory;
+
+            _inventory.OnGunEquipped += HandleGunEquipped;
+            _inventory.OnGunUnequipped += HandleGunUnequipped;
+
+            if (_inventory.CurrentGun != null) //Do you need playerWeaponController event if I dont use it?
+                HandleGunEquipped(_inventory.CurrentGun);
+            else
+                ammoText.text = "--/--";
+        }
+
+        private void OnDestroy()
+        {
+            if (_inventory == null) return;
+
+            _inventory.OnGunEquipped -= HandleGunEquipped;
+            _inventory.OnGunUnequipped -= HandleGunUnequipped;
+
+            UnsubscribeFromGun();
+        }
+
+        private void HandleGunEquipped(Gun gun)
+        {
+            UnsubscribeFromGun();
+
+            _currentGun = gun;
+            _currentGun.OnAmmoAmountChanged += UpdateAmmoText;
+            //_currentGun.OnReloadStateChanged += HandleReloadState;
+
+            UpdateAmmoText(_currentGun.CurrentAmmo, _currentGun.MaxAmmo);
+        }
+
+        private void HandleGunUnequipped(Gun gun)
+        {
+            if (gun != _currentGun) return;
+
+            UnsubscribeFromGun();
             ammoText.text = "--/--";
-    }
+        }
 
-    private void OnDestroy()
-    {
-        if (_inventory == null) return;
+        private void UpdateAmmoText(int current, int max)
+        {
+            ammoText.text = $"{current}/{max}";
+        }
 
-        _inventory.OnGunEquipped -= HandleGunEquipped;
-        _inventory.OnGunUnequipped -= HandleGunUnequipped;
+        private void HandleReloadState(bool isReloading)
+        {
+            if (isReloading)
+                ammoText.text = "RELOADING...";
+        }
 
-        UnsubscribeFromGun();
-    }
+        private void UnsubscribeFromGun()
+        {
+            if (_currentGun == null) return;
 
-    private void HandleGunEquipped(Gun gun)
-    {
-        UnsubscribeFromGun();
-
-        _currentGun = gun;
-        _currentGun.OnAmmoAmountChanged += UpdateAmmoText;
-        //_currentGun.OnReloadStateChanged += HandleReloadState;
-
-        UpdateAmmoText(_currentGun.CurrentAmmo, _currentGun.MaxAmmo);
-    }
-
-    private void HandleGunUnequipped(Gun gun)
-    {
-        if (gun != _currentGun) return;
-
-        UnsubscribeFromGun();
-        ammoText.text = "--/--";
-    }
-
-    private void UpdateAmmoText(int current, int max)
-    {
-        ammoText.text = $"{current}/{max}";
-    }
-
-    private void HandleReloadState(bool isReloading)
-    {
-        if (isReloading)
-            ammoText.text = "RELOADING...";
-    }
-
-    private void UnsubscribeFromGun()
-    {
-        if (_currentGun == null) return;
-
-        _currentGun.OnAmmoAmountChanged -= UpdateAmmoText;
-        //_currentGun.OnReloadStateChanged -= HandleReloadState;
-        _currentGun = null;
+            _currentGun.OnAmmoAmountChanged -= UpdateAmmoText;
+            //_currentGun.OnReloadStateChanged -= HandleReloadState;
+            _currentGun = null;
+        }
     }
 }

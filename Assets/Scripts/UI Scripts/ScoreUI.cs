@@ -1,27 +1,31 @@
+using Managers;
 using TMPro;
 using UnityEngine;
 
-public class ScoreUI : MonoBehaviour
+namespace UI_Scripts
 {
-    [SerializeField] private TMP_Text scoreText;
-
-    private ScoreManager _scoreManager;
-
-    public void Bind(ScoreManager scoreManager)
+    public class ScoreUI : MonoBehaviour
     {
-        _scoreManager = scoreManager;
-        _scoreManager.OnScoreChanged += UpdateScore;
-        UpdateScore(_scoreManager.CurrentScore);
-    }
+        [SerializeField] private TMP_Text scoreText;
 
-    private void OnDestroy()
-    {
-        if (_scoreManager != null)
-            _scoreManager.OnScoreChanged -= UpdateScore;
-    }
+        private ScoreManager _scoreManager;
 
-    private void UpdateScore(int score)
-    {
-        scoreText.text = score.ToString();
+        public void Bind(ScoreManager scoreManager)
+        {
+            _scoreManager = scoreManager;
+            _scoreManager.OnScoreChanged += UpdateScore;
+            UpdateScore(_scoreManager.CurrentScore);
+        }
+
+        private void OnDestroy()
+        {
+            if (_scoreManager != null)
+                _scoreManager.OnScoreChanged -= UpdateScore;
+        }
+
+        private void UpdateScore(int score)
+        {
+            scoreText.text = score.ToString();
+        }
     }
 }

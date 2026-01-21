@@ -1,37 +1,39 @@
 using UnityEngine;
-using Guns;
 
-public class Laser : HitscanGun
+namespace Guns
 {
-    public override void Initialize(GunConfig cfg, int ammo)
+    public class Laser : HitscanGun
     {
-        base.Initialize(cfg, ammo);
-
-        //якщо пул треба буде для ФХ то краще створити окремий
-        //rojectilePool.InitializePool(config.bulletPF, config.usesProjectile);
-    }
-
-    protected override void OnHit(RaycastHit hit, Vector3 direction)
-    {
-        if (hit.collider.TryGetComponent<IDamageable>(out var damageable))
+        public override void Initialize(GunConfig cfg, int ammo)
         {
-            DamageInfo damageInfo = new DamageInfo
-            {
-                amount = config.damage,
-                source = gameObject,   // gun
-                instigator = owner,    // holder
-                hitPoint = hit.point,
-                hitDirection = direction
-            };
+            base.Initialize(cfg, ammo);
 
-            damageable.TakeDamage(damageInfo);
+            //якщо пул треба буде для ФХ то краще створити окремий
+            //rojectilePool.InitializePool(config.bulletPF, config.usesProjectile);
         }
 
-        //TODO impact FX
-    }
+        protected override void OnHit(RaycastHit hit, Vector3 direction)
+        {
+            if (hit.collider.TryGetComponent<IDamageable>(out var damageable))
+            {
+                DamageInfo damageInfo = new DamageInfo
+                {
+                    amount = config.damage,
+                    source = gameObject,   // gun
+                    instigator = owner,    // holder
+                    hitPoint = hit.point,
+                    hitDirection = direction
+                };
 
-    protected override void OnMiss(Vector3 direction)
-    {
-        //TODO FX without hit
+                damageable.TakeDamage(damageInfo);
+            }
+
+            //TODO impact FX
+        }
+
+        protected override void OnMiss(Vector3 direction)
+        {
+            //TODO FX without hit
+        }
     }
 }

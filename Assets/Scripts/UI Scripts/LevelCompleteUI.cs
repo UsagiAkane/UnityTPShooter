@@ -1,21 +1,25 @@
+using Managers;
 using TMPro;
 using UnityEngine;
 
-public class LevelCompleteUI : MonoBehaviour
+namespace UI_Scripts
 {
-    [SerializeField] private GameObject root;
-    [SerializeField] private TMP_Text scoreText;
-
-    private void Awake()
+    public class LevelCompleteUI : MonoBehaviour
     {
-        root.SetActive(false);
-    }
+        [SerializeField] private GameObject root;
+        [SerializeField] private TMP_Text scoreText;
 
-    public void Show()
-    {
-        root.SetActive(true);
+        private void Awake()
+        {
+            root.SetActive(false);
+        }
 
-        scoreText.text =
-            ScoreManager.Instance.CurrentScore.ToString();
+        public void Show()
+        {
+            root.SetActive(true);
+
+            scoreText.text =
+                ScoreManager.Instance.CurrentScore.ToString();
+        }
     }
 }

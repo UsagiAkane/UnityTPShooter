@@ -1,88 +1,90 @@
+using System;
 using UnityEngine;
 
-
 //AimSystem нічого не крутить, він просто ретьорнить результат прицілювання
-public class AimSystem : MonoBehaviour
+namespace Player.AimSystem
 {
-    [Header("Aim params")]
-    [Tooltip("Main camera")]
-    [SerializeField] private Transform aimDirectionSource;
-    [SerializeField] private LayerMask aimMask;
-    [SerializeField] private float maxAimDistance = 100f;
-    [SerializeField] private bool enableRaycast = true;
-
-    private IAimProvider _aimProvider;
-
-    private AimResult _currentAim;
-    private bool _hasAim;
-
-
-    public bool HasAim => _hasAim;
-    public AimResult CurrentAim => _currentAim;
-
-    private void Update()
+    public class AimSystem : MonoBehaviour
     {
-        if (_aimProvider == null)
-            return;
+        public event Action<AimResult> OnAimComputed;
 
-        PerformAim();
-    }
-    
-    //bind
-    public void SetAimProvider(IAimProvider provider)
-    {
-        _aimProvider = provider;
-        _hasAim = false;
-    }
+        [Header("Aim params")] [Tooltip("Main camera")] [SerializeField]
+        private Transform aimDirectionSource;
+        [SerializeField] private LayerMask aimMask;
+        [SerializeField] private float maxAimDistance = 100f;
+        //[SerializeField] private bool enableRaycast = true;
 
-    public void ClearAimProvider(IAimProvider provider)
-    {
-        if (_aimProvider == provider)
+        private IAimProvider _aimProvider;
+
+        private AimResult _currentAim;
+        private bool _hasAim;
+
+
+        public bool HasAim => _hasAim;
+        public AimResult CurrentAim => _currentAim;
+
+        private void Update()
         {
-            _aimProvider = null;
+            if (_aimProvider == null)
+                return;
+
+            PerformAim();
+        }
+
+        //bind
+        public void SetAimProvider(IAimProvider provider)
+        {
+            _aimProvider = provider;
             _hasAim = false;
         }
-    }
 
-    private void PerformAim()
-    {
-        Transform originTransform = _aimProvider.AimOrigin;
-
-        Vector3 origin = aimDirectionSource.position;   // CAMERA
-        Vector3 direction = aimDirectionSource.forward; // CAMERA
-        
-        
-
-        bool hasHit = false;
-        RaycastHit hit = default;
-
-        if (enableRaycast)
+        public void ClearAimProvider(IAimProvider provider)
         {
+            if (_aimProvider == provider)
+            {
+                _aimProvider = null;
+                _hasAim = false;
+            }
+        }
+
+        private void PerformAim()
+        {
+            //Джерело камера
+            Vector3 origin = aimDirectionSource.position;
+            Vector3 direction = aimDirectionSource.forward;
+
+            //Raycast (якщо дозволений)
+            RaycastHit hit = default;
+            bool hasHit = false;
+
             hasHit = Physics.Raycast(
                 origin,
                 direction,
                 out hit,
                 maxAimDistance,
                 aimMask,
-                QueryTriggerInteraction.Ignore
+                QueryTriggerInteraction.Ignore//щоб аім НЕ реагував на trigger-колайдери
             );
+
+            //Визначаємо aim point
+            Vector3 aimPoint = hasHit ? hit.point : origin + direction * maxAimDistance;
+
+            //Формуємо aim data
+            _currentAim = new AimResult(
+                direction,
+                aimPoint,
+                hasHit,
+                hasHit ? hit : default
+            );
+
+            _hasAim = true;
+
+            //ТІЛЬКИ повідомляємо, без логіки
+            OnAimComputed?.Invoke(_currentAim);
+
+#if UNITY_EDITOR
+            Debug.DrawRay(origin, direction * 2f, hasHit ? Color.red : Color.green);
+#endif
         }
-
-        Vector3 aimPoint = hasHit ? hit.point : origin + direction * maxAimDistance;
-
-        _currentAim = new AimResult(
-            direction,
-            aimPoint,
-            hasHit,
-            hit
-        );
-
-        _hasAim = true;
-
-        //visual реакція
-        _aimProvider.OnAimUpdated(_currentAim);
-
-        // Debug (safe)
-        Debug.DrawRay(origin, direction * 2f, hasHit ? Color.red : Color.green);
     }
 }

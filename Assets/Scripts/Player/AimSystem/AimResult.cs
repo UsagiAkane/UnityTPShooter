@@ -4,22 +4,25 @@ using UnityEngine;
 //без логіки
 //без MonoBehaviour
 //можна кешувати / логувати
-public readonly struct AimResult
+namespace Player.AimSystem
 {
-    public readonly Vector3 Direction;// normalized
-    public readonly Vector3 AimPoint;// direction * distance AimPoint = targeting intent, не гарант
-    public readonly bool HasHit;
-    public readonly RaycastHit Hit;
-
-    public AimResult(
-        Vector3 direction,
-        Vector3 aimPoint,
-        bool hasHit,
-        RaycastHit hit)
+    public readonly struct AimResult
     {
-        Direction = direction;
-        AimPoint = aimPoint;
-        HasHit = hasHit;
-        Hit = hit;
+        public readonly Vector3 Direction;// normalized
+        public readonly Vector3 AimPoint;// direction * distance AimPoint = targeting intent, не гарант
+        public readonly bool HasHit;
+        public readonly RaycastHit Hit;
+
+        public AimResult(
+            Vector3 direction,
+            Vector3 aimPoint,
+            bool hasHit,
+            RaycastHit hit)
+        {
+            Direction = direction;
+            AimPoint = aimPoint;
+            HasHit = hasHit;
+            Hit = hit;
+        }
     }
 }
