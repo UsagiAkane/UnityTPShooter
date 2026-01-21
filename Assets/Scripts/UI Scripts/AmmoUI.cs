@@ -37,9 +37,9 @@ public class AmmoUI : MonoBehaviour
 
         _currentGun = gun;
         _currentGun.OnAmmoAmountChanged += UpdateAmmoText;
-        _currentGun.OnReloadStateChanged += HandleReloadState;
+        //_currentGun.OnReloadStateChanged += HandleReloadState;
 
-        UpdateAmmoText(_currentGun.AmmoCurrent, _currentGun.AmmoMax);
+        UpdateAmmoText(_currentGun.CurrentAmmo, _currentGun.MaxAmmo);
     }
 
     private void HandleGunUnequipped(Gun gun)
@@ -66,7 +66,7 @@ public class AmmoUI : MonoBehaviour
         if (_currentGun == null) return;
 
         _currentGun.OnAmmoAmountChanged -= UpdateAmmoText;
-        _currentGun.OnReloadStateChanged -= HandleReloadState;
+        //_currentGun.OnReloadStateChanged -= HandleReloadState;
         _currentGun = null;
     }
 }

@@ -1,60 +1,85 @@
 using System;
-using System.Collections;
 using UnityEngine;
 
 public abstract class Gun : MonoBehaviour
 {
     public event Action<int, int> OnAmmoAmountChanged;
-    public event Action<bool> OnReloadStateChanged;
 
     [SerializeField] protected Transform firePoint;
 
-    protected WeaponRuntimeData runtime;
+    protected GunConfig config;
+    protected IDamageInstigator owner;
+
+    protected int currentAmmo;
     protected int maxAmmo;
-    //тут чи нижче?
-    public int AmmoCurrent => runtime.currentAmmo;
-    public int AmmoMax => maxAmmo;
 
     protected float cooldown;
 
     protected ObjectPool projectilePool;
-    protected GunConfig config;
-    protected IDamageInstigator Owner { get; private set; }
 
-    private void Awake()
+    public int CurrentAmmo => currentAmmo;
+    public int MaxAmmo => maxAmmo;
+
+    protected virtual void Awake()
     {
         projectilePool = GetComponent<ObjectPool>();
     }
-    
-    public virtual void Initialize(GunConfig cfg, WeaponRuntimeData runtimeData)
+
+    public virtual void Initialize(GunConfig cfg, int startAmmo)
     {
         config = cfg;
         maxAmmo = cfg.clipSize;
-        runtime = runtimeData ?? new WeaponRuntimeData(maxAmmo);
+        currentAmmo = Mathf.Clamp(startAmmo, 0, maxAmmo);
 
-        OnAmmoAmountChanged?.Invoke(runtime.currentAmmo, maxAmmo);
+        OnAmmoAmountChanged?.Invoke(currentAmmo, maxAmmo);
     }
     
     private void Update()
     {
-        //Debug.DrawRay(firePoint.position, firePoint.forward, Color.red);
-        TickCooldown(Time.deltaTime);
-    }
-    
-    public virtual void SetOwner(IDamageInstigator owner)
-    {
-        Owner = owner;
+        TickCooldown(Time.deltaTime); //знає про свій cooldown(від firerate), сам його трекає бо він потрібен тільки тут. Не залежить від input бо ми не маємо впливати на максимальний shots per minute
     }
 
-    public bool CanShoot()
+    public void SetOwner(IDamageInstigator instigator)
     {
-        return runtime.currentAmmo > 0 && cooldown <= 0f; // && !runtime.isReloading;
+        owner = instigator;
     }
     
+
+    public bool CanShoot()//TODO relocate in state machine
+    {
+        return currentAmmo > 0 && cooldown <= 0f;
+    }
+
     public virtual void Shoot()
     {
-        if (!CanShoot()) return;
+        if (!CanShoot())
+            return;
 
+        ShootLogic();//трігер пострілу для логіки проджектайл\хітскан\дробовик
+        AfterShoot();
+    }
+    protected virtual void ShootLogic()//Laser override ShootLogic(), Shotgun override ShootLogic(), Burst rifle override Shoot() або ShootLogic()
+    {
+        SpawnProjectile();
+    }
+    protected virtual void AfterShoot()
+    {
+        currentAmmo--;
+        cooldown = 60f / config.fireRate;
+        OnAmmoAmountChanged?.Invoke(currentAmmo, maxAmmo);
+
+        if (config.shotSfx != null)
+            SFXmanager.instance.PlaySFXClip(config.shotSfx, transform, 1f);
+    }
+
+    public void ReloadInstant()//Must be called from state machine after reload finished
+    {
+        currentAmmo = maxAmmo;
+        OnAmmoAmountChanged?.Invoke(currentAmmo, maxAmmo);
+    }
+    
+    protected void SpawnProjectile()
+    {
         GameObject bullet = projectilePool.GetBulletProjectile(
             firePoint.position,
             firePoint.rotation
@@ -66,70 +91,22 @@ public abstract class Gun : MonoBehaviour
             config.damage,
             config.projectileLifeTimeSeconds,
             projectilePool,
-            Owner
+            owner
         );
-
-        ConsumeAmmo();
-        cooldown = 60f / config.fireRate;
-
-        SFXmanager.instance.PlaySFXClip(config.shotSfx, transform, 1f);
     }
     
-    protected virtual void ConsumeAmmo(int amount = 1)
-    {
-        runtime.currentAmmo -= amount;
-        OnAmmoAmountChanged?.Invoke(runtime.currentAmmo, maxAmmo);
-    }
-
-    public virtual void Reload()//MonoBehaviour runner)
-    {
-        // if (runtime.isReloading) return;
-        // if (runtime.currentAmmo == maxAmmo) return;
-        //
-        // runtime.isReloading = true;
-        // runtime.reloadVersion++;
-        //
-        // int myVersion = runtime.reloadVersion;
-
-        OnReloadStateChanged?.Invoke(true);
-        StartCoroutine(ReloadRoutine());
-        //runner.StartCoroutine(ReloadRoutine(myVersion));
-    }
-
-    private IEnumerator ReloadRoutine()
-    {
-        OnReloadStateChanged?.Invoke(true);
-        
-        SFXmanager.instance.PlaySFXClip(config.reloadSfx, transform, 1f);
-
-        yield return new WaitForSeconds(config.reloadTime);
-        
-        runtime.currentAmmo = maxAmmo;
-
-        OnAmmoAmountChanged?.Invoke(runtime.currentAmmo, maxAmmo);
-        OnReloadStateChanged?.Invoke(false);
-    }
-    
-    private IEnumerator ReloadRoutine(int version)
-    {
-        SFXmanager.instance.PlaySFXClip(config.reloadSfx, transform, 1f);
-
-        yield return new WaitForSeconds(config.reloadTime);
-
-        //Якщо був дропнутий
-        if (runtime.reloadVersion != version)
-            yield break;
-
-        runtime.currentAmmo = maxAmmo;
-        runtime.isReloading = false;
-
-        OnAmmoAmountChanged?.Invoke(runtime.currentAmmo, maxAmmo);
-        OnReloadStateChanged?.Invoke(false);
-    }
-
-
     protected void TickCooldown(float dt)
     {
-        if (cooldown >= 0f) cooldown -= dt;
+        if (cooldown > 0f)
+            cooldown -= dt;
     }
+    
+    // //DONT NEED IT RIGHT NOW
+    // protected void SpawnShot()
+    // {
+    //     if (config.usesProjectile)
+    //         SpawnProjectile();
+    //     else
+    //         DoHitscan();
+    // }
 }

@@ -64,7 +64,7 @@ public class PlayerWeaponController : MonoBehaviour
     private void HandleReload()
     {
         if (_currentGun == null) return;
-        _currentGun.Reload();//this);
+        _currentGun.ReloadInstant();//this);
     }
 
     private void HandleDrop()

@@ -3,15 +3,14 @@ using UnityEngine;
 public class DroppedWeapon : MonoBehaviour
 {
     [SerializeField] private GunConfig config;
+    [SerializeField] private int currentAmmo;
 
-    private WeaponRuntimeData runtime;
+    public GunConfig GetConfig => config;
+    public int GetCurrentAmmo => currentAmmo;
 
-    public void Initialize(GunConfig cfg, WeaponRuntimeData runtimeData)
+    public void Initialize(GunConfig cfg, int ammo)
     {
         config = cfg;
-        runtime = runtimeData;
+        currentAmmo = ammo;
     }
-
-    public GunConfig GetConfig() => config;
-    public WeaponRuntimeData GetRuntime() => runtime;
 }
