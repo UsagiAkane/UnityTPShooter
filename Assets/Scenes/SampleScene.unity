@@ -557,20 +557,6 @@ Transform:
   - {fileID: 1756917770}
   m_Father: {fileID: 1827590156}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &310906497
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fc1515ab76e54f068e2f2207940fab32, type: 3}
-  m_Name: Player/Reload
-  m_EditorClassIdentifier: Unity.InputSystem::UnityEngine.InputSystem.InputActionReference
-  m_Asset: {fileID: -944628639613478452, guid: 4b5c7a3ff36a0924694e558d8e09be8d, type: 3}
-  m_ActionId: f86d0092-78c3-44b5-954d-a07168c0cbd7
 --- !u!1 &330585543
 GameObject:
   m_ObjectHideFlags: 0
@@ -1241,20 +1227,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 456718732}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!114 &552817258
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fc1515ab76e54f068e2f2207940fab32, type: 3}
-  m_Name: Player/Swap
-  m_EditorClassIdentifier: Unity.InputSystem::UnityEngine.InputSystem.InputActionReference
-  m_Asset: {fileID: -944628639613478452, guid: 4b5c7a3ff36a0924694e558d8e09be8d, type: 3}
-  m_ActionId: 17635950-fa2b-4207-b2a0-34a3dabecf7e
 --- !u!1 &604363393
 GameObject:
   m_ObjectHideFlags: 0
@@ -2051,21 +2023,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 604363394}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &968639661
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fc1515ab76e54f068e2f2207940fab32, type: 3}
-  m_Name: Player/PickUp
-  m_EditorClassIdentifier: Unity.InputSystem::UnityEngine.InputSystem.InputActionReference
-  m_Asset: {fileID: -944628639613478452, guid: 4b5c7a3ff36a0924694e558d8e09be8d, type: 3}
-  m_ActionId: 981f0d32-b5a7-4a2c-966f-abc6cf0d063f
---- !u!114 &1031518093
+--- !u!114 &879270202
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2110,6 +2068,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1334792170}
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+--- !u!114 &1101693804
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc1515ab76e54f068e2f2207940fab32, type: 3}
+  m_Name: Player/Shoot
+  m_EditorClassIdentifier: Unity.InputSystem::UnityEngine.InputSystem.InputActionReference
+  m_Asset: {fileID: -944628639613478452, guid: 4b5c7a3ff36a0924694e558d8e09be8d, type: 3}
+  m_ActionId: b9fd80af-ef78-408f-b50d-027480f22b3d
 --- !u!1 &1121732928
 GameObject:
   m_ObjectHideFlags: 0
@@ -2275,6 +2247,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: DroppedPistolModel
       objectReference: {fileID: 0}
+    - target: {fileID: 2531511061991598494, guid: 0ef8028e39878674bbec32ec39898dc1, type: 3}
+      propertyPath: currentAmmo
+      value: 13
+      objectReference: {fileID: 0}
     - target: {fileID: 2863037684071349793, guid: 0ef8028e39878674bbec32ec39898dc1, type: 3}
       propertyPath: m_LocalPosition.x
       value: 2.82
@@ -2320,6 +2296,20 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0ef8028e39878674bbec32ec39898dc1, type: 3}
+--- !u!114 &1177643844
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc1515ab76e54f068e2f2207940fab32, type: 3}
+  m_Name: Player/PickUp
+  m_EditorClassIdentifier: Unity.InputSystem::UnityEngine.InputSystem.InputActionReference
+  m_Asset: {fileID: -944628639613478452, guid: 4b5c7a3ff36a0924694e558d8e09be8d, type: 3}
+  m_ActionId: 981f0d32-b5a7-4a2c-966f-abc6cf0d063f
 --- !u!1 &1201578424
 GameObject:
   m_ObjectHideFlags: 0
@@ -2590,20 +2580,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1242058245}
   m_CullTransparentMesh: 1
---- !u!114 &1285194316
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fc1515ab76e54f068e2f2207940fab32, type: 3}
-  m_Name: Player/Shoot
-  m_EditorClassIdentifier: Unity.InputSystem::UnityEngine.InputSystem.InputActionReference
-  m_Asset: {fileID: -944628639613478452, guid: 4b5c7a3ff36a0924694e558d8e09be8d, type: 3}
-  m_ActionId: b9fd80af-ef78-408f-b50d-027480f22b3d
 --- !u!1 &1334792169
 GameObject:
   m_ObjectHideFlags: 0
@@ -2618,7 +2594,6 @@ GameObject:
   - component: {fileID: 1334792171}
   - component: {fileID: 1334792176}
   - component: {fileID: 1334792175}
-  - component: {fileID: 1334792179}
   - component: {fileID: 1334792178}
   - component: {fileID: 1334792180}
   m_Layer: 6
@@ -2721,6 +2696,11 @@ MonoBehaviour:
   pickupCollisionLayerMask:
     serializedVersion: 2
     m_Bits: 128
+  shootAction: {fileID: 1101693804}
+  reloadAction: {fileID: 1902319311}
+  pickupAction: {fileID: 1177643844}
+  dropAction: {fileID: 879270202}
+  swapAction: {fileID: 1680509549}
 --- !u!114 &1334792176
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2760,23 +2740,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WeaponInventory
   weaponHolder: {fileID: 1052137282}
---- !u!114 &1334792179
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1334792169}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 57e7483f354d5824bb71768cc696371f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerWeaponInput
-  shoot: {fileID: 1285194316}
-  reload: {fileID: 310906497}
-  pickup: {fileID: 968639661}
-  drop: {fileID: 1031518093}
-  swap: {fileID: 552817258}
 --- !u!114 &1334792180
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3238,6 +3201,20 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1562136558}
   m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1680509549
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc1515ab76e54f068e2f2207940fab32, type: 3}
+  m_Name: Player/Swap
+  m_EditorClassIdentifier: Unity.InputSystem::UnityEngine.InputSystem.InputActionReference
+  m_Asset: {fileID: -944628639613478452, guid: 4b5c7a3ff36a0924694e558d8e09be8d, type: 3}
+  m_ActionId: 17635950-fa2b-4207-b2a0-34a3dabecf7e
 --- !u!1 &1735240007
 GameObject:
   m_ObjectHideFlags: 0
@@ -3776,6 +3753,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 7
       objectReference: {fileID: 0}
+    - target: {fileID: 5469152405899336863, guid: a953d1da82b1ff441b6bb6a8da4de693, type: 3}
+      propertyPath: currentAmmo
+      value: 21
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -4220,6 +4201,20 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1893328620}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1902319311
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc1515ab76e54f068e2f2207940fab32, type: 3}
+  m_Name: Player/Reload
+  m_EditorClassIdentifier: Unity.InputSystem::UnityEngine.InputSystem.InputActionReference
+  m_Asset: {fileID: -944628639613478452, guid: 4b5c7a3ff36a0924694e558d8e09be8d, type: 3}
+  m_ActionId: f86d0092-78c3-44b5-954d-a07168c0cbd7
 --- !u!1 &1916308346
 GameObject:
   m_ObjectHideFlags: 0
@@ -4495,6 +4490,10 @@ PrefabInstance:
     - target: {fileID: 3784009868338572175, guid: 420342cae50baa640993fb56813adf28, type: 3}
       propertyPath: m_Layer
       value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 4756150804630102598, guid: 420342cae50baa640993fb56813adf28, type: 3}
+      propertyPath: currentAmmo
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

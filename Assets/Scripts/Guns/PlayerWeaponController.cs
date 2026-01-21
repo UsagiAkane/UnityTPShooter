@@ -1,45 +1,60 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
-public class PlayerWeaponController : MonoBehaviour
+//PlayerWeaponController тепер:
+//читає input (polling)
+//передає intent у WeaponInventory / Gun
+//поєднує AimSystem і активний ган
+public class PlayerWeaponController : MonoBehaviour 
 {
+    [Header("Pickup")]
     [SerializeField] private LayerMask pickupCollisionLayerMask;
 
+    [Header("Input Actions")]
+    [SerializeField] private InputActionReference shootAction;
+    [SerializeField] private InputActionReference reloadAction;
+    [SerializeField] private InputActionReference pickupAction;
+    [SerializeField] private InputActionReference dropAction;
+    [SerializeField] private InputActionReference swapAction;
+    
     private WeaponInventory _inventory;
     private AimSystem _aimSystem;
-    private IWeaponInputSource _input;
 
-    private Gun _currentGun;
+    private Gun _currentGun; //щоб не питати WeaponInventory кожен раз та синхронізувати з AimSystem
 
     private void Awake()
     {
         _inventory = GetComponent<WeaponInventory>();
         _aimSystem = GetComponent<AimSystem>();
-        _input = GetComponent<IWeaponInputSource>();
     }
 
     private void OnEnable()
     {
         _inventory.OnGunEquipped += HandleGunEquipped;
         _inventory.OnGunUnequipped += HandleGunUnequipped;
-
-        _input.Shoot += HandleShoot;//TODO call it in update?
-        _input.Reload += HandleReload;//TODO call it in update?
-        _input.Pickup += HandlePickup;//TODO call it in update?
-        _input.Drop += HandleDrop;//TODO call it in update?
     }
 
     private void OnDisable()
     {
         _inventory.OnGunEquipped -= HandleGunEquipped;
         _inventory.OnGunUnequipped -= HandleGunUnequipped;
-
-        _input.Shoot -= HandleShoot;
-        _input.Reload -= HandleReload;
-        _input.Pickup -= HandlePickup;
-        _input.Drop -= HandleDrop;
     }
 
-    //---Inventory---
+    private void Update()
+    {
+        if (shootAction.action.IsPressed()) _currentGun?.Shoot();
+
+        if (reloadAction.action.WasPressedThisFrame()) _currentGun?.ReloadInstant();
+
+        //if (swapAction.action.WasPressedThisFrame()) _inventory.Swap();
+
+        if (pickupAction.action.WasPressedThisFrame()) TryPickup();
+        
+        if (dropAction.action.WasPressedThisFrame()) _inventory.Drop();
+    }
+
+    //INVENTORY EVENTS поки думаю чи потрібні вони тут
     private void HandleGunEquipped(Gun gun)
     {
         _currentGun = gun;
@@ -54,25 +69,8 @@ public class PlayerWeaponController : MonoBehaviour
         _aimSystem.ClearGun(gun);
     }
 
-    //---Input---
-    private void HandleShoot()
-    {
-        if (_currentGun == null) return; //TODO AUTO RELOAD
-        _currentGun.Shoot();
-    }
-
-    private void HandleReload()
-    {
-        if (_currentGun == null) return;
-        _currentGun.ReloadInstant();//this);
-    }
-
-    private void HandleDrop()
-    {
-        _inventory.Drop();
-    }
-
-    private void HandlePickup()
+    //PICKUP
+    private void TryPickup()
     {
         if (!TryRaycastPickup(out DroppedWeapon dropped))
             return;
@@ -80,20 +78,20 @@ public class PlayerWeaponController : MonoBehaviour
         _inventory.Pickup(dropped);
     }
 
-    //--- Helpers ---
     private bool TryRaycastPickup(out DroppedWeapon dropped)
     {
         dropped = null;
         if (Camera.main == null) return false;
 
         Ray ray = Camera.main.ScreenPointToRay(
-            new Vector2(Screen.width / 2f, Screen.height / 2f)
+            new Vector2(Screen.width * 0.5f, Screen.height * 0.5f)
         );
 
         if (!Physics.Raycast(ray, out RaycastHit hit, 999f, pickupCollisionLayerMask))
             return false;
 
         return hit.collider.GetComponentInParent<DroppedWeapon>() is { } dw
-            && (dropped = dw) != null;
+               && (dropped = dw) != null;
     }
 }
+
