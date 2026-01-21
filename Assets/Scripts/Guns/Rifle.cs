@@ -1,11 +1,22 @@
+using System;
+using UnityEngine;
+
 namespace Guns
 {
     public class Rifle : ProjectileGun
     {
-        public override void Initialize(GunConfig cfg, int ammo)
+        private void Update()
         {
-            base.Initialize(cfg, ammo);
-            projectilePool.InitializePool(config.bulletPF, config.usesProjectile);
+            if (!HasAimDebug()) // optional guard, дивись нижче
+                return;
+
+            Vector3 dir = (GetLastAimPoint() - firePoint.position).normalized;
+
+            Debug.DrawRay(
+                firePoint.position,
+                dir * 10f,
+                Color.magenta
+            );
         }
     }
 }

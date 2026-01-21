@@ -202,9 +202,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Guns.Rifle
   firePoint: {fileID: 1198870244325952508}
   visualRoot: {fileID: 4858216227603641607}
-  maxAimDistance: 100
   projectileSpeed: 20
   projectileLifetime: 5
+  projectilePool: {fileID: 4026269091061341253}
 --- !u!114 &4026269091061341253
 MonoBehaviour:
   m_ObjectHideFlags: 0

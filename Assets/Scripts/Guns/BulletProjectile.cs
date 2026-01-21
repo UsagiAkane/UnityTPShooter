@@ -21,9 +21,10 @@ namespace Guns
             _speed = speed;
             _damage = dmg;
             _pool = pool;
+            _instigator = ownerGameObject;
+            
             gameObject.SetActive(true);
             rbBullet.AddForce(_direction * _speed, ForceMode.Impulse);
-            _instigator = ownerGameObject;
         }
 
         private IEnumerator WaitForReturn(float seconds)

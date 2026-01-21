@@ -5,9 +5,9 @@ namespace Guns
 {
     public abstract class HitscanGun : Gun
     {
-        [Header("Hitscan params")]
-        [SerializeField] protected float maxRange = 100f;
-        [SerializeField] protected LayerMask hitMask;
+        // [Header("Hitscan params")] //now using AimResult
+        // [SerializeField] protected float maxRange = 100f;
+        // [SerializeField] protected LayerMask hitMask;
         
         
         protected override void ShootLogic(AimResult aim)

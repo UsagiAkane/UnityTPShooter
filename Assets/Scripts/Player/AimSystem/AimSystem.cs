@@ -47,6 +47,7 @@ namespace Player.AimSystem
             }
         }
 
+        //[SerializeField] private Transform aimPointDebug;
         private void PerformAim()
         {
             //Джерело камера
@@ -81,10 +82,11 @@ namespace Player.AimSystem
 
             //ТІЛЬКИ повідомляємо, без логіки
             OnAimComputed?.Invoke(_currentAim);
-
-#if UNITY_EDITOR
-            Debug.DrawRay(origin, direction * 2f, hasHit ? Color.red : Color.green);
-#endif
+            
+            
+            //aimPointDebug.position = aimPoint;
+            //Debug.Log(Physics.CheckSphere(origin, 0.01f));
+            //Debug.DrawRay(origin, direction * 20f, hasHit ? Color.red : Color.green);
         }
     }
 }

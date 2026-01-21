@@ -1,3 +1,4 @@
+using Guns.State_machine;
 using Player.AimSystem;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -22,8 +23,9 @@ namespace Guns
     
         private WeaponInventory _inventory;
         private AimSystem _aimSystem;
-
+        //private GunStateMachine _fsm; //TODO MUST BE IN GUN
         private Gun _currentGun; //щоб не питати WeaponInventory кожен раз та синхронізувати з AimSystem
+        
 
         private void Awake()
         {
@@ -51,29 +53,41 @@ namespace Guns
 
         private void Update()
         {
-            if (shootAction.action.IsPressed()) _currentGun?.Shoot(_aimSystem.CurrentAim);
+            if (shootAction.action.WasPressedThisFrame())
+                _currentGun?.HandleFirePressed(_aimSystem.CurrentAim);
 
-            if (reloadAction.action.WasPressedThisFrame()) _currentGun?.ReloadInstant();
+            if (shootAction.action.WasReleasedThisFrame())
+                _currentGun?.HandleFireReleased();
 
-            //if (swapAction.action.WasPressedThisFrame()) _inventory.Swap();
+            if (reloadAction.action.WasPressedThisFrame())
+                _currentGun?.HandleReload();
 
-            if (pickupAction.action.WasPressedThisFrame()) TryPickup();
-        
-            if (dropAction.action.WasPressedThisFrame()) HandleDropRequested();
-            
+            if (pickupAction.action.WasPressedThisFrame())
+                TryPickup();
+
+            if (dropAction.action.WasPressedThisFrame())
+                HandleDropRequested();
+
+            _currentGun?.Tick(Time.deltaTime);
         }
-
+        
         //AimSystem - Gun linking
         private void HandleGunEquipped(Gun gun)
         {
             _currentGun = gun;
             _aimSystem.SetAimProvider(gun);
+
+            
+            //_fsm = new GunStateMachine(gun);//TODO REWORK
         }
 
         private void HandleGunUnequipped(Gun gun)
         {
             if (_currentGun == gun)
+            {
                 _currentGun = null;
+                //_fsm = null;//TODO REWORK
+            }
 
             _aimSystem.ClearAimProvider(gun);
         }
@@ -104,7 +118,10 @@ namespace Guns
         private void TryPickup()
         {
             if (!TryRaycastPickup(out DroppedWeapon dropped))
+            {
+                Debug.unityLogger.Log("PlayerWeaponController TryPickup() TryRaycastPickup(out DroppedWeapon dropped) == null");
                 return;
+            }
 
             _inventory.Pickup(dropped);
         }

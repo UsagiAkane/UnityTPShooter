@@ -23,7 +23,11 @@ namespace Guns
     
         public void Pickup(DroppedWeapon dropped)
         {
-            if (dropped == null) return;
+            if (dropped == null)
+            {
+                Debug.unityLogger.Log("WeaponInventory Pickup(DroppedWeapon dropped) dropped == null");
+                return;
+            }
 
             if (_currentGun != null)
                 RequestDrop(); //без фізики, хто дропає? PlayerWeaponController
@@ -74,18 +78,16 @@ namespace Guns
     
         private void SpawnGun(GunConfig config, int ammo)
         {
-            Gun gun = Instantiate(config.equipedPF, weaponHolder)
-                .GetComponent<Gun>();
+            Gun gun = Instantiate(config.equipedPF, weaponHolder).GetComponent<Gun>();
 
             gun.transform.localPosition = Vector3.zero;
             gun.transform.localRotation = Quaternion.identity;
             gun.transform.localScale = Vector3.one;
 
-            gun.SetOwner(GetComponentInParent<IDamageInstigator>());
             gun.Initialize(config, ammo);
+            gun.SetOwner(GetComponentInParent<IDamageInstigator>());
 
             _currentGun = gun;
-
             OnGunEquipped?.Invoke(gun);
         }
     }

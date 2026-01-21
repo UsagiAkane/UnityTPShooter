@@ -9,11 +9,23 @@ namespace Guns
         [SerializeField] protected float projectileSpeed = 20f;
         [SerializeField] protected float projectileLifetime = 5f;
 
+        [SerializeField] protected ObjectPool projectilePool;
+        
+        //Init pool
+        public override void Initialize(GunConfig cfg, int startAmmo)
+        {
+            base.Initialize(cfg, startAmmo);
+
+            projectilePool.InitializePool(
+                cfg.bulletPF,
+                cfg.usesProjectile
+            );
+        }
+        
         protected override void ShootLogic(AimResult aim)
         {
-            Vector3 direction = GetDirection(aim);
-
-            SpawnProjectile(direction);
+            Vector3 dirFromFirePoint = (aim.AimPoint - firePoint.position).normalized;
+            SpawnProjectile(dirFromFirePoint);
         }
         
         protected virtual Vector3 GetDirection(AimResult aim)
@@ -23,24 +35,21 @@ namespace Guns
 
         protected virtual void SpawnProjectile(Vector3 direction)
         {
-            if (projectilePool == null)
+            GameObject projectile = projectilePool.GetBulletProjectile(firePoint.position, Quaternion.LookRotation(direction));
+
+            if (!projectile.TryGetComponent(out BulletProjectile bullet))
             {
-                Debug.Log($"{name} projectilePool null");
+                Debug.Log("BulletProjectile missing");
                 return;
             }
             
-            GameObject projectile = projectilePool.GetBulletProjectile(
-                firePoint.position,
-                Quaternion.LookRotation(direction)
-            );
-
-            projectile.GetComponent<BulletProjectile>().Init(
+            bullet.Init(
                 direction,
                 projectileSpeed,
-                config.damage,
+                damage,//runtime snapshot
                 projectileLifetime,
                 projectilePool,
-                owner
+                instigator
             );
         }
     }

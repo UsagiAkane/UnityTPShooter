@@ -4,9 +4,9 @@ namespace Guns
 {
     public class Laser : HitscanGun
     {
-        public override void Initialize(GunConfig cfg, int ammo)
+        public override void Initialize(GunConfig cfg, int startAmmo)
         {
-            base.Initialize(cfg, ammo);
+            base.Initialize(cfg, startAmmo);
 
             //якщо пул треба буде для ФХ то краще створити окремий
             //rojectilePool.InitializePool(config.bulletPF, config.usesProjectile);
@@ -18,9 +18,9 @@ namespace Guns
             {
                 DamageInfo damageInfo = new DamageInfo
                 {
-                    amount = config.damage,
+                    amount = damage,
                     source = gameObject,   // gun
-                    instigator = owner,    // holder
+                    instigator = instigator,    // holder
                     hitPoint = hit.point,
                     hitDirection = direction
                 };
