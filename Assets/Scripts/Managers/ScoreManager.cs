@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 
+
 public class ScoreManager : MonoBehaviour
 {
     //Listen to Damage / Kill events

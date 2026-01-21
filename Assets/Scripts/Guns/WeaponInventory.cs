@@ -4,7 +4,7 @@ using UnityEngine;
 public class WeaponInventory : MonoBehaviour, IWeaponInventory
 {
     public Gun CurrentGun => _currentGun;
-
+    
     public event Action<Gun> OnGunEquipped;
     public event Action<Gun> OnGunUnequipped;
 
@@ -38,13 +38,13 @@ public class WeaponInventory : MonoBehaviour, IWeaponInventory
         DropInternal();
     }
 
-    private void DropInternal(float dropImpulse = 2f, float torqueRange = 1f)
+    private void DropInternal(float dropImpulse = 2f, float torqueRange = 1f)//TODO torqueRange
     {
         Gun gunToDrop = _currentGun;
         
         //відмінити reload
         _currentRuntime.reloadVersion++;
-        _currentRuntime.isReloading = false;
+        _currentRuntime.isReloading = false; //TODO REMOVE THIS
 
         OnGunUnequipped?.Invoke(gunToDrop);
 
@@ -53,18 +53,18 @@ public class WeaponInventory : MonoBehaviour, IWeaponInventory
             transform.forward * 0.5f +
             transform.right * 0.5f;
 
-        Rigidbody rb = Instantiate(
+        Rigidbody gunRB = Instantiate(
             _currentConfig.droppepPF,
             spawnPos,
             gunToDrop.transform.rotation
         ).GetComponent<Rigidbody>();
 
-        DroppedWeapon dropped = rb.GetComponent<DroppedWeapon>();
+        DroppedWeapon dropped = gunRB.GetComponent<DroppedWeapon>();
         dropped.Initialize(_currentConfig, _currentRuntime);
 
-        rb.linearVelocity = GetComponent<Rigidbody>().linearVelocity;
-        rb.AddForce(transform.up * dropImpulse, ForceMode.Impulse);
-        rb.AddForce(transform.forward * dropImpulse, ForceMode.Impulse);
+        gunRB.linearVelocity = GetComponent<Rigidbody>().linearVelocity; //TODO PERFOMANCE ISSUES? Better to do var? And we dont have Rigidbody on WeaponInventory. This left after PlayerWeaponController slice
+        gunRB.AddForce(transform.up * dropImpulse, ForceMode.Impulse);
+        gunRB.AddForce(transform.forward * dropImpulse, ForceMode.Impulse);
 
         Destroy(gunToDrop.gameObject);
 
@@ -73,7 +73,7 @@ public class WeaponInventory : MonoBehaviour, IWeaponInventory
         _currentRuntime = null;
     }
     
-    private void SpawnGun(GunConfig config, WeaponRuntimeData runtime)
+    private void SpawnGun(GunConfig config, WeaponRuntimeData runtime)//TODO Override with new ammo system
     {
         Gun gun = Instantiate(config.equipedPF, weaponHolder)
             .GetComponent<Gun>();

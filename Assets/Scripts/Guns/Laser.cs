@@ -4,7 +4,7 @@ public class Laser : Gun
 {
     [SerializeField] private float maxRange = 100f;
 
-    public override void Initialize(GunConfig cfg, WeaponRuntimeData runtime)
+    public override void Initialize(GunConfig cfg, WeaponRuntimeData runtime)//TODO delete WeaponRuntimeData. Override with new ammo system
     {
         base.Initialize(cfg, runtime);
 

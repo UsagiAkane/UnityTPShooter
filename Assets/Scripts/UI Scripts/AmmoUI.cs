@@ -15,7 +15,7 @@ public class AmmoUI : MonoBehaviour
         _inventory.OnGunEquipped += HandleGunEquipped;
         _inventory.OnGunUnequipped += HandleGunUnequipped;
 
-        if (_inventory.CurrentGun != null)
+        if (_inventory.CurrentGun != null) //Do you need playerWeaponController event if I dont use it?
             HandleGunEquipped(_inventory.CurrentGun);
         else
             ammoText.text = "--/--";

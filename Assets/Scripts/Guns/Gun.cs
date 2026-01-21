@@ -48,7 +48,7 @@ public abstract class Gun : MonoBehaviour
 
     public bool CanShoot()
     {
-        return runtime.currentAmmo > 0 && cooldown <= 0f && !runtime.isReloading;
+        return runtime.currentAmmo > 0 && cooldown <= 0f; // && !runtime.isReloading;
     }
     
     public virtual void Shoot()
@@ -81,20 +81,35 @@ public abstract class Gun : MonoBehaviour
         OnAmmoAmountChanged?.Invoke(runtime.currentAmmo, maxAmmo);
     }
 
-    public virtual void Reload(MonoBehaviour runner)
+    public virtual void Reload()//MonoBehaviour runner)
     {
-        if (runtime.isReloading) return;
-        if (runtime.currentAmmo == maxAmmo) return;
-
-        runtime.isReloading = true;
-        runtime.reloadVersion++;
-
-        int myVersion = runtime.reloadVersion;
+        // if (runtime.isReloading) return;
+        // if (runtime.currentAmmo == maxAmmo) return;
+        //
+        // runtime.isReloading = true;
+        // runtime.reloadVersion++;
+        //
+        // int myVersion = runtime.reloadVersion;
 
         OnReloadStateChanged?.Invoke(true);
-        runner.StartCoroutine(ReloadRoutine(myVersion));
+        StartCoroutine(ReloadRoutine());
+        //runner.StartCoroutine(ReloadRoutine(myVersion));
     }
 
+    private IEnumerator ReloadRoutine()
+    {
+        OnReloadStateChanged?.Invoke(true);
+        
+        SFXmanager.instance.PlaySFXClip(config.reloadSfx, transform, 1f);
+
+        yield return new WaitForSeconds(config.reloadTime);
+        
+        runtime.currentAmmo = maxAmmo;
+
+        OnAmmoAmountChanged?.Invoke(runtime.currentAmmo, maxAmmo);
+        OnReloadStateChanged?.Invoke(false);
+    }
+    
     private IEnumerator ReloadRoutine(int version)
     {
         SFXmanager.instance.PlaySFXClip(config.reloadSfx, transform, 1f);

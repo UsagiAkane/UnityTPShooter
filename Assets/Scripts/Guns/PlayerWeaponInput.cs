@@ -2,7 +2,8 @@ using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PlayerWeaponInput : MonoBehaviour, IWeaponInputSource
+//TODO FULL REWORK, DELETE ALL
+public class PlayerWeaponInput : MonoBehaviour, IWeaponInputSource //TODO REWORK abstract class PlayerInput with all inputs.  PlayerWeaponInput inheritance PlayerInput
 {
     public event Action Shoot;
     public event Action Reload;
@@ -25,18 +26,18 @@ public class PlayerWeaponInput : MonoBehaviour, IWeaponInputSource
         drop.action.performed += OnDrop;
         swap.action.performed += OnSwap;
 
-        shoot.action.Enable();
-        reload.action.Enable();
-        pickup.action.Enable();
-        drop.action.Enable();
-        swap.action.Enable();
+        // shoot.action.Enable();
+        // reload.action.Enable();
+        // pickup.action.Enable();
+        // drop.action.Enable();
+        // swap.action.Enable();
     }
 
     private void OnDisable()
     {
-        //не знаю чи треба?
-        shoot.action.Disable();
-        reload.action.Disable();
+        // //не знаю чи треба?
+        // shoot.action.Disable();
+        // reload.action.Disable();
         
         shoot.action.performed -= OnShoot;
         reload.action.performed -= OnReload;

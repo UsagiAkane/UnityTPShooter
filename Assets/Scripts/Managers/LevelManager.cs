@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class LevelManager : MonoBehaviour
+public class LevelManager : MonoBehaviour //TODO Delete. Full rework with state manager
 {
     [SerializeField] private LevelCompleteUI levelCompleteUI;
     
@@ -19,7 +19,7 @@ public class LevelManager : MonoBehaviour
 
     private void CompleteLevel()
     {
-        Object.FindAnyObjectByType<InputSystem.InputsManager>()?.gameObject.SetActive(false);// Чи можна тут так?
+        FindAnyObjectByType<InputSystem.InputsManager>()?.gameObject.SetActive(false);//BAD 
         
         levelCompleteUI.Show();
         
@@ -33,6 +33,6 @@ public class LevelManager : MonoBehaviour
     public void RestartLevel()
     {
         Time.timeScale = 1f;
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);//BAD
     }
 }

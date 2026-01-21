@@ -8,7 +8,7 @@ public class BulletTarget : MonoBehaviour, IDamageable
     public static event Action<BulletTarget, DamageInfo> OnTargetKilled;//TODO
     //public static event Action<float> OnDamageTaken; //для UI
     
-    public static int AliveCount { get; private set; }
+    public static int AliveCount { get; private set; } //TODO Enemy spawner with runtime set list<SO>
     
 
     [SerializeField] private float maxHealth = 100f;

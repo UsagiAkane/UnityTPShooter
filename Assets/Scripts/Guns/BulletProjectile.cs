@@ -40,7 +40,7 @@ public class BulletProjectile : MonoBehaviour
             {
                 amount = _damage,
                 source = gameObject,
-                instigator = _instigator,//to log who deal dmg
+                instigator = _instigator,//to log who deal dmg Nickname - gun - Who - headshot
                 hitPoint = transform.position,
                 hitDirection = transform.forward
             };

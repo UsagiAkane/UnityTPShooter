@@ -22,10 +22,10 @@ public class PlayerWeaponController : MonoBehaviour
         _inventory.OnGunEquipped += HandleGunEquipped;
         _inventory.OnGunUnequipped += HandleGunUnequipped;
 
-        _input.Shoot += HandleShoot;
-        _input.Reload += HandleReload;
-        _input.Pickup += HandlePickup;
-        _input.Drop += HandleDrop;
+        _input.Shoot += HandleShoot;//TODO call it in update?
+        _input.Reload += HandleReload;//TODO call it in update?
+        _input.Pickup += HandlePickup;//TODO call it in update?
+        _input.Drop += HandleDrop;//TODO call it in update?
     }
 
     private void OnDisable()
@@ -57,14 +57,14 @@ public class PlayerWeaponController : MonoBehaviour
     //---Input---
     private void HandleShoot()
     {
-        if (_currentGun == null) return;
+        if (_currentGun == null) return; //TODO AUTO RELOAD
         _currentGun.Shoot();
     }
 
     private void HandleReload()
     {
         if (_currentGun == null) return;
-        _currentGun.Reload(this);
+        _currentGun.Reload();//this);
     }
 
     private void HandleDrop()

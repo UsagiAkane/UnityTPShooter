@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 
+//TODO Useless interface? delete it because it duplicates code without purpouse
 public interface IWeaponInventory
 {
     Gun CurrentGun { get; }
