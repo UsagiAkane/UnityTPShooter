@@ -7,7 +7,12 @@ namespace Guns.State_machine
         public GunReloadingState(GunStateMachine fsm, Gun gun)
             : base(fsm, gun)
         {
-            timer = gun.ReloadDuration; //runtime snapshot
+            timer = gun.ReloadDuration;//runtime snapshot
+        }
+        
+        public override void Enter()
+        {
+            gun.StartReload();
         }
 
         public override void Tick(float dt)
@@ -15,7 +20,7 @@ namespace Guns.State_machine
             timer -= dt;
             if (timer <= 0f)
             {
-                gun.RefillAmmo();
+                gun.FinishReload();
                 fsm.SwitchState(new GunIdleState(fsm, gun));
             }
         }

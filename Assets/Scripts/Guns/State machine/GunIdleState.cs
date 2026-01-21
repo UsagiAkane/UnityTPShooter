@@ -11,6 +11,7 @@ namespace Guns.State_machine
         {
             if (!gun.HasAmmo)
             {
+                gun.NotifyDryFire();
                 fsm.SwitchState(new GunEmptyState(fsm, gun));
                 return;
             }

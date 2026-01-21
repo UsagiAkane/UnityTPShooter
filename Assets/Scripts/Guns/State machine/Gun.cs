@@ -13,6 +13,10 @@ namespace Guns
     public abstract class Gun : MonoBehaviour, IAimProvider
     {
         public event Action<int, int> OnAmmoAmountChanged;
+        public event Action Shot;
+        public event Action ReloadStarted;
+        public event Action ReloadFinished;
+        public event Action DryFire;
      
         [SerializeField] protected Transform firePoint;
         [SerializeField] protected Transform visualRoot;
@@ -120,6 +124,7 @@ namespace Guns
         public void ExecuteShot(AimResult aim)
         {
             ShootLogic(aim);
+            Shot?.Invoke();
         }
 
         protected abstract void ShootLogic(AimResult aim);
@@ -127,6 +132,22 @@ namespace Guns
         private void NotifyAmmo()
         {
             OnAmmoAmountChanged?.Invoke(currentAmmo, clipSize);
+        }
+        
+        public void NotifyDryFire()
+        {
+            DryFire?.Invoke();
+        }
+        
+        public void StartReload()
+        {
+            ReloadStarted?.Invoke();
+        }
+
+        public void FinishReload()
+        {
+            RefillAmmo();
+            ReloadFinished?.Invoke();
         }
     }
 }
