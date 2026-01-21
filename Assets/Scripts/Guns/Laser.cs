@@ -1,39 +1,37 @@
 using UnityEngine;
+using Guns;
 
-public class Laser : Gun
+public class Laser : HitscanGun
 {
-    [SerializeField] private float maxRange = 100f;
-
     public override void Initialize(GunConfig cfg, int ammo)
     {
         base.Initialize(cfg, ammo);
 
-        // Laser не projectile, але пул для FX
-        projectilePool.InitializePool(config.bulletPF, config.usesProjectile);
+        //якщо пул треба буде для ФХ то краще створити окремий
+        //rojectilePool.InitializePool(config.bulletPF, config.usesProjectile);
     }
 
-    protected override void ShootLogic()
+    protected override void OnHit(RaycastHit hit, Vector3 direction)
     {
-        Vector3 origin = firePoint.position;
-        Vector3 direction = firePoint.forward;
-
-        if (Physics.Raycast(origin, direction, out RaycastHit hit, maxRange))
+        if (hit.collider.TryGetComponent<IDamageable>(out var damageable))
         {
-            if (hit.collider.TryGetComponent<IDamageable>(out var damageable))
+            DamageInfo damageInfo = new DamageInfo
             {
-                DamageInfo damageInfo = new DamageInfo
-                {
-                    amount = config.damage,
-                    source = gameObject, //gun
-                    instigator = owner, //gun_holder_root
-                    hitPoint = hit.point,
-                    hitDirection = direction
-                };
+                amount = config.damage,
+                source = gameObject,   // gun
+                instigator = owner,    // holder
+                hitPoint = hit.point,
+                hitDirection = direction
+            };
 
-                damageable.TakeDamage(damageInfo);
-            }
-
-            //TODO FX
+            damageable.TakeDamage(damageInfo);
         }
+
+        //TODO impact FX
+    }
+
+    protected override void OnMiss(Vector3 direction)
+    {
+        //TODO FX without hit
     }
 }

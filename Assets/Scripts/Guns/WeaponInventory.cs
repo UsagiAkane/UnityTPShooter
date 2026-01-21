@@ -1,8 +1,9 @@
 using System;
 using UnityEngine;
 
-public class WeaponInventory : MonoBehaviour, IWeaponInventory
+public class WeaponInventory : MonoBehaviour
 {
+    public event Action OnDropRequested;
     public Gun CurrentGun => _currentGun;
     
     public event Action<Gun> OnGunEquipped;
@@ -13,12 +14,17 @@ public class WeaponInventory : MonoBehaviour, IWeaponInventory
     private Gun _currentGun;
     private GunConfig _currentConfig;
     
+    private void RequestDrop()
+    {
+        OnDropRequested?.Invoke();
+    }
+    
     public void Pickup(DroppedWeapon dropped)
     {
         if (dropped == null) return;
 
         if (_currentGun != null)
-            DropInternal();
+            RequestDrop(); //без фізики, хто дропає? PlayerWeaponController
 
         _currentConfig = dropped.GetConfig;
         int startAmmo = dropped.GetCurrentAmmo;
@@ -28,17 +34,15 @@ public class WeaponInventory : MonoBehaviour, IWeaponInventory
         Destroy(dropped.gameObject);
     }
 
-    public void Drop()
+    public void Drop(Vector3 startingVelocity)
     {
         if (_currentGun == null) return;
-        DropInternal();
+        DropInternal(startingVelocity);
     }
 
-    private void DropInternal(float dropImpulse = 2f, float torqueRange = 1f)//TODO torqueRange
+    private void DropInternal(Vector3 startingVelocity, float dropImpulse = 2f)
     {
         Gun gunToDrop = _currentGun;
-        
-
         OnGunUnequipped?.Invoke(gunToDrop);
 
         Vector3 spawnPos =
@@ -49,13 +53,14 @@ public class WeaponInventory : MonoBehaviour, IWeaponInventory
         Rigidbody gunRB = Instantiate(
             _currentConfig.droppepPF,
             spawnPos,
-            gunToDrop.transform.rotation
+            gunToDrop.VisualRotation
         ).GetComponent<Rigidbody>();
 
         DroppedWeapon dropped = gunRB.GetComponent<DroppedWeapon>();
         dropped.Initialize(_currentConfig, _currentGun.CurrentAmmo);
 
-        gunRB.linearVelocity = GetComponent<Rigidbody>().linearVelocity; //TODO PERFOMANCE ISSUES? Better to do var? And we dont have Rigidbody on WeaponInventory. This left after PlayerWeaponController slice
+        //inventory не шукає Rigidbody — воно просто використовує дані
+        gunRB.linearVelocity = startingVelocity;//Хто тепер передає velocity? PlayerWeaponController
         gunRB.AddForce(transform.up * dropImpulse, ForceMode.Impulse);
         gunRB.AddForce(transform.forward * dropImpulse, ForceMode.Impulse);
 

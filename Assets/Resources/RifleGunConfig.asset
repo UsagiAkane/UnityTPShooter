@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: RifleGunConfig
   m_EditorClassIdentifier: Assembly-CSharp::GunConfig
   droppepPF: {fileID: 2808625149419590679, guid: a953d1da82b1ff441b6bb6a8da4de693, type: 3}
-  equipedPF: {fileID: 4533255817393384811, guid: 3f351c6e8be4b1c409acac7e0a16dd13, type: 3}
+  equipedPF: {fileID: 9200075911143382447, guid: b755f2eb15c58cd45a97d6df3d272fb0, type: 3}
   bulletPF: {fileID: 7465240956135062789, guid: ab347df51905bc5489443e8784d0e49c, type: 3}
   weaponName: Rifle weapon
   shotSfx: {fileID: 8300000, guid: d1534f23bf508fb43b5de130cd17e9f4, type: 3}

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: LaserGunConfig
   m_EditorClassIdentifier: Assembly-CSharp::GunConfig
   droppepPF: {fileID: 3784009868338572175, guid: 420342cae50baa640993fb56813adf28, type: 3}
-  equipedPF: {fileID: 4438786768396064293, guid: 485b2e19f21da204589cd1f09fd190ab, type: 3}
+  equipedPF: {fileID: 4154383595605530890, guid: dfc903ba31da752448ab1d045f3498d7, type: 3}
   bulletPF: {fileID: 8741731339181686983, guid: 0970fa8219c31dc4aa7c2d009e6ae038, type: 3}
   weaponName: Laser weapon
   shotSfx: {fileID: 8300000, guid: cf01f756d3661c345b735fe356f2db74, type: 3}

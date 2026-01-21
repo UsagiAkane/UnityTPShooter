@@ -1,11 +1,11 @@
-using System;
-using UnityEngine;
-
-public class Rifle : Gun
+namespace Guns
 {
-    public override void Initialize(GunConfig cfg, int ammo)
+    public class Rifle : ProjectileGun
     {
-        base.Initialize(cfg, ammo);
-        projectilePool.InitializePool(config.bulletPF, config.usesProjectile);
+        public override void Initialize(GunConfig cfg, int ammo)
+        {
+            base.Initialize(cfg, ammo);
+            projectilePool.InitializePool(config.bulletPF, config.usesProjectile);
+        }
     }
 }
