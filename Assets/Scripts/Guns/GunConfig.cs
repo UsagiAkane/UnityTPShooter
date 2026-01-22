@@ -23,7 +23,7 @@ namespace Guns
         public float reloadTime;
         public AudioClip reloadSfx;
 
-        // Optional: spread, range, recoil, etc.
+        //Optional: spread, range, recoil, etc.
         public bool usesProjectile = true;
     }
 }

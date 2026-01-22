@@ -18,12 +18,6 @@ namespace InputSystem
     
         private void Awake()
         {
-            //Debug.Log("0: Awake");//---------
-            // UnityEngine.InputSystem.InputSystem.onDeviceChange += OnDeviceChanged;
-
-            // _playerInput = GetComponent<PlayerInput>();
-            // _playerInput.onControlsChanged += ControlsChanged;
-            
             InitializeMaps();
         }
 

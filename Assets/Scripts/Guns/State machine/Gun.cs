@@ -3,11 +3,6 @@ using Guns.State_machine;
 using Player.AimSystem;
 using UnityEngine;
 
-//ган сам вирішує, як реагувати. Якщо це граната, то вона має цілитись по кривій вгору від точки
-//1 AimSystem дає дані
-//2 Controller каже "стріляй"
-//3 Gun стріляє(якщо може)
-
 namespace Guns
 {
     public abstract class Gun : MonoBehaviour, IAimProvider
@@ -25,7 +20,7 @@ namespace Guns
         [Header("Runtime State")]
         protected int currentAmmo;
 
-        //Runtime snapshot (скопійовано з config в Initialize)
+        //Runtime snapshot from config to Initialize
         protected int clipSize;
         protected float fireCooldown;
         protected float reloadDuration;
@@ -50,7 +45,7 @@ namespace Guns
             return lastAim.Value.AimPoint;
         }
 
-        //FSM має право читати ТІЛЬКИ це
+        //FSM read only this
         public float FireCooldown => fireCooldown;
         public float ReloadDuration => reloadDuration;
         
@@ -59,7 +54,7 @@ namespace Guns
         public virtual void OnAimUpdated(AimResult aim)
         {
             lastAim = aim;
-            //кручу візуальну частину гану в напрямку aim
+            //visual gun rotation
             Quaternion targetRotation = Quaternion.LookRotation(aim.Direction, Vector3.up);
             visualRoot.rotation = targetRotation;     
         }
@@ -120,7 +115,7 @@ namespace Guns
             NotifyAmmo();
         }
 
-        //FSM викликає
+        //FSM
         public void ExecuteShot(AimResult aim)
         {
             ShootLogic(aim);

@@ -7,7 +7,7 @@ namespace Guns
     {
         private void Update()
         {
-            if (!HasAimDebug()) // optional guard, дивись нижче
+            if (!HasAimDebug())
                 return;
 
             Vector3 dir = (GetLastAimPoint() - firePoint.position).normalized;

@@ -9,7 +9,6 @@ namespace Guns
         // [SerializeField] protected float maxRange = 100f;
         // [SerializeField] protected LayerMask hitMask;
         
-        
         protected override void ShootLogic(AimResult aim)
         {
             if (CheckHit(aim, out RaycastHit hit, out Vector3 direction))

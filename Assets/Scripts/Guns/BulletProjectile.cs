@@ -12,8 +12,7 @@ namespace Guns
         private float _speed;
         private ObjectPool _pool;
         private IDamageInstigator _instigator;//to log who deal dmg
-
-
+        
         //Called by pool to spawn bullet
         public void Init(Vector3 direction, float speed, float dmg, float _lifeTime, ObjectPool pool, IDamageInstigator ownerGameObject)
         {
@@ -42,7 +41,7 @@ namespace Guns
                 {
                     amount = _damage,
                     source = gameObject,
-                    instigator = _instigator,//to log who deal dmg Nickname - gun - Who - headshot
+                    instigator = _instigator,//to log who deal dmg Nickname - gun - toWho - headshot
                     hitPoint = transform.position,
                     hitDirection = transform.forward
                 };

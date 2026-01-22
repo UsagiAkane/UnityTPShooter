@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Managers
 {
-    public class SFXmanager : MonoBehaviour
+    public class SFXmanager : MonoBehaviour//TODO Rework this or start use?
     {
         public static SFXmanager instance;
 
@@ -16,7 +16,7 @@ namespace Managers
             }
         }
 
-        public void PlaySFXClip(AudioClip clip, Transform spawn, float volume)
+        public void PlaySFXClip(AudioClip clip, Transform spawn, float volume)//TODO Rework this or start use?
         {
             //spawn in gameobj
             AudioSource audioSource = Instantiate(sFXObject, spawn.position, Quaternion.identity);

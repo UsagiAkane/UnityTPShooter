@@ -1,7 +1,6 @@
 using System;
 using UnityEngine;
 
-//AimSystem нічого не крутить, він просто ретьорнить результат прицілювання
 namespace Player.AimSystem
 {
     public class AimSystem : MonoBehaviour
@@ -50,11 +49,10 @@ namespace Player.AimSystem
         //[SerializeField] private Transform aimPointDebug;
         private void PerformAim()
         {
-            //Джерело камера
+            //Usually main camera
             Vector3 origin = aimDirectionSource.position;
             Vector3 direction = aimDirectionSource.forward;
-
-            //Raycast (якщо дозволений)
+            
             RaycastHit hit = default;
             bool hasHit = false;
 
@@ -64,13 +62,13 @@ namespace Player.AimSystem
                 out hit,
                 maxAimDistance,
                 aimMask,
-                QueryTriggerInteraction.Ignore//щоб аім НЕ реагував на trigger-колайдери
+                QueryTriggerInteraction.Ignore
             );
 
-            //Визначаємо aim point
+            //aim point
             Vector3 aimPoint = hasHit ? hit.point : origin + direction * maxAimDistance;
 
-            //Формуємо aim data
+            //aim data
             _currentAim = new AimResult(
                 direction,
                 aimPoint,
@@ -80,7 +78,6 @@ namespace Player.AimSystem
 
             _hasAim = true;
 
-            //ТІЛЬКИ повідомляємо, без логіки
             OnAimComputed?.Invoke(_currentAim);
             
             

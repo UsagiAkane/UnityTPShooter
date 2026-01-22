@@ -30,7 +30,7 @@ namespace Guns
             }
 
             if (_currentGun != null)
-                RequestDrop(); //без фізики, хто дропає? PlayerWeaponController
+                RequestDrop();
 
             _currentConfig = dropped.GetConfig;
             int startAmmo = dropped.GetCurrentAmmo;
@@ -64,9 +64,8 @@ namespace Guns
 
             DroppedWeapon dropped = gunRB.GetComponent<DroppedWeapon>();
             dropped.Initialize(_currentConfig, _currentGun.CurrentAmmo);
-
-            //inventory не шукає Rigidbody — воно просто використовує дані
-            gunRB.linearVelocity = startingVelocity;//Хто тепер передає velocity? PlayerWeaponController
+            
+            gunRB.linearVelocity = startingVelocity;//velocity from PlayerWeaponController
             gunRB.AddForce(transform.up * dropImpulse, ForceMode.Impulse);
             gunRB.AddForce(transform.forward * dropImpulse, ForceMode.Impulse);
 

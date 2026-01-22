@@ -4,14 +4,6 @@ namespace Guns
 {
     public class Laser : HitscanGun
     {
-        public override void Initialize(GunConfig cfg, int startAmmo)
-        {
-            base.Initialize(cfg, startAmmo);
-
-            //якщо пул треба буде для ФХ то краще створити окремий
-            //rojectilePool.InitializePool(config.bulletPF, config.usesProjectile);
-        }
-
         protected override void OnHit(RaycastHit hit, Vector3 direction)
         {
             if (hit.collider.TryGetComponent<IDamageable>(out var damageable))

@@ -23,8 +23,7 @@ namespace Guns
     
         private WeaponInventory _inventory;
         private AimSystem _aimSystem;
-        //private GunStateMachine _fsm; //TODO MUST BE IN GUN
-        private Gun _currentGun; //щоб не питати WeaponInventory кожен раз та синхронізувати з AimSystem
+        private Gun _currentGun; //TODO Do i really need this?
         
 
         private void Awake()
@@ -76,9 +75,6 @@ namespace Guns
         {
             _currentGun = gun;
             _aimSystem.SetAimProvider(gun);
-
-            
-            //_fsm = new GunStateMachine(gun);//TODO REWORK
         }
 
         private void HandleGunUnequipped(Gun gun)
@@ -86,7 +82,6 @@ namespace Guns
             if (_currentGun == gun)
             {
                 _currentGun = null;
-                //_fsm = null;//TODO REWORK
             }
 
             _aimSystem.ClearAimProvider(gun);
@@ -96,8 +91,7 @@ namespace Guns
         {
             _currentGun?.OnAimUpdated(aim);
         }
-
-        //PICKUP / DROP
+        
         private void TryDrop()
         {
             if (_inventory.CurrentGun == null)
